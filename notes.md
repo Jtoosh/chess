@@ -2,6 +2,8 @@
 
 ## Pre-Class studying
 
+### Java Basics
+
 I worked on the Java W3 Schools exercises during the break, heres some bits I learned:
 
 - Java is more syntax strict, like C++. Strings need to be in "", '' is for characters. Semi-colons after every line, case-sensitive, etc.
@@ -15,3 +17,9 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 - In Java, the length of a string is a method of the string (`.length()`), not a property or a separate method. Finding the index of the first occurrence of a char (or array element for that matter) is done with `.indexOf()`. When using `.indexOf()`, on a string, the char you are searching for is placed in "", not ''.
 - Apart from the normal way with the `+` operator, Strings can be concatenated with the `.concat()` method.
 - Escape characters are handled like normal, with a `\` before the character.
+
+### Git Review
+
+- `git branch` - without an argument lists the branches, with an argument creates a new branch with that name.
+- `git checkout` - switches branches, can also be used to create a new branch with the `-b` flag.
+- `git diff` - when passed with two versions, by providing the commit hashes, shows the differences between the two versions.
