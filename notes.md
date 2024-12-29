@@ -23,3 +23,4 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 - `git branch` - without an argument lists the branches, with an argument creates a new branch with that name.
 - `git checkout` - switches branches, can also be used to create a new branch with the `-b` flag.
 - `git diff` - when passed with two versions, by providing the commit hashes, shows the differences between the two versions.
+- Add the `-a` flag to `git commit` to commit all changes, without needing to add them first. `git commit -am "message"`. This is a shortcut for `git add .` and `git commit -m "message"`.
