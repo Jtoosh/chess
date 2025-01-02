@@ -76,7 +76,7 @@ public class ScannerExample {
 }
 ```
 
-### Chapter 2 Reading: Classes and objects
+### Chapter 2 Reading: Classes and Objects
 
 - Classes are the main code construct for Java. In Java, the variables of a class are called the `fields` and the functions of a class are called the `methods`.
 - One way of thinking about *Encapsulation* is only exposing code on a need-to-know basis. This is done by using private fields, and **getters and setters**. Common practice is to make all fields private, and then create public methods to access and return the field values, and modify the field values as needed. Sometimes this will seem redundant, but the value becomes apparent when the field values or program behaviors become more complex. Sometimes the getters and setters are as simple as this:
@@ -96,6 +96,8 @@ public class Duck{
     }
 }
 ```
+
+- When creating my own classes, it is generally a good idea to *overwrite* a few of the built-in Java methods: `equals()`, `hashCode()`, and `toString()`. This is because the default implementations of these methods generally do not have the desired functionality. When overriding a built-in Java method, the method is prefixed with the `@Override` annotation on the line above. Overriding these methods is a good practice, because it ensures that hash codes are generated with all the fields being considered, and equality is being determined by all the fields as well. Overriding the `toString()` method is especially helpful for debugging.
 
 **Things to Understand:**
 
@@ -124,7 +126,7 @@ public class Duck{
     }
     ```
 
-    > The values of an `enum` can be accessed with the `.` operator. To access the values of the `Level` enum, you would use `Level.LOW`, `Level.MEDIUM`, and `Level.HIGH`. `enums` are often used with `switch` statements, and have a `values()` method that returns an array of the values of the `enum`.
+    > The values of an `enum` can be accessed with dot notation. To access the values of the `Level` enum, you would use `Level.LOW`, `Level.MEDIUM`, and `Level.HIGH`. `enums` are often used with `switch` statements, and have a `values()` method that returns an array of the values of the `enum`. It is most useful to use an `enum` when you are working with a set of values that you know will remain constant.
 
 - The standard order of elements in a Java class
     > Here is an answer provided by GitHub Copilot:
@@ -145,3 +147,13 @@ public class Duck{
     >
     >
     > This order helps in locating different parts of a class quickly and understanding the structure of a Java class more easily.
+
+### Java Records
+
+In object-oriented programming, it is fairly common to create a class just for representing a collection of data. These instances of data field collections are referred to as `data objects`, and are fairly common in Java. Ideally, a data object should have the following characteristics:
+
+- Is immutable
+- Has getters for all fields
+- Overrides the `equals`, `hashCode`, and `toString` methods to match the fields of the object
+
+This can be done with a standard class, but it adds to the amount of boilerplate code that is needed. Because of how common data objects are, Java introduced the `record` keyword, that can create something functionally equivalent, but much, much more concise. To create a record, use the following syntax:`record Person(String name, int age) {}` Record that are created this way will meet the three characteristics mentioned above, as they are immutable, have getters for all fields, and override the `equals`, `hashCode`, and `toString` methods to factor in all of the fields of the record.
