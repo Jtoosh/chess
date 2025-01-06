@@ -157,3 +157,11 @@ In object-oriented programming, it is fairly common to create a class just for r
 - Overrides the `equals`, `hashCode`, and `toString` methods to match the fields of the object
 
 This can be done with a standard class, but it adds to the amount of boilerplate code that is needed. Because of how common data objects are, Java introduced the `record` keyword, that can create something functionally equivalent, but much, much more concise. To create a record, use the following syntax:`record Person(String name, int age) {}` Record that are created this way will meet the three characteristics mentioned above, as they are immutable, have getters for all fields, and override the `equals`, `hashCode`, and `toString` methods to factor in all of the fields of the record.
+
+### Chapter 3 Reading: Interfaces
+
+The central idea around an `interface`, is being able to define a class, and what its methods do, without defining how they do it. It is defining functionality without defining implementation.
+
+An interface defines methods that a class implements using a normal method signature, including the method's access scope, return type, name, and parameters. Curly braces and the implementation are not added. When a class implements, or uses, and interface, the class declaration uses the keyword `implements` such as `class MyClass implements MyInterface`. The class needs to declare and implement the methods defined in the interface. So, in the "implementing class" is where the functionality of the methods are actually defined. A class that implements an interface can implement other methods than the ones defined in the interface as well. If any of the methods defined in the interface are not implemented in the class, the class must be declared as `abstract`.
+
+An interface has no instantiations. Objects are only instances of classes, not interfaces. But, variables can be declared as an interface type. When this is done, that variable can have a value that is of any of the subtypes of that interface. This is a significant way to create polymorphism in Java. So, if a variable is declared as having the type `Collection` the variable can be assigned a value of any class that implements the `Collection` interface, such as `ArrayList`, `LinkedList`, or `HashSet`.
