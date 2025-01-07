@@ -160,8 +160,45 @@ This can be done with a standard class, but it adds to the amount of boilerplate
 
 ### Chapter 3 Reading: Interfaces
 
+Polymorphism
+: A blanket term in computer science for taking one object and morphing it to fit in to many contexts. In Java, this is accomplished primarily through *inheritance*, *interfaces*, and *abstract classes*.
+
 The central idea around an `interface`, is being able to define a class, and what its methods do, without defining how they do it. It is defining functionality without defining implementation.
 
 An interface defines methods that a class implements using a normal method signature, including the method's access scope, return type, name, and parameters. Curly braces and the implementation are not added. When a class implements, or uses, and interface, the class declaration uses the keyword `implements` such as `class MyClass implements MyInterface`. The class needs to declare and implement the methods defined in the interface. So, in the "implementing class" is where the functionality of the methods are actually defined. A class that implements an interface can implement other methods than the ones defined in the interface as well. If any of the methods defined in the interface are not implemented in the class, the class must be declared as `abstract`.
 
+When writing the implementation for the methods defined in the interface, some programmers like to put the `@Override` annotation before the method in the implementing class. This is not technically necessary, it will function fine without, but it means to add a bit of clarity to the code.
+
 An interface has no instantiations. Objects are only instances of classes, not interfaces. But, variables can be declared as an interface type. When this is done, that variable can have a value that is of any of the subtypes of that interface. This is a significant way to create polymorphism in Java. So, if a variable is declared as having the type `Collection` the variable can be assigned a value of any class that implements the `Collection` interface, such as `ArrayList`, `LinkedList`, or `HashSet`.
+
+There are built-in JDK interfaces, that certain classes implement, and the developer can create new classes that implement built-in interfaces too. A developer can also write entirely new interfaces. This is done similar to writing a class, but with `interface` as the key word, instead of `class`. Here is a sample:
+
+```java
+public interface CharIterator {
+    /** Returns true if there is another character to iterate. */
+    boolean hasNext();
+
+    /** Returns the next character. */
+    char next();
+}
+```
+
+### Chapter 4 Reading: Inheritance and Extending Classes
+
+When a class "inherits" from another, the inheriting class is called the `subclass` and the class that gives things to be inherited is the `superclass`. A subclass is able to access and use code from a super class as if it was written in the subclass itself. In Java, the keyword for defining a class as a subclass of another is the `extends` keyword. An example:
+
+```java
+public static class Dog extends Pet{
+
+}
+```
+
+In this example, the subclass, Dog, is able to access all of the code for the `Pet` class, and then define its own code. This perspective makes the `extends` keyword make sense, because the class `Dog` is taking all of the functionality of `Pet`, and then **extending** past that with whatever members are defined in `Dog`. **Note:** using the `extends` keyword is (to my current knowledge) the ***only*** way to make one class a subclass of another. (I don't know if some of the built-in JDK classes have pre-made inheritance relationships, I'll have to find that out)
+
+`Abstract Classes` are a type of hybrid between a standard class and a hybrid. If an implementing class only implements some of the methods defined in the interface, or if it defines additional methods without providing their implementation, then that class is an `abstract` class. Both the class needs to have a signature of `abstract` and the methods that are left unimplemented. Then, similar to implementing classes of interfaces, a subclass of an abstract class is what will implement the abstract methods.
+
+Similar to interfaces, any variable whose declared data type is that of an abstract class, can hold a value of any of its implementing subclasses.
+
+`instanceof` is an operator in Java that returns `true` if the LHS is an instance of the data type/class passed on the RHS (including if the LHS `extends` or `implements` the class on the RHS), and `false` otherwise.
+
+Lastly, the keyword `final` can be applied to method signatures or field declarations. If a method is declared as `final`, then it cannot be overridden by subclasses. If a field variable is declared as `final` then its value become immutable. `final` methods and fields can still be called and accessed, respectively, just not changed.
