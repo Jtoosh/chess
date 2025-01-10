@@ -1,6 +1,6 @@
 # Computer Science 240: Advanced Software Construction
 
-## Pre-Class studying and Reading Notes
+## Pre-Class studying
 
 ### Java Basics
 
@@ -23,6 +23,8 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 - `git checkout` - switches branches, can also be used to create a new branch with the `-b` flag.
 - `git diff` - when passed with two versions, by providing the commit hashes, shows the differences between the two versions.
 - Add the `-a` flag to `git commit` to commit all changes, without needing to add them first. `git commit -am "message"`. This is a shortcut for `git add .` and `git commit -m "message"`.
+
+## Reading Notes from "Core Java for the Impatient" 3rd Edition
 
 ### Chapter 1 Reading: Fundamental Programming Structures
 
@@ -203,5 +205,38 @@ Similar to interfaces, any variable whose declared data type is that of an abstr
 
 Lastly, the keyword `final` can be applied to method signatures or field declarations. If a method is declared as `final`, then it cannot be overridden by subclasses. If a field variable is declared as `final` then its value become immutable. `final` methods and fields can still be called and accessed, respectively, just not changed.
 
-## Class Notes
+### Chapter 5 Reading: Exceptions
 
+Normally, errors are thrown to the caller of a method, so errors must move up the call stack, and generally only involve returning an error code. This is not the most effective way to handle errors. Instead, throwing exceptions allows specific *handlers* to take over control when an exception is thrown.
+
+Exception in Java is a subclass of `Throwable` objects. Here is the hierarchy of exceptions in Java:
+![Java Exception Hierarchy](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9780135404522/files/html/images/exception-hierarchy.jpg).
+> A note about the `Runtime Exception` class. Really, all exceptions are thrown at runtime, but the objects of the `RuntimeException` class are not checked by the compiler. So `Runtime Exception` means that they are first *detected* at runtime, makings its subclasses *unchecked* exceptions. All other exception types are checked by the compiler, thus their designation as *checked* exceptions.
+
+Any method that has the potential to throw a **checked** exception must have it declared in the method signature, after the method name.
+To catch an exception, set up a `try` block. If an exception is thrown while any of the code in the `try` block executes, then control will be passed to the handler that is defined in the `catch` block. If no exception is thrown, then the `catch` block is skipped. The `finally` block is always executed, regardless of exception throwing.
+
+Often times a exception being thrown will prevent resources from being correctly deleted or closed from memory, which presents a clear issue. To avoid this, there is the "try-with-resources" statement. The syntax is the same as a try block, but before the curly braces `{}` any resources that need to be closed are declared, separated by semi-colons if there are morn than one. Once an exception is thrown **or** the try block executes successfully, the resources are closed.
+
+Example of these three:
+
+```java
+public void tryWithResources() throws IOException {
+    // Close is automatically called at the end of the try block
+    try (FileInputStream input = new FileInputStream("test.txt")) {
+        System.out.println(input.read());
+    }
+    catch (FileNotFoundException e) {
+        // Handle the exception
+        System.out.println("An exception was thrown with this message " + e.getMessage());
+    }
+    finally{
+        // Do something else
+        System.out.println("Finally block");
+    }
+}
+```
+
+Things can get a bit trickier if the `close` method for one of the resources is what actually throws an exception
+
+## Class Notes
