@@ -1,6 +1,6 @@
 # Computer Science 240: Advanced Software Construction
 
-## Pre-Class studying
+## Pre-Class studying and Reading Notes
 
 ### Java Basics
 
@@ -202,3 +202,6 @@ Similar to interfaces, any variable whose declared data type is that of an abstr
 `instanceof` is an operator in Java that returns `true` if the LHS is an instance of the data type/class passed on the RHS (including if the LHS `extends` or `implements` the class on the RHS), and `false` otherwise.
 
 Lastly, the keyword `final` can be applied to method signatures or field declarations. If a method is declared as `final`, then it cannot be overridden by subclasses. If a field variable is declared as `final` then its value become immutable. `final` methods and fields can still be called and accessed, respectively, just not changed.
+
+## Class Notes
+
