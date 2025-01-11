@@ -250,3 +250,10 @@ Some classes of exceptions have a method to get the cause to then display it, ge
 When an exception is never caught, a *stack trace* is given. This is a list of all the methods that were called up to the point of the exception being thrown. Most exception classes also have a `.printStackTrace()` method that will print the stack trace to the console. Along this vein, the Object class has useful methods that can throw exceptions, such as `.requireNonNull()`. If you see that this method is the latest on a stack trace before an exception, you can much more easily detect the bug. It also can take a message string as an optional 2nd parameter. Some alternatives to these methods can be useful too, such as `.requireNotNullElse()`. which allow the developer to supply an alternative value to be used if the first value is `null`.
 
 ## Class Notes
+
+## Project Notes
+
+### Phase 0 Notes
+
+- As I worked on this phase, I realized I had to pause fairly frequently and think about how to design the classes and methods. I've had to do that in past classes, but not as much and not as early. I think this is a good part of this class being a stepping stone for me.
+- In Java, the equivalent of dictionaries are `Maps`. `Map` in Java is an interface though, but its most common implementing class is `HashMap`. The methods used are a bit different than other languages, but still fairly intuitive. `put()` is to add, `get()` is to access, and `remove()` is to delete. All of these three take in a key as parameters. There is also the `.clear()` method and the `.size()` method. For iterating through a `HashMap`, use `.keyset()` to access the keys, and `values()` to access the values.
