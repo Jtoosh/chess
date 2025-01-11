@@ -237,6 +237,16 @@ public void tryWithResources() throws IOException {
 }
 ```
 
-Things can get a bit trickier if the `close` method for one of the resources is what actually throws an exception
+Things can get a bit trickier if the `close` method for one of the resources is what actually throws an exception. If just the close method exception gets thrown, then in it thrown to the caller. If another exception is thrown, and then the close method, which is executing because of the prior exception, throws an exception, the close method exception can safely be ignored for now. When this second case happens, the first exception gets rethrown, and the second exception is added as a *suppressed* exception. These can be accessed with an exception object's `getSuppressed()` method.
+
+`finally` blocks are another way to clean up resources after a try block is executed or an exception is thrown. Because the resources that can be passed to a `try-with-resources` block are limited to those of the class `AutoClosable`, the `finally` block is still necessary for other types of resources. Two important notes about `finally` blocks are 1, to avoid putting return statements in `finally` blocks, and 2, to avoid throwing exceptions in `finally` blocks. Because a `finally` block is always executed, a return statement in a `try` block will not be executed until the `finally` block is executed, so that return statement will be lost to the one in the `finally` block. Throwing an exception in a `finally` block will override any other exceptions that are thrown, and the exception thrown in the `finally` block will be the one that is caught, and the other exceptions will be inaccessible, as the suppression mechanism only works with try-with-resources blocks.
+
+Generally, just avoid any code that will alter the control flow in a `finally` block.
+
+Exceptions can be rethrown using the `throw` keyword. As of now, I don't quite understand the why behind rethrowing, so I'll need to pay attention to that in lecture. From what I do understand, one purpose of rethrowing is to **chain** exceptions, which allows you to change the class of an exception to provide more meaningful information to the caller and/or stack trace.
+
+Some classes of exceptions have a method to get the cause to then display it, generally `.getCause()`. For those that don't have a cause as a constructor parameter, the `.initCause()` method can be used to set the cause of the exception (the argument passed to `.initCause()` must be a `Throwable` object, generally it is the exception that caused the current exception).
+
+When an exception is never caught, a *stack trace* is given. This is a list of all the methods that were called up to the point of the exception being thrown. Most exception classes also have a `.printStackTrace()` method that will print the stack trace to the console. Along this vein, the Object class has useful methods that can throw exceptions, such as `.requireNonNull()`. If you see that this method is the latest on a stack trace before an exception, you can much more easily detect the bug. It also can take a message string as an optional 2nd parameter. Some alternatives to these methods can be useful too, such as `.requireNotNullElse()`. which allow the developer to supply an alternative value to be used if the first value is `null`.
 
 ## Class Notes
