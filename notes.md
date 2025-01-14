@@ -251,6 +251,40 @@ When an exception is never caught, a *stack trace* is given. This is a list of a
 
 ## Class Notes
 
+### Lecture: Java Fundamentals and Phase 0
+
+A brief history of Java:
+
+- A guy left Sun Microsystems because he didn't like it there. The boss, Scott Mcneely, went to some of his senior engineers and asked them to try an find the new hot thing in tech. James Gosling was one of the engineers, and their project led to creating Oak, a language designed for communication between devices. This was all between 1991 and 1993.
+- Mosiac and the web launched, and around 1994, the Green team (the group from Sun) realized they accidentally made a language that was perfect for the web. They changed the name to Java since they couldn't trademark Oak, and made the HotJava Browser, allowing dynamic content which was a big deal at the time.
+- Netscape announced in 1995 that they would support Java, and that is kind of where it took off.
+- Oracle then bought Sun in 2010, and also gaining Java in the process.
+
+**Overview of Java:**
+Similar syntax to C++, but different *semantics*
+
+Java and C++ differences:
+
+- Java has built-in garbage collection, C++ does not.
+- Java uses references instead of pointers (pointers are evil according to Dr Wilkerson).
+- Data types are the same size in Java, in C++ they can vary based on hardware.
+- Built-in boolean type in Java, not in C++.
+- In C and C++, code needs to be compiled and linked, while classes are dynamically linked at runtime in Java.
+- Java is hybrid compiled/interpreted, C++ is compiled.
+
+Compiled vs Interpreted code:
+
+- Compiled code is less portable, but faster.
+![Compiled](https://keep.google.com/u/0/media/v2/1Yr4fp7ENpb0A6lZiiUzDZ7UXipMP0lN4h0YPO-MZDFdM7mnY38pAf-F_XWct2AU/19Hh9hs7kezn98dnFbb9s3Pxt6Vc54hM2jiOMriSDMe8gBKd4UlNmUmt3lQlinA?accept=image%2Fgif%2Cimage%2Fjpeg%2Cimage%2Fjpg%2Cimage%2Fpng%2Caudio%2Faac&sz=915)
+- Interpreted code is more portable, but slower.
+- Java is a hybrid of the two, with the code being compiled by the same compiler, regardless of platform, and the same Java Byte Code is run on any hardware, and then each platform has its own JVM that interprets the Byte Code.
+
+Java compiles in a unique way that offers some advantages. It uses JIT compilation, or Just In Time compilation. This means that the Java Byte Code is compiled to machine code at runtime, and then that machine code is run. This allows the JVM to optimize the code for the specific hardware that it is running on.
+
+The JVM is also a Hotspot VM, meaning it can dynamically recompile at runtime, while other compilers can't do that.
+
+
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -261,3 +295,5 @@ When an exception is never caught, a *stack trace* is given. This is a list of a
   - A map would work fine for the ChessBoard, but it doesn't work great with the library that we use later in the project to serialize and store the ChessBoard objects in a database. This reminded me that when designing data structures, I need to keep a wider perspective, and remember all of the ways they will be utilized, as that can affect which design choice will be best.
   - Tuples don't exist in Java the way that they do in Python. Python is one of the only languages where that is a built-in data structure, so just keep that in mind.
   - The `equals` method of a HashMap works by executing the `equals` method of all of the keys and values in the map. So, if the keys and/or values have `equals` methods that need to be overridden to be more accurate, failing to do so can cause the `equals` method of the map to return inaccurate results.
+  - Storing the pieces of a ChessBoard in a 2D array may work better, so I'm making a branch and trying that.
+  
