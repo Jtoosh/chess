@@ -48,7 +48,7 @@ public class ChessBoard {
             this.board[0][2] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
             this.board[0][5] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
             this.board[0][3] = new ChessPiece(teamColor, ChessPiece.PieceType.QUEEN);
-            this.board[0][5] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
+            this.board[0][4] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
         } else{
             for (int i = 0; i < 8; i++){
                 this.board[6][i] = new ChessPiece(teamColor, ChessPiece.PieceType.PAWN);
@@ -60,7 +60,7 @@ public class ChessBoard {
             this.board[7][2] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
             this.board[7][5] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
             this.board[7][3] = new ChessPiece(teamColor, ChessPiece.PieceType.QUEEN);
-            this.board[7][5] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
+            this.board[7][4] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
         }
 
     }
