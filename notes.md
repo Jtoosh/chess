@@ -296,4 +296,5 @@ The JVM is also a Hotspot VM, meaning it can dynamically recompile at runtime, w
   - Tuples don't exist in Java the way that they do in Python. Python is one of the only languages where that is a built-in data structure, so just keep that in mind.
   - The `equals` method of a HashMap works by executing the `equals` method of all of the keys and values in the map. So, if the keys and/or values have `equals` methods that need to be overridden to be more accurate, failing to do so can cause the `equals` method of the map to return inaccurate results.
   - Storing the pieces of a ChessBoard in a 2D array may work better, so I'm making a branch and trying that.
+- Array syntax is a bit different than I'm used to, coming off of Python and Javascript. Remember the syntax is `type[] name = {value, value}` or `type[] name = new type[size]` to initialize as empty. To make it multidimensional, just add another set of brackets, like `type[][] name = new type[size][size]`.
   
