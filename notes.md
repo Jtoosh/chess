@@ -14,7 +14,7 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 - Type casting is done with `()` around the type, like `int myNum = (int) "0";`. When moving from a smaller primitive type to a larger one, it is called a Widening Cast, and is done automatically. When moving from a larger type to a smaller one, it is called a Narrowing Cast, and must be done manually.
 - Operators are similar/same as in C++.
 - In Java, the length of a string is a method of the string (`.length()`), not a property or a separate method. Finding the index of the first occurrence of a char (or array element for that matter) is done with `.indexOf()`. When using `.indexOf()`, on a string, the char you are searching for is placed in "", not ''.
-- Apart from the normal way with the `+` operator, Strings can be concatenated with the `.concat()` method.
+- Apart from the normal way with the `+` operator, Strings can be concatenated with the `.concat()` method. And because strings are immutable, concatenation does not alter any existing strings, but creates a new one.
 - Escape characters are handled like normal, with a `\` before the character.
 
 ### Git Review
@@ -46,14 +46,14 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 - When using 3rd party libraries, or utilizing code external to the current class, the `java` command needs to be given the classpath value, which is given with the `-cp` flag in the command. When specifying mulitiple classpaths in one command, separate each path with a `:` on Linux/Unix systems, and `,` on Windows systems.
 - 2 critical classes, particularly for I/O, are the `File` class and `Scanner` class. Both are useful classes with methods that perform essential functions. A `Scanner` is an object that implements an interator, and has a method, `hasNext()` to return if a next object exists, and `.next()` to yield that next object.
 
-Key things to understand:
+#### Key things to understand
 
 1. *Ways Java differs from C++*
 2. **Java installation**
 3. **How Java is both portable and fast:** - Java's architecture of creating intermediate byte codes is a type of compromise between the greater speed but less portability of natively compiled machine code (binary), and the greater portability but slower speed of interpreted code. - Java was designed to be a "write once, run anywhere" language. This is part of the reason why programs are compiled into byte codes that are run on the Java Virtual Machine (JVM). This allows Java programs to run on any machine that has a JVM installed.
 4. **How to compile and run Java code:** - Here is a note from the book about compiling and running a Java program: The `javac` compiler is invoked with the name of a file, with slashes separating the path segments, and an extension .java. The `java` virtual machine launcher is invoked with the name of a class, with dots separating the package segments, and no extension.
 5. **The primitive data type available in Java:** byte, short, int, long (these 4 are the int types), float, double (these 2 are the decimal types), char, boolean.
-6. **What's the difference in string literal String construction and construction with `new` operator:** - When using the string literal method for declaring a string, which is the `String = "hello"` method, the JRE stores the string in a special memory area called the "string constant pool". Java will internally check if the string already exists in the pool, and if it does, it will not create a new string, but instead return a reference to the existing string. By contrast, using the `new` operator will always create a new string object on the heap.
+6. **What's the difference in string literal String construction and construction with `new` operator:** - When using the string literal method for declaring a string, which is the `String = "hello"` method, the JRE stores the string in a special memory area called the "string intern table". Java will internally check if the string already exists in the pool, and if it does, it will not create a new string, but instead return a reference to the existing string. By contrast, using the `new` operator will always create a new string object on the heap.
 7. **How to declare, create, and initialize arrays:** - Arrays can be instantiated as empty with a size, or with values. For example, `int[] primes = new int[10];` creates an array of 10 integers, named `primes`, all initialized to 0. `int[] primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};` creates an array of 10 integers, with the values specified. This second way of initializing an array uses what is called the "list initializer syntax", which uses the {} braces. Arrays are accessed using normal indexing.
 8. **How to find the length of an array:** The Array class has a .length() method, that takes no parameters.
 9. **How to create and access a nested array**:
@@ -283,7 +283,13 @@ Java compiles in a unique way that offers some advantages. It uses JIT compilati
 
 The JVM is also a Hotspot VM, meaning it can dynamically recompile at runtime, while other compilers can't do that.
 
+### Lecture: Java Fundamentals cont. and Classes and Objects
 
+The reason that using a `PieceMovesCalc` interface, with a set of implementing classes, works slightly better has to do with serializing and deserializing the ChessPiece objects. (**serializing** and **deserializing** is the process of converting an Object into a storage type, like JSON, and then converting it back into an Object). Because ChessPiece is what will be serialized and stored, the move calculation logic doesn't necessarily need to be stored. So, if it doesn't need to be stored it is better to leave it out, so that serialization and deserialization is a bit simpler. So, making an interface that `ChessPiece.pieceMoves()` will call, and then having the implementing classes have the logic for the moves, this will leave the move logic out of the serialization process.
+
+- Not all classes have main methods, and in fact most don't, as they are meant to specifically only be accessed from other classes.
+- Primitive data types, refer to [Ch 1 Reading](./notes.md#key-things-to-understand)
+- For a lot of the other content in lecture today, reference [Java Basics Section](./notes.md#java-basics)
 
 ## Project Notes
 
@@ -297,4 +303,5 @@ The JVM is also a Hotspot VM, meaning it can dynamically recompile at runtime, w
   - The `equals` method of a HashMap works by executing the `equals` method of all of the keys and values in the map. So, if the keys and/or values have `equals` methods that need to be overridden to be more accurate, failing to do so can cause the `equals` method of the map to return inaccurate results.
   - Storing the pieces of a ChessBoard in a 2D array may work better, so I'm making a branch and trying that.
 - Array syntax is a bit different than I'm used to, coming off of Python and Javascript. Remember the syntax is `type[] name = {value, value}` or `type[] name = new type[size]` to initialize as empty. To make it multidimensional, just add another set of brackets, like `type[][] name = new type[size][size]`.
+- Right now I am trying to figure out how to make a 2D ArrayList to store all of the valid moves, and keep the loop fairly abstract, to avoid repeating code. **As of right now, I think I could try using the ternary operator in the `.add()` method call.**
   
