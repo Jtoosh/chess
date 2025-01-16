@@ -36,6 +36,10 @@ public class ChessBoard {
         return this.board[position.getRow()-1][position.getColumn()-1];
     }
 
+    public ChessPiece[][] getBoardPieces(){
+        return this.board;
+    }
+
     private void resetHelper(ChessGame.TeamColor teamColor) {
         if (teamColor == ChessGame.TeamColor.WHITE) {
             for (int i = 0; i < 8; i++){
