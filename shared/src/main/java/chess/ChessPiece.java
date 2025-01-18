@@ -65,6 +65,8 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        RookMoveCalc rookMoves = new RookMoveCalc(board, myPosition);
+        return rookMoves.pieceMoves(board, myPosition);
+
     }
 }

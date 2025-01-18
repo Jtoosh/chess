@@ -304,5 +304,5 @@ The reason that using a `PieceMovesCalc` interface, with a set of implementing c
   - Storing the pieces of a ChessBoard in a 2D array may work better, so I'm making a branch and trying that.
 - Array syntax is a bit different than I'm used to, coming off of Python and Javascript. Remember the syntax is `type[] name = {value, value}` or `type[] name = new type[size]` to initialize as empty. To make it multidimensional, just add another set of brackets, like `type[][] name = new type[size][size]`.
 - Right now I am trying to figure out how to make a 2D ArrayList to store all of the valid moves, and keep the loop fairly abstract, to avoid repeating code. **As of right now, I think I could try using the ternary operator in the `.add()` method call.**
-- Java ternary operator is similar to JS and C++, `condition ? valueIfTrue : valueIfFalse`. 
+- Java ternary operator is similar to JS and C++, `condition ? valueIfTrue : valueIfFalse`.
   

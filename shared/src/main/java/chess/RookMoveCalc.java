@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class RookMoveCalc implements PieceMoveCalc{
-  private ArrayList<int[]> validMovePositions = new ArrayList<>();
-  private ChessBoard currentBoard;
+  private ArrayList<ChessMove> validMovePositions = new ArrayList<>();
   private ChessPiece[][] currentBoardPieces = new ChessPiece[8][8];
-  private ChessPosition rookPosition;
-  private ChessPiece rookPiece;
+  private final ChessPosition rookPosition;
+  private final ChessPiece rookPiece;
 
   public RookMoveCalc(ChessBoard currentBoard, ChessPosition piecePosition){
-    this.currentBoard = currentBoard;
     this.currentBoardPieces =currentBoard.getBoardPieces();
     this.rookPosition = piecePosition;
     this.rookPiece = currentBoardPieces[piecePosition.getRow()][piecePosition.getColumn()];
@@ -22,8 +20,8 @@ public class RookMoveCalc implements PieceMoveCalc{
     positionChecker("right", "row");
     positionChecker("down", "col");
     positionChecker("up", "col");
-    
-    return null;
+
+    return validMovePositions;
   }
 
   /* When moving through a row or column looking at rook movements, you can observe a row or column to traverse,
@@ -40,9 +38,13 @@ public class RookMoveCalc implements PieceMoveCalc{
               ChessPiece pieceAtThisSquare = currentBoardPieces[currentRow][i];
               if (pieceAtThisSquare != null && pieceAtThisSquare.getTeamColor() == this.rookPiece.getTeamColor()){
                 break;
+              } else if (pieceAtThisSquare != null){
+                ChessPosition posToAdd = new ChessPosition(currentRow, i) ;
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
+                break;
               } else{
-                int[] posToAdd = {currentRow, i};
-                validMovePositions.add(posToAdd);
+                ChessPosition posToAdd = new ChessPosition(currentRow, i) ;
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
               }
             }
             break;
@@ -51,9 +53,13 @@ public class RookMoveCalc implements PieceMoveCalc{
               ChessPiece pieceAtThisSquare = currentBoardPieces[currentRow][i];
               if (pieceAtThisSquare != null && pieceAtThisSquare.getTeamColor() == this.rookPiece.getTeamColor()){
                 break;
-              } else{
-                int[] posToAdd = {currentRow, i};
-                validMovePositions.add(posToAdd);
+              } else if(pieceAtThisSquare != null){
+                ChessPosition posToAdd = new ChessPosition(currentRow, i);
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
+                break;
+              } else {
+                ChessPosition posToAdd = new ChessPosition(currentRow, i);
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
               }
             }
             break;
@@ -66,10 +72,16 @@ public class RookMoveCalc implements PieceMoveCalc{
               ChessPiece pieceAtThisSquare = currentBoardPieces[i][currentCol];
               if (pieceAtThisSquare != null && pieceAtThisSquare.getTeamColor() == this.rookPiece.getTeamColor()){
                 break;
-              } else{
-                int[] posToAdd = {i, currentCol};
-                validMovePositions.add(posToAdd);
+              } else if (pieceAtThisSquare != null){
+                ChessPosition posToAdd = new ChessPosition(i, currentCol);
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
+                break;
+              } else {
+                ChessPosition posToAdd = new ChessPosition(i, currentCol);
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
               }
+            }
+
             }
             break;
           case "up":
@@ -77,13 +89,17 @@ public class RookMoveCalc implements PieceMoveCalc{
               ChessPiece pieceAtThisSquare = currentBoardPieces[i][currentCol];
               if (pieceAtThisSquare != null && pieceAtThisSquare.getTeamColor() == this.rookPiece.getTeamColor()){
                 break;
-              } else{
-                int[] posToAdd = {i, currentCol};
-                validMovePositions.add(posToAdd);
+              } else if (pieceAtThisSquare != null){
+                ChessPosition posToAdd = new ChessPosition(i, currentCol);
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
+                break;
+              } else {
+                ChessPosition posToAdd = new ChessPosition(i, currentCol);
+                validMovePositions.add(new ChessMove(this.rookPosition, posToAdd, null));
               }
             }
-        }
-
     }
   }
+
 }
+
