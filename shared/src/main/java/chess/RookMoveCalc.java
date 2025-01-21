@@ -17,83 +17,75 @@ public class RookMoveCalc implements PieceMoveCalc {
 
   @Override
   public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-    furthestMoveUp(7);
-    furthestMoveDown(0);
-    furthestMoveRight(7);
-    furthestMoveLeft(0);
+    furthestMoveUp();
+    furthestMoveDown();
+    furthestMoveRight();
+    furthestMoveLeft();
 
     return validMovePositions;
   }
 
-  private void furthestMoveUp(int max) {
-    if (max == rookPosition.getRow()-1){return;}
+  private void furthestMoveUp() {
     int furthestSquareUp = rookPosition.getRow();
-    for (int i = furthestSquareUp; i <= max; i++){
+    for (int i = furthestSquareUp; i <= 7; i++){
       if (currentBoardPieces[i][rookPosition.getColumn()-1] == null){
         furthestSquareUp = i+1;
+        ChessPosition newPostition=new ChessPosition(furthestSquareUp, rookPosition.getColumn());
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
       }else if (currentBoardPieces[i][rookPosition.getColumn()-1].getTeamColor() != rookPiece.getTeamColor()){
         furthestSquareUp = i+1;
+        ChessPosition newPostition=new ChessPosition(furthestSquareUp, rookPosition.getColumn());
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
         break;
       } else{break;}
     }
-    if (furthestSquareUp <= 8) {
-      ChessPosition newPostition=new ChessPosition(furthestSquareUp, rookPosition.getColumn());
-      validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
-    }
-    furthestMoveUp(max - 1);
   }
-  private void furthestMoveDown (int min){
-    if (min == rookPosition.getRow()-1) {return;}
+  private void furthestMoveDown (){
     int furthestSquareDown =rookPosition.getRow()-2;
-    for (int i =furthestSquareDown; i >= min; i--){
+    for (int i =furthestSquareDown; i >= 0; i--){
       if(currentBoardPieces[i][rookPosition.getColumn()-1] == null){
         furthestSquareDown = i + 1;
+        ChessPosition newPostition=new ChessPosition(furthestSquareDown, rookPosition.getColumn());
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
       }else if (currentBoardPieces[i][rookPosition.getColumn()-1].getTeamColor() != rookPiece.getTeamColor()){
         furthestSquareDown = i+1;
+        ChessPosition newPostition=new ChessPosition(furthestSquareDown, rookPosition.getColumn());
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
+        break;
       }else{break;}
-      break;
     }
-    if (furthestSquareDown >= 1) {
-      ChessPosition newPostition=new ChessPosition(furthestSquareDown, rookPosition.getColumn());
-      validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
-    }
-    furthestMoveDown(min + 1);
   }
 
-  private void furthestMoveRight (int max){
-    if (max == rookPosition.getColumn()-1){return;}
+  private void furthestMoveRight (){
     int furthestSquareRight =rookPosition.getColumn();
-    for (int i =furthestSquareRight;i <= max; i++){
+    for (int i =furthestSquareRight;i <= 7; i++){
       if (currentBoardPieces[rookPosition.getRow()-1][i] ==null){
         furthestSquareRight = i+1;
+        ChessPosition newPostition=new ChessPosition(rookPosition.getRow(), furthestSquareRight);
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
       }else if (currentBoardPieces[rookPosition.getRow()-1][i].getTeamColor() != rookPiece.getTeamColor()){
         furthestSquareRight = i+1;
+        ChessPosition newPostition=new ChessPosition(rookPosition.getRow(), furthestSquareRight);
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
         break;
       }else{break;}
     }
-    if (furthestSquareRight <= 8) {
-      ChessPosition newPostition=new ChessPosition(rookPosition.getRow(), furthestSquareRight);
-      validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
-    }
-    furthestMoveRight(max - 1);
   }
 
-  private void furthestMoveLeft (int min){
-    if (min == rookPosition.getColumn()){return;}
+  private void furthestMoveLeft (){
     int furthestSquareLeft =rookPosition.getColumn()-2;
-    for (int i =furthestSquareLeft;i >= min; i--){
+    for (int i =furthestSquareLeft;i >= 0; i--){
       if (currentBoardPieces[rookPosition.getRow()-1][i] ==null){
         furthestSquareLeft = i+1;
+        ChessPosition newPostition=new ChessPosition(rookPosition.getRow(), furthestSquareLeft);
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
       } else if (currentBoardPieces[rookPosition.getRow()-1][i].getTeamColor() != rookPiece.getTeamColor()){
         furthestSquareLeft = i+1;
+        ChessPosition newPostition=new ChessPosition(rookPosition.getRow(), furthestSquareLeft);
+        validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
         break;
       }else{break;}
     }
-    if (furthestSquareLeft >= 1) {
-      ChessPosition newPostition=new ChessPosition(rookPosition.getRow(), furthestSquareLeft);
-      validMovePositions.add(new ChessMove(rookPosition, newPostition, null));
-    }
-    furthestMoveLeft(min + 1);
   }
 
 
