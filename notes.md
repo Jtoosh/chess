@@ -29,7 +29,6 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 ### Chapter 1 Reading: Fundamental Programming Structures
 
 - Java has a few main reasons for its use: **Portability**, **Object-Orientation**, **Garbage Collection**, **Maturity**, **Rich Libraries**, and **Large Community**.
-- `System.out` is actually an instance of the `PrintStream` class, whose methods include, `print`, `println`, and others.
 - Remember, instance methods operate on actual objects of a class, while static methods operate independent from any instances of a class. This good for utility methods, or for declaring a "singleton" which is allocated to a class, not an instance of a class.
 - Most classes in Java need to be constructed, which is done using the `new` operator. The `new` operator creates a new object of a class, and returns a reference to that object. For example, `new Random();` constructs a new `Random` object. Some objects are ready to use without constructing them, like `System.out` or `String`.
 - An alternative way to produce an instance of a class is called the *factory method*. An example is `RandomGenerator generator = RandomGenerator.getDefault();`. This is a static method that returns an instance of the class. (This is also the preferred way to make a random number generator, as the `Random` class is more of a legacy class).
@@ -38,13 +37,37 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 - Some special floating-point values are `Double.POSITIVE_INFINITY`, `Double.NEGATIVE_INFINITY`, and `Double.NaN`. **NOTE** that each `NaN` value is considered unequal to itself, so `Double.NaN == Double.NaN` will return `false`. To check if a value is `NaN`, use the `Double.isNaN()` method.
 - Special `char` literals include `'\n'` for newline, `'\t'` for tab, `'\b'` for backspace, and `'\r'` for carriage return.
 - Java is a strongly typed langauge. Each variable declared must have a type. Sometimes the type can be inferred by the compiler, so instead of a type, the keyword `var` can be used. For example, `var x = 5;` is the same as `int x = 5;`.
+
+**Strings:**
+
 - `String` objects are immutable in Java. To mutate a string throughout a program, there is the `StringBuilder` class, which includes familiar methods like `.append()`. `StringBuilder` can easily be converted to a `String` with the `.toString()` method.
+- Because of string immutability, concatenating strings with the `+` operator can be really inefficient, so try to use `StringBuilder` when possible.
 - Strings have plenty of useful methods, reference the reading or Java docs for more info. Some of the more useful ones include: `.length()`, `.charAt()`, `.substring()`, `startsWith()`, `split()`, `replace()`, and others.
 - The static method `main`, which is the entry point for the program, takes in the `String[] args` parameter. This is an array of strings that are passed in as command line arguments. Accessing command line arguments is done by simply indexing the `args` array.
-- Packages are a concept that are fairly unique to Java. A package is a way to encapsulate code. The name of a package should match the directory structure of a project. All of the code in the same package has access to each other, because all of that code is in the `package scope.` Code that is available outside of the package is in the `public scope`. The `public` keyword is used to declare a class or method as public. If a class is not declared as public, it is only available to other classes in the same package.
-- The `import` keyword is used to import classes from other packages. This is done at the top of the file, before the class declaration
+
+**Arrays:**
+
+- Declaring, creating, and initializing an array are different. *Declaring* happens with this syntax: `int [] intArray`. This does not create an array, but a reference that can point to one. An array is created with the `new` operator, like this: `int [] intArray = new int[10];`. The array now exists in memory, but there are no values. The array is initialized with values like this: `int [] intArray = {1, 2, 3, 4, 5};` (list initializer syntax) or after the creation of the array, `intArray[0] = 1;`.
+- If values inside of an array are primitive, the values are stored directly in the array (directly in the allocated memory). If the values are objects, the values of the array are references to the objects, not the objects themselves.
+- Multi-dimensional arrays are created by nesting the `[]` brackets. For example, `int [][] intArray = new int[3][3];` creates a 3x3 2D array. The first bracket is the row, the second is the column. The same syntactical rules apply for declaration, creation, and initialization of multi-dimensional arrays.
+- In Java, mult-dimensional arrays don't have to me matrices, or square in dimensions. They can have uneven lengths of rows and columns, referred to as a "ragged array". This behavior does not exist in C and C++.
+
+**Packages, Imports:**
+
+- Packages are a concept that are fairly unique to Java. A package is a way to encapsulate code, specifically classes, into logical groups. The name of a package should match the directory structure of a project. All of the code in the same package has access to each other, because all of that code is in the `package scope.` Code that is available outside of the package is in the `public scope`. The `public` keyword is used to declare a class or method as public. If a class is not declared as public, it is only available to other classes in the same package.
+- Packages can have sub-packages separated by dots (`java.util.date`).
+- The package name becomes part of the class name when you place a class in a package. For example, a class named `Date` in the package `java.util` would be referred to as `java.util.Date`. To refer to a packaged class, you must use the fully qualified name, with the package name and its sub-packages, OR use the `import` keyword.
+- The `import` keyword is used to import classes from other packages. This is done at the top of the file, before the class declaration. This provides a shorthand for referencing packaged classes, allowing reference using just the class name.
+- The wildcard `*` imports all of the classes in the package, but it is not recursive, meaning it doesn't import classes from sub-packages.
 - When using 3rd party libraries, or utilizing code external to the current class, the `java` command needs to be given the classpath value, which is given with the `-cp` flag in the command. When specifying mulitiple classpaths in one command, separate each path with a `:` on Linux/Unix systems, and `,` on Windows systems.
+- CLASSPATH is an environment vairable that lists all of the directories that contian .class files, package base directories, or other resources the application needs to access.
+- IDEs like IntelliJ and Eclipse manage the classpath for you.
+
+**File I/O:**
+
 - 2 critical classes, particularly for I/O, are the `File` class and `Scanner` class. Both are useful classes with methods that perform essential functions. A `Scanner` is an object that implements an interator, and has a method, `hasNext()` to return if a next object exists, and `.next()` to yield that next object.
+- `System.out` is actually an instance of the `PrintStream` class, whose methods include, `print`, `println`, and others.
+- `printf()` uses the same syntax and format characters as C and C++.
 
 #### Key things to understand
 
@@ -290,6 +313,12 @@ The reason that using a `PieceMovesCalc` interface, with a set of implementing c
 - Not all classes have main methods, and in fact most don't, as they are meant to specifically only be accessed from other classes.
 - Primitive data types, refer to [Ch 1 Reading](./notes.md#key-things-to-understand)
 - For a lot of the other content in lecture today, reference [Java Basics Section](./notes.md#java-basics)
+
+### Lecture: Classes and Objects continued
+
+Although subclassing seems intuitive with `ChessPiece`, because there is already a way to determine the piece type, with the ChessPiece field `type`, subclassing would give a redundant way to determine the piece type, which is a code smell. And the reason to not put all of the behavior in switch cases in `ChessPiece` is the **Single Responsibility Principle**. This is a software engineering principle that dictates that each class handles one responsibility only. It does one job, and does it very well.
+
+**From Dr. Wilkerson's code:** he makes a new `PieceMovesCalc`, and the value is assigned to a switch statement that switches on the piece type, to get the corresponding `PieceMovesCalc` type, and then after the switch statement, the `.pieceMoves()` method is called on the instantiated `PieceMovesCalc` object.
 
 ## Project Notes
 
