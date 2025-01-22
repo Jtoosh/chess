@@ -31,7 +31,6 @@ public class BishopMoveCalc implements PieceMoveCalc{
       if (currentBoardPieces[bishopPosition.getRow() + i][bishopPosition.getColumn() + i] == null){
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()+i + 1),(bishopPosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
-        continue;
       } else if (currentBoardPieces[bishopPosition.getRow() + i][bishopPosition.getColumn() + i].getTeamColor() != bishopPiece.getTeamColor()) {
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()+i + 1),(bishopPosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
@@ -46,7 +45,6 @@ public class BishopMoveCalc implements PieceMoveCalc{
       if (currentBoardPieces[bishopPosition.getRow()+i][bishopPosition.getColumn()-i - 2] == null){
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()+i + 1),(bishopPosition.getColumn()- i - 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
-        continue;
       } else if (currentBoardPieces[bishopPosition.getRow() + i][bishopPosition.getColumn() - i - 2].getTeamColor() != bishopPiece.getTeamColor()) {
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()+i + 1),(bishopPosition.getColumn()+ i - 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
@@ -61,7 +59,6 @@ public class BishopMoveCalc implements PieceMoveCalc{
       if (currentBoardPieces[bishopPosition.getRow() - i - 2][bishopPosition.getColumn() + i] == null){
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()-i - 1),(bishopPosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
-        continue;
       } else if (currentBoardPieces[bishopPosition.getRow() - i - 2][bishopPosition.getColumn() + i].getTeamColor() != bishopPiece.getTeamColor()) {
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()-i - 1),(bishopPosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
@@ -76,7 +73,6 @@ public class BishopMoveCalc implements PieceMoveCalc{
       if (currentBoardPieces[bishopPosition.getRow() - i - 2][bishopPosition.getColumn() - i - 2] == null){
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()-i - 1),(bishopPosition.getColumn()- i - 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
-        continue;
       } else if (currentBoardPieces[bishopPosition.getRow() - i -2 ][bishopPosition.getColumn() - i -2 ].getTeamColor() != bishopPiece.getTeamColor()){
         ChessPosition newPosition = new ChessPosition((bishopPosition.getRow()-i - 1),(bishopPosition.getColumn()- i - 1));
         validMovePositions.add(new ChessMove(bishopPosition, newPosition, null));
