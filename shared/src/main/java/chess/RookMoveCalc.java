@@ -61,6 +61,13 @@ public class RookMoveCalc implements PieceMoveCalc {
     }
   }
 
+  /**
+   * Performs the inner functionality of the row loops, with the direction parameterized, due to the need
+   * to go in different directions
+   *
+   * @param i the index to access
+   * @return True if the loop is complete, False if it needs to continue
+   **/
   private boolean rowLoop(int i) {
     int furthestSquareRight;
     if (currentBoardPieces[rookPosition.getRow()-1][i] ==null){
