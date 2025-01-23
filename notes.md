@@ -209,6 +209,8 @@ public interface CharIterator {
 }
 ```
 
+Later on, Interfaces were updated to allow the use of `static`, `default`, and `private` methods. This allows for methods to be actually defined within an interface.
+
 ### Chapter 4 Reading: Inheritance and Extending Classes
 
 When a class "inherits" from another, the inheriting class is called the `subclass` and the class that gives things to be inherited is the `superclass`. A subclass is able to access and use code from a super class as if it was written in the subclass itself. In Java, the keyword for defining a class as a subclass of another is the `extends` keyword. An example:
@@ -238,6 +240,7 @@ Exception in Java is a subclass of `Throwable` objects. Here is the hierarchy of
 > A note about the `Runtime Exception` class. Really, all exceptions are thrown at runtime, but the objects of the `RuntimeException` class are not checked by the compiler. So `Runtime Exception` means that they are first *detected* at runtime, makings its subclasses *unchecked* exceptions. All other exception types are checked by the compiler, thus their designation as *checked* exceptions.
 
 Any method that has the potential to throw a **checked** exception must have it declared in the method signature, after the method name.
+
 To catch an exception, set up a `try` block. If an exception is thrown while any of the code in the `try` block executes, then control will be passed to the handler that is defined in the `catch` block. If no exception is thrown, then the `catch` block is skipped. The `finally` block is always executed, regardless of exception throwing.
 
 Often times a exception being thrown will prevent resources from being correctly deleted or closed from memory, which presents a clear issue. To avoid this, there is the "try-with-resources" statement. The syntax is the same as a try block, but before the curly braces `{}` any resources that need to be closed are declared, separated by semi-colons if there are morn than one. Once an exception is thrown **or** the try block executes successfully, the resources are closed.
@@ -322,6 +325,28 @@ Although subclassing seems intuitive with `ChessPiece`, because there is already
 **From Dr. Wilkerson's code:** he makes a new `PieceMovesCalc`, and the value is assigned to a switch statement that switches on the piece type, to get the corresponding `PieceMovesCalc` type, and then after the switch statement, the `.pieceMoves()` method is called on the instantiated `PieceMovesCalc` object.
 
 Remember that references and objects are different, and only the `new` operator creates objects, references are created with the `Date dt` syntax.
+
+### Lecture: Programming Exam, Record, and Exceptions
+
+**Programming Exam:**
+
+- "I know students that have failed the programming exam the first time and gone on to MIT." - Dr. Wilkerson emphasizing that failing the programming exam does not mean you are stupid and not capable.
+- The main takeaway from Dr. Wilkerson's spiel about the programming exam is that spending adequate time preparing is the key to passing. I'm going to do the whole 4 hours at least once as practice, even though it'll be time consuming.
+
+**Records:**
+
+- Because they are their own class, need to be in their own file, even though it is just the one line of code.
+- Contrary to the Java convention, the automatic getters generated for records simply use the name of the field for the method name, such as `.name()`, rather than `.getName()`.
+- Records are immutable, but can have methods defined within them that go beyond the automatically generated ones. If you want to mutate a record, you'd have to create an entirely new record.
+
+**Exceptions and Exception Handling:**
+
+- Errors are exceptions, but sometimes an exception is not an error. Exceptions are simply abnormal behavior in a class.
+- What the readings and the slide say about exceptions in Java holds for the majority of languages, with a few nuances here and there.
+- In Java, something unique to it is the Handle or Declare rule. This is, when a checked exception is found in compilation, the JVM forces a handler (try-catch block) to be made, or the method to be declared (in the signature) as throwing that checked exception. If one of these is not done, the JVM will not allow the program to compile.
+- Dr. Wilkerson's advice is to not write handlers for *unchecked* exceptions, because these types of exceptions are generally fixable bugs. Writing a handler for these unchecked exceptions can hide the bugs from the programmer and keep them from improving the program.
+- "Swallowing" an exception means writing a handler for an exception, but then not actually implementing handling behavior for it.
+- Always create Exception instances on the same line that you throw them. Don't create an exception and then throw it later.
 
 ## Project Notes
 
