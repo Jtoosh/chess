@@ -31,7 +31,7 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 - Java has a few main reasons for its use: **Portability**, **Object-Orientation**, **Garbage Collection**, **Maturity**, **Rich Libraries**, and **Large Community**.
 - Remember, instance methods operate on actual objects of a class, while static methods operate independent from any instances of a class. This good for utility methods, or for declaring a "singleton" which is allocated to a class, not an instance of a class.
 - Most classes in Java need to be constructed, which is done using the `new` operator. The `new` operator creates a new object of a class, and returns a reference to that object. For example, `new Random();` constructs a new `Random` object. Some objects are ready to use without constructing them, like `System.out` or `String`.
-- An alternative way to produce an instance of a class is called the *factory method*. An example is `RandomGenerator generator = RandomGenerator.getDefault();`. This is a static method that returns an instance of the class. (This is also the preferred way to make a random number generator, as the `Random` class is more of a legacy class).
+- An alternative way to produce an instance of a class is called the _factory method_. An example is `RandomGenerator generator = RandomGenerator.getDefault();`. This is a static method that returns an instance of the class. (This is also the preferred way to make a random number generator, as the `Random` class is more of a legacy class).
 - `jshell` is a read-evaluate-print-loop (REPL) tool that allows you to test Java code without needing to compile it. It is useful for testing small code snippets, and for learning Java. It is run by simply typing the command `jshell` in the terminal. It is exited by typing `/exit`.
 - > Side note: Hexadecimal number literals have the prefix of `0x`, and binary literals have the prefix of `0b`. This is why memory addresses start is `0x`, because they are hexadecimal literals.
 - Some special floating-point values are `Double.POSITIVE_INFINITY`, `Double.NEGATIVE_INFINITY`, and `Double.NaN`. **NOTE** that each `NaN` value is considered unequal to itself, so `Double.NaN == Double.NaN` will return `false`. To check if a value is `NaN`, use the `Double.isNaN()` method.
@@ -47,7 +47,7 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 
 **Arrays:**
 
-- Declaring, creating, and initializing an array are different. *Declaring* happens with this syntax: `int [] intArray`. This does not create an array, but a reference that can point to one. An array is created with the `new` operator, like this: `int [] intArray = new int[10];`. The array now exists in memory, but there are no values. The array is initialized with values like this: `int [] intArray = {1, 2, 3, 4, 5};` (list initializer syntax) or after the creation of the array, `intArray[0] = 1;`.
+- Declaring, creating, and initializing an array are different. _Declaring_ happens with this syntax: `int [] intArray`. This does not create an array, but a reference that can point to one. An array is created with the `new` operator, like this: `int [] intArray = new int[10];`. The array now exists in memory, but there are no values. The array is initialized with values like this: `int [] intArray = {1, 2, 3, 4, 5};` (list initializer syntax) or after the creation of the array, `intArray[0] = 1;`.
 - If values inside of an array are primitive, the values are stored directly in the array (directly in the allocated memory). If the values are objects, the values of the array are references to the objects, not the objects themselves.
 - Multi-dimensional arrays are created by nesting the `[]` brackets. For example, `int [][] intArray = new int[3][3];` creates a 3x3 2D array. The first bracket is the row, the second is the column. The same syntactical rules apply for declaration, creation, and initialization of multi-dimensional arrays.
 - In Java, mult-dimensional arrays don't have to me matrices, or square in dimensions. They can have uneven lengths of rows and columns, referred to as a "ragged array". This behavior does not exist in C and C++.
@@ -72,7 +72,7 @@ I worked on the Java W3 Schools exercises during the break, heres some bits I le
 
 #### Key things to understand
 
-1. *Ways Java differs from C++*
+1. _Ways Java differs from C++_
 2. **Java installation**
 3. **How Java is both portable and fast:** - Java's architecture of creating intermediate byte codes is a type of compromise between the greater speed but less portability of natively compiled machine code (binary), and the greater portability but slower speed of interpreted code. - Java was designed to be a "write once, run anywhere" language. This is part of the reason why programs are compiled into byte codes that are run on the Java Virtual Machine (JVM). This allows Java programs to run on any machine that has a JVM installed.
 4. **How to compile and run Java code:** - Here is a note from the book about compiling and running a Java program: The `javac` compiler is invoked with the name of a file, with slashes separating the path segments, and an extension .java. The `java` virtual machine launcher is invoked with the name of a class, with dots separating the package segments, and no extension.
@@ -105,7 +105,7 @@ public class ScannerExample {
 ### Chapter 2 Reading: Classes and Objects
 
 - Classes are the main code construct for Java. In Java, the variables of a class are called the `fields` and the functions of a class are called the `methods`.
-- One way of thinking about *Encapsulation* is only exposing code on a need-to-know basis. This is done by using private fields, and **getters and setters**. Common practice is to make all fields private, and then create public methods to access and return the field values, and modify the field values as needed. Sometimes this will seem redundant, but the value becomes apparent when the field values or program behaviors become more complex. Sometimes the getters and setters are as simple as this:
+- One way of thinking about _Encapsulation_ is only exposing code on a need-to-know basis. This is done by using private fields, and **getters and setters**. Common practice is to make all fields private, and then create public methods to access and return the field values, and modify the field values as needed. Sometimes this will seem redundant, but the value becomes apparent when the field values or program behaviors become more complex. Sometimes the getters and setters are as simple as this:
 
 ```java
 public class Duck{
@@ -123,56 +123,56 @@ public class Duck{
 }
 ```
 
-- When creating my own classes, it is generally a good idea to *overwrite* a few of the built-in Java methods: `equals()`, `hashCode()`, and `toString()`. This is because the default implementations of these methods generally do not have the desired functionality. When overriding a built-in Java method, the method is prefixed with the `@Override` annotation on the line above. Overriding these methods is a good practice, because it ensures that hash codes are generated with all the fields being considered, and equality is being determined by all the fields as well. Overriding the `toString()` method is especially helpful for debugging.
+- When creating my own classes, it is generally a good idea to _overwrite_ a few of the built-in Java methods: `equals()`, `hashCode()`, and `toString()`. This is because the default implementations of these methods generally do not have the desired functionality. When overriding a built-in Java method, the method is prefixed with the `@Override` annotation on the line above. Overriding these methods is a good practice, because it ensures that hash codes are generated with all the fields being considered, and equality is being determined by all the fields as well. Overriding the `toString()` method is especially helpful for debugging.
 
 **Things to Understand:**
 
 - **What object references are and why we need them**
-    > When a class is instantiated using the `new` operator, a pointer reference to the object is returned. This reference is stored in the variable that the develolper passes in. To reference an object inside of itself, the `this` keyword is used. Generally, when referencing an objects fields or methods, Java will assume that the reference is to the current object without the `this` keyword, unless there is a naming conflict.
+  > When a class is instantiated using the `new` operator, a pointer reference to the object is returned. This reference is stored in the variable that the develolper passes in. To reference an object inside of itself, the `this` keyword is used. Generally, when referencing an objects fields or methods, Java will assume that the reference is to the current object without the `this` keyword, unless there is a naming conflict.
 - **The differences between static methods and variables and instance methods and variables**
-    > Static methods and variables are associated with and operate on the class itself, not on a specific instance of the class. Instance methods and variables are associated with and operate on a specific instance of the class. Static methods and variables are declared with the `static` keyword, while instance methods and variables are not.
+  > Static methods and variables are associated with and operate on the class itself, not on a specific instance of the class. Instance methods and variables are associated with and operate on a specific instance of the class. Static methods and variables are declared with the `static` keyword, while instance methods and variables are not.
 - **How constructors work in Java**
-    > Constructors are generated by writing a method with the same name as the class name. Then, the constructor will be called whenever the class is instantiated with the `new` operator. Constructors can be overloaded, meaning that multiple constructors can be written with different parameters. The constructor that is called is determined by the parameters passed in when the class is instantiated. Another common use of constructors is to make a "copy constructor", which takes in an object of the same class and copies all of its fields to a new object.
+  > Constructors are generated by writing a method with the same name as the class name. Then, the constructor will be called whenever the class is instantiated with the `new` operator. Constructors can be overloaded, meaning that multiple constructors can be written with different parameters. The constructor that is called is determined by the parameters passed in when the class is instantiated. Another common use of constructors is to make a "copy constructor", which takes in an object of the same class and copies all of its fields to a new object.
 - **What constructor the compiler writes (and when it doesn't write one)**
-    > When no constructor is written, the compiler will write a default constructor that takes no parameters, and does nothing. If a constructor is written, the compiler will not write a default constructor.
+  > When no constructor is written, the compiler will write a default constructor that takes no parameters, and does nothing. If a constructor is written, the compiler will not write a default constructor.
 - **What code the compiler adds to some constructors and why**
 - **What the 'this' reference is used for**
 - **When the 'this' reference is required and when it is optional**
-    > Addressing the two preceeding bullet points, the `this` keyword is used to reference an object inside of itself. It is required when there is a naming conflict between a parameter and a field of the class. It is optional when there is no naming conflict, because Java can infer that the reference is to the current object.
+  > Addressing the two preceeding bullet points, the `this` keyword is used to reference an object inside of itself. It is required when there is a naming conflict between a parameter and a field of the class. It is optional when there is no naming conflict, because Java can infer that the reference is to the current object.
 - **How to use the 'this' reference to call another constructor in the same class**
-    > The `this` keyword can be used to call another constructor in the same class. This is done by using the `this` keyword like a method call, typing `this()` and passing in the parameters for the corresponding constructor. This process, of calling another constructor in the same class, is called constructor chaining.
+  > The `this` keyword can be used to call another constructor in the same class. This is done by using the `this` keyword like a method call, typing `this()` and passing in the parameters for the corresponding constructor. This process, of calling another constructor in the same class, is called constructor chaining.
 - **What an enum is and how to implement one**
-    > An `enum` is a special type of class. It represents a group of constants, so the values are immutable. An `enum` is declared with the `enum` keyword, and the values are declared in a list, separated by commas. An example of an `enum` is:
 
-    ```java
-    enum Level{
-        LOW,
-        MEDIUM,
-        HIGH
-    }
-    ```
+  > An `enum` is a special type of class. It represents a group of constants, so the values are immutable. An `enum` is declared with the `enum` keyword, and the values are declared in a list, separated by commas. An example of an `enum` is:
 
-    > The values of an `enum` can be accessed with dot notation. To access the values of the `Level` enum, you would use `Level.LOW`, `Level.MEDIUM`, and `Level.HIGH`. `enums` are often used with `switch` statements, and have a `values()` method that returns an array of the values of the `enum`. It is most useful to use an `enum` when you are working with a set of values that you know will remain constant.
+  ```java
+  enum Level{
+      LOW,
+      MEDIUM,
+      HIGH
+  }
+  ```
+
+  > The values of an `enum` can be accessed with dot notation. To access the values of the `Level` enum, you would use `Level.LOW`, `Level.MEDIUM`, and `Level.HIGH`. `enums` are often used with `switch` statements, and have a `values()` method that returns an array of the values of the `enum`. It is most useful to use an `enum` when you are working with a set of values that you know will remain constant.
 
 - The standard order of elements in a Java class
-    > Here is an answer provided by GitHub Copilot:
-    In the context of the notes in the file, "The standard order of elements in a Java class" refers to the conventional sequence in which different parts of a Java class are typically organized. This order helps in maintaining readability and consistency across Java codebases. The standard order is generally as follows:
-    >
-    > 1. **Package declaration**: Specifies the package name.
-    > 2. **Import statements**: Lists all the required imports.
-    > 3. **Class or interface declaration**: Starts with the class or interface declaration.
-    > 4. **Static variables (static fields)**: Declares static fields.
-    > 5. **Instance variables (non-static fields)**: Declares instance variables.
-    > 6. **Constructors**: Includes all constructors.
-    > 7. **Methods**:
+  > Here is an answer provided by GitHub Copilot:
+  > In the context of the notes in the file, "The standard order of elements in a Java class" refers to the conventional sequence in which different parts of a Java class are typically organized. This order helps in maintaining readability and consistency across Java codebases. The standard order is generally as follows:
+  >
+  > 1. **Package declaration**: Specifies the package name.
+  > 2. **Import statements**: Lists all the required imports.
+  > 3. **Class or interface declaration**: Starts with the class or interface declaration.
+  > 4. **Static variables (static fields)**: Declares static fields.
+  > 5. **Instance variables (non-static fields)**: Declares instance variables.
+  > 6. **Constructors**: Includes all constructors.
+  > 7. **Methods**:
         - Static methods
         - Instance methods
         - Getter and setter methods
         - Other methods
-    > 8. **Inner classes or interfaces**: Defines any inner classes or interfaces.
-    >
-    >
-    > This order helps in locating different parts of a class quickly and understanding the structure of a Java class more easily.
+  > 8. **Inner classes or interfaces**: Defines any inner classes or interfaces.
+  >
+  > This order helps in locating different parts of a class quickly and understanding the structure of a Java class more easily.
 
 ### Java Records
 
@@ -187,7 +187,7 @@ This can be done with a standard class, but it adds to the amount of boilerplate
 ### Chapter 3 Reading: Interfaces
 
 Polymorphism
-: A blanket term in computer science for taking one object and morphing it to fit in to many contexts. In Java, this is accomplished primarily through *inheritance*, *interfaces*, and *abstract classes*.
+: A blanket term in computer science for taking one object and morphing it to fit in to many contexts. In Java, this is accomplished primarily through _inheritance_, _interfaces_, and _abstract classes_.
 
 The central idea around an `interface`, is being able to define a class, and what its methods do, without defining how they do it. It is defining functionality without defining implementation.
 
@@ -221,7 +221,7 @@ public static class Dog extends Pet{
 }
 ```
 
-In this example, the subclass, Dog, is able to access all of the code for the `Pet` class, and then define its own code. This perspective makes the `extends` keyword make sense, because the class `Dog` is taking all of the functionality of `Pet`, and then **extending** past that with whatever members are defined in `Dog`. **Note:** using the `extends` keyword is (to my current knowledge) the ***only*** way to make one class a subclass of another. (I don't know if some of the built-in JDK classes have pre-made inheritance relationships, I'll have to find that out)
+In this example, the subclass, Dog, is able to access all of the code for the `Pet` class, and then define its own code. This perspective makes the `extends` keyword make sense, because the class `Dog` is taking all of the functionality of `Pet`, and then **extending** past that with whatever members are defined in `Dog`. **Note:** using the `extends` keyword is (to my current knowledge) the **_only_** way to make one class a subclass of another. (I don't know if some of the built-in JDK classes have pre-made inheritance relationships, I'll have to find that out)
 
 `Abstract Classes` are a type of hybrid between a standard class and a hybrid. If an implementing class only implements some of the methods defined in the interface, or if it defines additional methods without providing their implementation, then that class is an `abstract` class. Both the class needs to have a signature of `abstract` and the methods that are left unimplemented. Then, similar to implementing classes of interfaces, a subclass of an abstract class is what will implement the abstract methods.
 
@@ -233,11 +233,12 @@ Lastly, the keyword `final` can be applied to method signatures or field declara
 
 ### Chapter 5 Reading: Exceptions
 
-Normally, errors are thrown to the caller of a method, so errors must move up the call stack, and generally only involve returning an error code. This is not the most effective way to handle errors. Instead, throwing exceptions allows specific *handlers* to take over control when an exception is thrown.
+Normally, errors are thrown to the caller of a method, so errors must move up the call stack, and generally only involve returning an error code. This is not the most effective way to handle errors. Instead, throwing exceptions allows specific _handlers_ to take over control when an exception is thrown.
 
 Exception in Java is a subclass of `Throwable` objects. Here is the hierarchy of exceptions in Java:
 ![Java Exception Hierarchy](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9780135404522/files/html/images/exception-hierarchy.jpg).
-> A note about the `Runtime Exception` class. Really, all exceptions are thrown at runtime, but the objects of the `RuntimeException` class are not checked by the compiler. So `Runtime Exception` means that they are first *detected* at runtime, makings its subclasses *unchecked* exceptions. All other exception types are checked by the compiler, thus their designation as *checked* exceptions.
+
+> A note about the `Runtime Exception` class. Really, all exceptions are thrown at runtime, but the objects of the `RuntimeException` class are not checked by the compiler. So `Runtime Exception` means that they are first _detected_ at runtime, makings its subclasses _unchecked_ exceptions. All other exception types are checked by the compiler, thus their designation as _checked_ exceptions.
 
 Any method that has the potential to throw a **checked** exception must have it declared in the method signature, after the method name.
 
@@ -264,7 +265,7 @@ public void tryWithResources() throws IOException {
 }
 ```
 
-Things can get a bit trickier if the `close` method for one of the resources is what actually throws an exception. If just the close method exception gets thrown, then in it thrown to the caller. If another exception is thrown, and then the close method, which is executing because of the prior exception, throws an exception, the close method exception can safely be ignored for now. When this second case happens, the first exception gets rethrown, and the second exception is added as a *suppressed* exception. These can be accessed with an exception object's `getSuppressed()` method.
+Things can get a bit trickier if the `close` method for one of the resources is what actually throws an exception. If just the close method exception gets thrown, then in it thrown to the caller. If another exception is thrown, and then the close method, which is executing because of the prior exception, throws an exception, the close method exception can safely be ignored for now. When this second case happens, the first exception gets rethrown, and the second exception is added as a _suppressed_ exception. These can be accessed with an exception object's `getSuppressed()` method.
 
 `finally` blocks are another way to clean up resources after a try block is executed or an exception is thrown. Because the resources that can be passed to a `try-with-resources` block are limited to those of the class `AutoClosable`, the `finally` block is still necessary for other types of resources. Two important notes about `finally` blocks are 1, to avoid putting return statements in `finally` blocks, and 2, to avoid throwing exceptions in `finally` blocks. Because a `finally` block is always executed, a return statement in a `try` block will not be executed until the `finally` block is executed, so that return statement will be lost to the one in the `finally` block. Throwing an exception in a `finally` block will override any other exceptions that are thrown, and the exception thrown in the `finally` block will be the one that is caught, and the other exceptions will be inaccessible, as the suppression mechanism only works with try-with-resources blocks.
 
@@ -274,7 +275,40 @@ Exceptions can be rethrown using the `throw` keyword. As of now, I don't quite u
 
 Some classes of exceptions have a method to get the cause to then display it, generally `.getCause()`. For those that don't have a cause as a constructor parameter, the `.initCause()` method can be used to set the cause of the exception (the argument passed to `.initCause()` must be a `Throwable` object, generally it is the exception that caused the current exception).
 
-When an exception is never caught, a *stack trace* is given. This is a list of all the methods that were called up to the point of the exception being thrown. Most exception classes also have a `.printStackTrace()` method that will print the stack trace to the console. Along this vein, the Object class has useful methods that can throw exceptions, such as `.requireNonNull()`. If you see that this method is the latest on a stack trace before an exception, you can much more easily detect the bug. It also can take a message string as an optional 2nd parameter. Some alternatives to these methods can be useful too, such as `.requireNotNullElse()`. which allow the developer to supply an alternative value to be used if the first value is `null`.
+When an exception is never caught, a _stack trace_ is given. This is a list of all the methods that were called up to the point of the exception being thrown. Most exception classes also have a `.printStackTrace()` method that will print the stack trace to the console. Along this vein, the Object class has useful methods that can throw exceptions, such as `.requireNonNull()`. If you see that this method is the latest on a stack trace before an exception, you can much more easily detect the bug. It also can take a message string as an optional 2nd parameter. Some alternatives to these methods can be useful too, such as `.requireNotNullElse()`. which allow the developer to supply an alternative value to be used if the first value is `null`.
+
+### Chapter 7 Reading: Collections
+
+- The `Collection` interface is the built-in method for implementing some common data structures in Java.
+- Here is a chart that shows the inheritance of various types:
+    ![Collection inheritance chart](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9780135404522/files/html/images/collection-interfaces.jpg)
+- [This doc](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html) shows the methods in the Collection interface.
+- `List` is a subinterface of `SequencedCollection`, a subinterface of `Collection`. It has some useful methods for getting and setting the first and last elements of a list, returning the list in reversed order, and other useful methods. [Here](https://docs.oracle.com/javase/8/docs/api/java/util/List.html) is the doc for the List methods.
+- A useful method that the book mentions:
+    > the method `Collections.nCopies(n, o)` returns a `List` object with `n` copies of the object `o`. That object “cheats” in that it doesn’t actually store `n` copies but, when you ask about any one of them, returns `o`.
+- This is an example of one of the many useful methods of the `Collections` utility class, whose methods operate on any `Collection` object. [Here](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html) is a link to the doc for this class.
+
+**Iterators:**
+
+- Every implementing class of the `Collection` interface provides a way to iterate through its values, because, referring to the chart above, the `Collection` interface is a subtype of the `Iterable` interface, which defines this method. The method is simply called `iterator()` and returns an iterator for that type.
+- Like typical in most languages, 2 of the core methods for Java iterators are `hasNext()` which returns a boolean, and `next()` which advances the iterator.
+- Whenever a "for-each" loop is used, `for (String element : collection)` What is actually being done is an iterator is being used under the hood to iterate until the end of the collection is reached.
+- The `remove()` method of the Iterator interface removes the *previously visited* element, not the one currently being pointed to. This is something to keep in mind. For more details, [here](https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html) is the doc for the Iterator interface.
+- To do a conditional removal of an element, the collection method `removeIf()` is much easier than iterating through and removing. Part of this is due to the nature of iterators, in that the corresponding collection can't be mutated in between iterator instatiations, otherwise a `ConcurrentModificationException` is thrown. These are thrown to make sure that the iterator that you instantiate doesn't become invalid.
+
+**Sets:**
+
+- Sets are useful for when order doesn't matter, and you simply need to know if a value is an element of the set or not.
+- The 2 built-in sets are `HashSet` and `TreeSet`. `HashSet` is generally more efficient, as long as you have a good has function. `TreeSet` is better for when you want some sorting and medium ability to access values. `TreeSet` implements `SequencedSet`, `SortedSet`, and `NavigableSet` interfaces.
+
+**Maps:**
+
+- Maps are a very common data structure, that store associations between keys and values, equivalent of dictionaries in Python. Each association of key-value is called an _entry_. There are 4 main types of Maps in Java:
+  1. A TreeMap traverses entries in the sort order of the keys.
+  2. A HashMap hashes the keys, which is efficient but traversal visits the entries in an unpredictable order.
+  3. A LinkedHashMap traverses entries in in insertion order.
+  4. A ConcurrentHashMap allows safe concurrent updates
+- 
 
 ## Class Notes
 
@@ -288,7 +322,7 @@ A brief history of Java:
 - Oracle then bought Sun in 2010, and also gaining Java in the process.
 
 **Overview of Java:**
-Similar syntax to C++, but different *semantics*
+Similar syntax to C++, but different _semantics_
 
 Java and C++ differences:
 
@@ -302,7 +336,7 @@ Java and C++ differences:
 Compiled vs Interpreted code:
 
 - Compiled code is less portable, but faster.
-![Compiled](https://keep.google.com/u/0/media/v2/1Yr4fp7ENpb0A6lZiiUzDZ7UXipMP0lN4h0YPO-MZDFdM7mnY38pAf-F_XWct2AU/19Hh9hs7kezn98dnFbb9s3Pxt6Vc54hM2jiOMriSDMe8gBKd4UlNmUmt3lQlinA?accept=image%2Fgif%2Cimage%2Fjpeg%2Cimage%2Fjpg%2Cimage%2Fpng%2Caudio%2Faac&sz=915)
+  ![Compiled](https://keep.google.com/u/0/media/v2/1Yr4fp7ENpb0A6lZiiUzDZ7UXipMP0lN4h0YPO-MZDFdM7mnY38pAf-F_XWct2AU/19Hh9hs7kezn98dnFbb9s3Pxt6Vc54hM2jiOMriSDMe8gBKd4UlNmUmt3lQlinA?accept=image%2Fgif%2Cimage%2Fjpeg%2Cimage%2Fjpg%2Cimage%2Fpng%2Caudio%2Faac&sz=915)
 - Interpreted code is more portable, but slower.
 - Java is a hybrid of the two, with the code being compiled by the same compiler, regardless of platform, and the same Java Byte Code is run on any hardware, and then each platform has its own JVM that interprets the Byte Code.
 
@@ -344,7 +378,7 @@ Remember that references and objects are different, and only the `new` operator 
 - Errors are exceptions, but sometimes an exception is not an error. Exceptions are simply abnormal behavior in a class.
 - What the readings and the slide say about exceptions in Java holds for the majority of languages, with a few nuances here and there.
 - In Java, something unique to it is the Handle or Declare rule. This is, when a checked exception is found in compilation, the JVM forces a handler (try-catch block) to be made, or the method to be declared (in the signature) as throwing that checked exception. If one of these is not done, the JVM will not allow the program to compile.
-- Dr. Wilkerson's advice is to not write handlers for *unchecked* exceptions, because these types of exceptions are generally fixable bugs. Writing a handler for these unchecked exceptions can hide the bugs from the programmer and keep them from improving the program.
+- Dr. Wilkerson's advice is to not write handlers for _unchecked_ exceptions, because these types of exceptions are generally fixable bugs. Writing a handler for these unchecked exceptions can hide the bugs from the programmer and keep them from improving the program.
 - "Swallowing" an exception means writing a handler for an exception, but then not actually implementing handling behavior for it.
 - Always create Exception instances on the same line that you throw them. Don't create an exception and then throw it later.
 
@@ -362,6 +396,5 @@ Remember that references and objects are different, and only the `new` operator 
 - Array syntax is a bit different than I'm used to, coming off of Python and Javascript. Remember the syntax is `type[] name = {value, value}` or `type[] name = new type[size]` to initialize as empty. To make it multidimensional, just add another set of brackets, like `type[][] name = new type[size][size]`.
 - Right now I am trying to figure out how to make a 2D ArrayList to store all of the valid moves, and keep the loop fairly abstract, to avoid repeating code. **As of right now, I think I could try using the ternary operator in the `.add()` method call.**
 - Java ternary operator is similar to JS and C++, `condition ? valueIfTrue : valueIfFalse`.
-- The method that I had was confusing and a bit too nested. Michael's advice to find the furthest possible square in each direction eventually led me in the right direction. I tried to do recursion like he told me at first, but then figured out how to do it with iteration more effectively. I found the Single Responsibility principle to hold true in this case, as making 4 different methods for each of the directions that a piece could move, rather than one with far greater complexity, was much easier, even with the shared code between the 4. *Maybe this indicates a balance/tension between the DRY principle and Single responsibility principle.*
+- The method that I had was confusing and a bit too nested. Michael's advice to find the furthest possible square in each direction eventually led me in the right direction. I tried to do recursion like he told me at first, but then figured out how to do it with iteration more effectively. I found the Single Responsibility principle to hold true in this case, as making 4 different methods for each of the directions that a piece could move, rather than one with far greater complexity, was much easier, even with the shared code between the 4. _Maybe this indicates a balance/tension between the DRY principle and Single responsibility principle._
 - One thing that I had to be conscientious of in both the Rook and Bishop Move calculator classes was converting between base 0 for accessing the 2D matrix of chess pieces on the board, and the base 1 for accessing the position of pieces/creating ChessMoves. Later on I will investigate if there is an effective way to do this, or maybe ask Dr. Wilkerson.
-  
