@@ -23,7 +23,7 @@ public interface StraightOrDiagonalPiece extends PieceMoveCalc {
       ChessPosition newPostition=new ChessPosition(furthestSquareUp, piecePosition.getColumn());
       validMovePositions.add(new ChessMove(piecePosition, newPostition, null));
       return false;
-    }else if (currentBoardPieces[i][piecePosition.getColumn()-1].getTeamColor() != piece.getTeamColor()){
+    }else if (!currentBoardPieces[i][piecePosition.getColumn()-1].teamColorsEqual(piece)){
       furthestSquareUp = i+1;
       ChessPosition newPostition=new ChessPosition(furthestSquareUp, piecePosition.getColumn());
       validMovePositions.add(new ChessMove(piecePosition, newPostition, null));
@@ -49,7 +49,7 @@ public interface StraightOrDiagonalPiece extends PieceMoveCalc {
       ChessPosition newPostition=new ChessPosition(piecePosition.getRow(), furthestSquareRight);
       validMovePositions.add(new ChessMove(piecePosition, newPostition, null));
       return false;
-    }else if (currentBoardPieces[piecePosition.getRow()-1][i].getTeamColor() != piece.getTeamColor()){
+    }else if (!currentBoardPieces[piecePosition.getRow()-1][i].teamColorsEqual(piece)){
       furthestSquareRight = i+1;
       ChessPosition newPostition=new ChessPosition(piecePosition.getRow(), furthestSquareRight);
       validMovePositions.add(new ChessMove(piecePosition, newPostition, null));
@@ -63,7 +63,7 @@ public interface StraightOrDiagonalPiece extends PieceMoveCalc {
       if (currentBoardPieces[piecePosition.getRow() + i][piecePosition.getColumn() + i] == null){
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()+i + 1),(piecePosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
-      } else if (currentBoardPieces[piecePosition.getRow() + i][piecePosition.getColumn() + i].getTeamColor() != piece.getTeamColor()) {
+      } else if (!currentBoardPieces[piecePosition.getRow() + i][piecePosition.getColumn() + i].teamColorsEqual(piece)) {
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()+i + 1),(piecePosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
         break;
@@ -77,7 +77,7 @@ public interface StraightOrDiagonalPiece extends PieceMoveCalc {
       if (currentBoardPieces[piecePosition.getRow()+i][piecePosition.getColumn()-i - 2] == null){
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()+i + 1),(piecePosition.getColumn()- i - 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
-      } else if (currentBoardPieces[piecePosition.getRow() + i][piecePosition.getColumn() - i - 2].getTeamColor() != piece.getTeamColor()) {
+      } else if (!currentBoardPieces[piecePosition.getRow() + i][piecePosition.getColumn() - i - 2].teamColorsEqual(piece)) {
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()+i + 1),(piecePosition.getColumn()+ i - 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
         break;
@@ -91,7 +91,7 @@ public interface StraightOrDiagonalPiece extends PieceMoveCalc {
       if (currentBoardPieces[piecePosition.getRow() - i - 2][piecePosition.getColumn() + i] == null){
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()-i - 1),(piecePosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
-      } else if (currentBoardPieces[piecePosition.getRow() - i - 2][piecePosition.getColumn() + i].getTeamColor() != piece.getTeamColor()) {
+      } else if (!currentBoardPieces[piecePosition.getRow() - i - 2][piecePosition.getColumn() + i].teamColorsEqual(piece)) {
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()-i - 1),(piecePosition.getColumn()+ i + 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
         break;
@@ -105,7 +105,7 @@ public interface StraightOrDiagonalPiece extends PieceMoveCalc {
       if (currentBoardPieces[piecePosition.getRow() - i - 2][piecePosition.getColumn() - i - 2] == null){
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()-i - 1),(piecePosition.getColumn()- i - 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
-      } else if (currentBoardPieces[piecePosition.getRow() - i -2 ][piecePosition.getColumn() - i -2 ].getTeamColor() != piece.getTeamColor()){
+      } else if (!currentBoardPieces[piecePosition.getRow() - i -2 ][piecePosition.getColumn() - i -2 ].teamColorsEqual(piece)){
         ChessPosition newPosition = new ChessPosition((piecePosition.getRow()-i - 1),(piecePosition.getColumn()- i - 1));
         validMovePositions.add(new ChessMove(piecePosition, newPosition, null));
         break;

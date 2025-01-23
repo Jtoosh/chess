@@ -57,6 +57,10 @@ public class ChessPiece {
         return pieceType;
     }
 
+    public boolean teamColorsEqual (ChessPiece otherPiece){
+        return this.getTeamColor() == otherPiece.getTeamColor();
+    }
+
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in

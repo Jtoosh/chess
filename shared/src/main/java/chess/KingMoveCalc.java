@@ -18,6 +18,26 @@ public class KingMoveCalc implements PieceMoveCalc{
 
   @Override
   public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-    return List.of();
+    checkAdjacentSquare(1,0);
+    checkAdjacentSquare(1, 1);
+    checkAdjacentSquare(0,1);
+    checkAdjacentSquare(-1, 1);
+    checkAdjacentSquare(-1,0);
+    checkAdjacentSquare(-1,-1);
+    checkAdjacentSquare(0, -1);
+    checkAdjacentSquare(1,-1);
+
+    return this.validMovePositions;
+  }
+
+  private void checkAdjacentSquare (int rowOffset, int colOffset){
+    if ((kingPosition.getRow()-1) + rowOffset >= 8 || (kingPosition.getRow()-1) + colOffset >= 8){
+      return;
+    }
+    ChessPiece currentPiece =this.currentBoardPieces[(kingPosition.getRow()-1) + rowOffset][(kingPosition.getColumn()-1) + colOffset];
+    if ( currentPiece == null || !currentPiece.teamColorsEqual(this.kingPiece)){
+      ChessPosition newPosition = new ChessPosition(kingPosition.getRow()+rowOffset, kingPosition.getColumn() + colOffset);
+      validMovePositions.add(new ChessMove(kingPosition, newPosition,null));
+    }
   }
 }
