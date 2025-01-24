@@ -293,7 +293,7 @@ When an exception is never caught, a _stack trace_ is given. This is a list of a
 - Every implementing class of the `Collection` interface provides a way to iterate through its values, because, referring to the chart above, the `Collection` interface is a subtype of the `Iterable` interface, which defines this method. The method is simply called `iterator()` and returns an iterator for that type.
 - Like typical in most languages, 2 of the core methods for Java iterators are `hasNext()` which returns a boolean, and `next()` which advances the iterator.
 - Whenever a "for-each" loop is used, `for (String element : collection)` What is actually being done is an iterator is being used under the hood to iterate until the end of the collection is reached.
-- The `remove()` method of the Iterator interface removes the *previously visited* element, not the one currently being pointed to. This is something to keep in mind. For more details, [here](https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html) is the doc for the Iterator interface.
+- The `remove()` method of the Iterator interface removes the _previously visited_ element, not the one currently being pointed to. This is something to keep in mind. For more details, [here](https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html) is the doc for the Iterator interface.
 - To do a conditional removal of an element, the collection method `removeIf()` is much easier than iterating through and removing. Part of this is due to the nature of iterators, in that the corresponding collection can't be mutated in between iterator instatiations, otherwise a `ConcurrentModificationException` is thrown. These are thrown to make sure that the iterator that you instantiate doesn't become invalid.
 
 **Sets:**
@@ -308,7 +308,7 @@ When an exception is never caught, a _stack trace_ is given. This is a list of a
   2. A HashMap hashes the keys, which is efficient but traversal visits the entries in an unpredictable order.
   3. A LinkedHashMap traverses entries in in insertion order.
   4. A ConcurrentHashMap allows safe concurrent updates
-- 
+-
 
 ## Class Notes
 
@@ -398,3 +398,4 @@ Remember that references and objects are different, and only the `new` operator 
 - Java ternary operator is similar to JS and C++, `condition ? valueIfTrue : valueIfFalse`.
 - The method that I had was confusing and a bit too nested. Michael's advice to find the furthest possible square in each direction eventually led me in the right direction. I tried to do recursion like he told me at first, but then figured out how to do it with iteration more effectively. I found the Single Responsibility principle to hold true in this case, as making 4 different methods for each of the directions that a piece could move, rather than one with far greater complexity, was much easier, even with the shared code between the 4. _Maybe this indicates a balance/tension between the DRY principle and Single responsibility principle._
 - One thing that I had to be conscientious of in both the Rook and Bishop Move calculator classes was converting between base 0 for accessing the 2D matrix of chess pieces on the board, and the base 1 for accessing the position of pieces/creating ChessMoves. Later on I will investigate if there is an effective way to do this, or maybe ask Dr. Wilkerson.
+- I should consider: _How could I have used records in my implementation of Phase 0?_

@@ -31,7 +31,10 @@ public class KingMoveCalc implements PieceMoveCalc{
   }
 
   private void checkAdjacentSquare (int rowOffset, int colOffset){
-    if ((kingPosition.getRow()-1) + rowOffset >= 8 || (kingPosition.getRow()-1) + colOffset >= 8){
+    if ((kingPosition.getRow()-1) + rowOffset > 7 || (kingPosition.getRow()-1) + colOffset > 7){
+      return;
+    }
+    if ((kingPosition.getRow()-1) + rowOffset < 0 || (kingPosition.getColumn()-1) + colOffset < 0){
       return;
     }
     ChessPiece currentPiece =this.currentBoardPieces[(kingPosition.getRow()-1) + rowOffset][(kingPosition.getColumn()-1) + colOffset];
