@@ -283,10 +283,14 @@ When an exception is never caught, a _stack trace_ is given. This is a list of a
 - Here is a chart that shows the inheritance of various types:
     ![Collection inheritance chart](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9780135404522/files/html/images/collection-interfaces.jpg)
 - [This doc](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html) shows the methods in the Collection interface.
-- `List` is a subinterface of `SequencedCollection`, a subinterface of `Collection`. It has some useful methods for getting and setting the first and last elements of a list, returning the list in reversed order, and other useful methods. [Here](https://docs.oracle.com/javase/8/docs/api/java/util/List.html) is the doc for the List methods.
 - A useful method that the book mentions:
     > the method `Collections.nCopies(n, o)` returns a `List` object with `n` copies of the object `o`. That object “cheats” in that it doesn’t actually store `n` copies but, when you ask about any one of them, returns `o`.
 - This is an example of one of the many useful methods of the `Collections` utility class, whose methods operate on any `Collection` object. [Here](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html) is a link to the doc for this class.
+
+**Lists:**
+
+- `List` is a subinterface of `SequencedCollection`, a subinterface of `Collection`. It has some useful methods for getting and setting the first and last elements of a list, returning the list in reversed order, and other useful methods. [Here](https://docs.oracle.com/javase/8/docs/api/java/util/List.html) is the doc for the List methods.
+- 2 main implementing classes `ArrayList` (resizable array, faster at random access, slower adding non-terminal values) and `LinkedList` (doubly-linked list, slower at random access, faster at adding non-terminal values).
 
 **Iterators:**
 
@@ -299,7 +303,9 @@ When an exception is never caught, a _stack trace_ is given. This is a list of a
 **Sets:**
 
 - Sets are useful for when order doesn't matter, and you simply need to know if a value is an element of the set or not.
-- The 2 built-in sets are `HashSet` and `TreeSet`. `HashSet` is generally more efficient, as long as you have a good has function. `TreeSet` is better for when you want some sorting and medium ability to access values. `TreeSet` implements `SequencedSet`, `SortedSet`, and `NavigableSet` interfaces.
+- Sets have no index, no concept of "this value is 'at' this location". That is where an iterator would be needed.
+- The 2 built-in sets are `HashSet` and `TreeSet`. `HashSet` is generally more efficient, as long as you have a good hash function. `TreeSet` implements a binary search tree,and thus is better for when you want some sorting and medium ability to access values. `TreeSet` implements `SequencedSet`, `SortedSet`, and `NavigableSet` interfaces.
+- There is also `LinkedHashSet`, which is a hash table combined with a linked list.
 
 **Maps:**
 
@@ -382,6 +388,57 @@ Remember that references and objects are different, and only the `new` operator 
 - "Swallowing" an exception means writing a handler for an exception, but then not actually implementing handling behavior for it.
 - Always create Exception instances on the same line that you throw them. Don't create an exception and then throw it later.
 
+### Lecture: Collections and Copying objects
+
+The "collections API" refers to a group of classes and interfaces, mostly those shown in the chart from chapter 7 of the book.
+
+- The Collection API is found in the `java.util` package.
+- An important detail is that a `Collection` **cannot** store primitives, only objects. There are wrapper classes for primitives, like the `Integer` class, that can be used to store something functionally equivalent to primitive values.
+- **Tip from Dr. Wilkerson:** Make declarations and references as abstract as possible, using an interface or abstract class. By "hiding" the specific type that you implement later, you can change it more easily later. He mentioned a common theme in Computer Science of "what you hide, you can change".
+
+Some interfaces not mentioned in the book:
+**Queue:**
+
+- This interface is designed for holding elements prior to processing.
+- Methods include `add(value)` to add to the end of the queue, `peek()` to view the first item but not remove it, and `remove()` to pop out the first item in the queue.
+- [Javadoc](https://docs.oracle.com/javase/8/docs/api/java/util/Queue.html)
+- Implementing classes:
+  - ArrayDeque (fifo, resizable array impl)
+  - LinkedList (fifo, linked list implementation)
+  - PriorityQueue (priority queue, binary heap impl)
+
+**Deque:**
+
+- This interface extends on a queue by allowing for insertion and removal from front and back.
+- Methods include `addFirst()`, `addLast()`, `peekFirst()`, `peekLast()`, `removeFirst()`, `removeLast()`
+- [Javadoc](https://docs.oracle.com/javase/8/docs/api/java/util/Deque.html)
+- Implementing classes
+  - ArrayDeque (resizable array implementation)
+  - LinkedList (linked list implementation)
+
+The **stack** interface in Java is deprecated, because it does not work very well. Stacks are still a very useful data structure, and can be successfully implemented using a deque, using the corresponding peek, remove, and add methods to enforce a LIFO insertion behavior.
+
+**Brief recap of hashing:** Take an object, and using an hashing algorithm, create a unique integer for that object, called a hash code. This hash code is modulus divided by the length of the list storing items, and that result if the index for that item. If there is a hashcode collision, each element of the hash table (the list being inserted into) can be a list, containing all of the items that have a hashcode that results in that index.
+
+`Object.equals()` compares identity, or memory address for equality by default. This needs to be overridden to compare equality by value instead.
+An object in a collection implemented with hash tables also uses identity by default for the Object.hashCode method.
+**Rule**: If `equals` is based on identity (memory address), then `hashCode` should be too. If `equals` is based on value, then `hashCode` should be too, and both methods should use the same fields in their calculations.
+
+**Copying Objects**
+It is common to need to make a copy of exisitng objects in programming. This is how "Undo" capabilities work in many programs. An example for this class is when determining if the King is in Checkmate. Dr. Wilkerson recommends copying the board and trying a move when doing this.
+
+Two main ways to copy an object:
+
+1. Shallow copy: Simply creates a new reference to the original object and its values (Not recommended usually). Example: new reference to same linked list nodes.
+2. Deep copy: Creates an entirely new object with separate identity, but the values are made equal to those of the original. Example: makes new Linked List with new nodes, that have same values as original.
+
+Immutable objects don't need to be copied, can be referenced without worry.
+
+2 main methods for making copying capabilities in classes: **Copy constructors** (all languages), and a **`clone` method** (Java specific).
+
+- Copy constructors entail making a constructor that taking in an instance of the same class as a parameter.
+- Making a `clone` method involve implementing the `Cloneable` interface, and overriding/using the `clone` method. ([Cloneable javadoc](https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html))
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -399,6 +456,7 @@ Remember that references and objects are different, and only the `new` operator 
 - The method that I had was confusing and a bit too nested. Michael's advice to find the furthest possible square in each direction eventually led me in the right direction. I tried to do recursion like he told me at first, but then figured out how to do it with iteration more effectively. I found the Single Responsibility principle to hold true in this case, as making 4 different methods for each of the directions that a piece could move, rather than one with far greater complexity, was much easier, even with the shared code between the 4. _Maybe this indicates a balance/tension between the DRY principle and Single responsibility principle._
 - One thing that I had to be conscientious of in both the Rook and Bishop Move calculator classes was converting between base 0 for accessing the 2D matrix of chess pieces on the board, and the base 1 for accessing the position of pieces/creating ChessMoves. Later on I will investigate if there is an effective way to do this, or maybe ask Dr. Wilkerson.
 - I should consider: _How could I have used records in my implementation of Phase 0?_
+- Something that helped with abstraction was learning this technique: When the body of a loop is the same and the only thing that differs is direction of iteration in 2 different uses, abstract the loop body into a method, and pass in the iterator variable as a parameter. Then just have the loop body be calling that abstracted method.
 
 **Phase 0 Retrospective**
 So, I finished up Phase 0 on the due date, and got 100%. I ran the code quality check as well, just out of curiousity, and got 70%, which I'm very satisfied with, since we haven't lectured on that yet, and I'm not graded on it for this phase. The details said I did well with _Naming_, _Code Decompisition_, and _Package Structure*, but need to improve on _Code readability_. That checks out, to be honest. Some of the conditional statements that I used are pretty unpleasant to the eye.
