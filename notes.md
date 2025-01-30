@@ -439,6 +439,19 @@ Immutable objects don't need to be copied, can be referenced without worry.
 - Copy constructors entail making a constructor that taking in an instance of the same class as a parameter.
 - Making a `clone` method involve implementing the `Cloneable` interface, and overriding/using the `clone` method. ([Cloneable javadoc](https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html))
 
+### Lecture: Inner Classes, Phase 1, and Design Principles
+
+**Inner Classes:**
+An inner class is a class that is defined inside of another class. Sometimes they are also referred to as nested classes. Inner classes are useful for situations in which different classes need different implementations of an iterface. An example is the `Iterator` interface, and its implementation in different `Collection` types. The implementation for an `Iterator` in a `List` is different for that of a `Set`, and even each distinct type of `Set` will need a different implementation of `Iterator`. A good way to do this is by making inner implementing classes of `Iterator` where needed.
+
+**_Principle_**: Declare fields and variables as close as you can to where you use them.
+
+There are different types of inner classes. Here are the fundamental ones that we covered:
+
+1. **Static Inner Class:** A static inner class is a nested class that cannot access any of the outer class's members. Anything from the outer class that the inner class will handle must be passed to it. This is the simplest inner class type to understand.
+2. **Inner Class (Non-static):** A standard inner class is identical to a static inner class, only it _is_ able to access the outer class's members. This reduces the amount of data that needs to be passed.
+3. **Local Inner Class:** This type of inner class takes the above mentioned principle even further; it declares an inner class inside of the method that uses it. This makes the inner classes a bit easier to find and improves some code readability. It also allows the inner class to use local variables of the method, and in some cases allows for no constructor to be used. However, because the lifetime of the inner class's objects are usually longer than the lifetime of the local variables, there is a protective restrction, which is that a local inner class can only use local variables that are _final_ or _effecively final_, which means that they are not mutated if they aren't declared as final.
+
 ## Project Notes
 
 ### Phase 0 Notes
