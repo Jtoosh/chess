@@ -451,6 +451,9 @@ There are different types of inner classes. Here are the fundamental ones that w
 1. **Static Inner Class:** A static inner class is a nested class that cannot access any of the outer class's members. Anything from the outer class that the inner class will handle must be passed to it. This is the simplest inner class type to understand.
 2. **Inner Class (Non-static):** A standard inner class is identical to a static inner class, only it _is_ able to access the outer class's members. This reduces the amount of data that needs to be passed.
 3. **Local Inner Class:** This type of inner class takes the above mentioned principle even further; it declares an inner class inside of the method that uses it. This makes the inner classes a bit easier to find and improves some code readability. It also allows the inner class to use local variables of the method, and in some cases allows for no constructor to be used. However, because the lifetime of the inner class's objects are usually longer than the lifetime of the local variables, there is a protective restrction, which is that a local inner class can only use local variables that are _final_ or _effecively final_, which means that they are not mutated if they aren't declared as final.
+4. **Anonymous Inner Class:** This type takes this proximity principle as far as possible with inner classes: anonymous inner classes are defined within an expression, often within a return expression, of their needed method. This provides the same benefits as the other types, namely access to local variables and class members, but it is declared even closer to where it is used.
+
+Keep in mind that Inner classes were originally developed and added to Java for event handling, so that is where they really shine. They certainly have other uses, but that is their primary one.
 
 ## Project Notes
 
@@ -481,3 +484,7 @@ I want to start this new practice that I just thought of, which is documenting/j
 **Biggest Helps**: _The spec, lectures on the project phases, and overview videos_ were the most helpful. I think that this was because of this: I am at the point where some of the lower-level tasks I can handle just fine, but the higher level things like design choices, such as for storing the board data, or traversing the board for movement rules, I am just beginning with. The aforementioned resources proved helpful because they targetted these things: design suggestions and tips. I'll keep this in mind going forward.
 
 The **Javadoc from Oracle** also proved pretty helpful and comprehensive. Something else that helped was "lurking", per se, in **the Slack channel**, and reading up on threads from TAs and fellow students who had similar ideas, thoughts, and questions as me.
+
+### Phase 1 Notes
+
+
