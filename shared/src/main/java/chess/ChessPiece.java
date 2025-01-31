@@ -11,24 +11,28 @@ import java.util.Objects;
  */
 public class ChessPiece {
     private final ChessGame.TeamColor pieceColor;
-    private final ChessPiece.PieceType pieceType;
+    private PieceType type;
 
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+    public ChessPiece(ChessGame.TeamColor pieceColor, PieceType type) {
         this.pieceColor = pieceColor;
-        this.pieceType = type;
+        this.type = type;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChessPiece that=(ChessPiece) o;
-        return pieceColor == that.pieceColor && pieceType == that.pieceType;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessPiece that = (ChessPiece) o;
+        return pieceColor == that.pieceColor && type == that.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pieceColor, pieceType);
+        return Objects.hash(pieceColor, type);
     }
 
     /**
@@ -47,18 +51,18 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        return pieceColor;
+        return this.pieceColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        return pieceType;
+        return this.type;
     }
 
-    public boolean teamColorsEqual (ChessPiece otherPiece){
-        return this.getTeamColor() == otherPiece.getTeamColor();
+    public boolean teamColorEquals (ChessPiece otherPiece){
+        return this.pieceColor == otherPiece.getTeamColor();
     }
 
     /**
@@ -69,14 +73,16 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        PieceMoveCalc moves = switch (this.getPieceType()){
-            case ROOK -> new RookMoveCalc(board, myPosition);
-            case BISHOP -> new BishopMoveCalc(board, myPosition);
-            case QUEEN -> new QueenMoveCalc(board,myPosition);
-            case KING -> new KingMoveCalc(board,myPosition);
-            case KNIGHT -> new KnightMoveCalc(board, myPosition);
-            case PAWN -> new PawnMoveCalc(board, myPosition);
+        MoveCalcPiece moves = switch (this.getPieceType()){
+            case KING -> new MoveCalcKing(board, myPosition);
+            case QUEEN -> new MoveCalcQueen(board, myPosition);
+            case BISHOP -> new MoveCalcBishop(board,myPosition);
+            case KNIGHT -> new MoveCalcKnight(board, myPosition);
+            case ROOK -> new MoveCalcRook(board, myPosition);
+            case PAWN -> new MoveCalcPawn(board, myPosition);
         };
         return moves.pieceMoves(board, myPosition);
+
+
     }
 }

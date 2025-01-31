@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ChessBoard {
     private ChessPiece[][] board;
     public ChessBoard() {
-        board = new ChessPiece[8][8];
+        this.board = new ChessPiece[8][8];
     }
 
     /**
@@ -36,37 +36,25 @@ public class ChessBoard {
         return this.board[position.getRow()-1][position.getColumn()-1];
     }
 
-    public ChessPiece[][] getBoardPieces(){
-        return this.board;
+    public ChessPiece[][] getBoard() {
+        return board;
     }
 
-    private void resetHelper(ChessGame.TeamColor teamColor) {
-        if (teamColor == ChessGame.TeamColor.WHITE) {
-            for (int i = 0; i < 8; i++){
-                this.board[1][i] = new ChessPiece(teamColor, ChessPiece.PieceType.PAWN);
-            }
-            this.board[0][0] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
-            this.board[0][7] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
-            this.board[0][1] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
-            this.board[0][6] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
-            this.board[0][2] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
-            this.board[0][5] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
-            this.board[0][3] = new ChessPiece(teamColor, ChessPiece.PieceType.QUEEN);
-            this.board[0][4] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
-        } else{
-            for (int i = 0; i < 8; i++){
-                this.board[6][i] = new ChessPiece(teamColor, ChessPiece.PieceType.PAWN);
-            }
-            this.board[7][0] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
-            this.board[7][7] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
-            this.board[7][1] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
-            this.board[7][6] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
-            this.board[7][2] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
-            this.board[7][5] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
-            this.board[7][3] = new ChessPiece(teamColor, ChessPiece.PieceType.QUEEN);
-            this.board[7][4] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
-        }
+    private void resetHelper (ChessGame.TeamColor teamColor){
+        int firstRow = (teamColor == ChessGame.TeamColor.WHITE) ? 0 : 7;
+        int secondRow = (teamColor == ChessGame.TeamColor.WHITE) ? 1 : 6;
+        this.board[firstRow][0] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
+        this.board[firstRow][1] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
+        this.board[firstRow][2] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
+        this.board[firstRow][3] = new ChessPiece(teamColor, ChessPiece.PieceType.QUEEN);
+        this.board[firstRow][4] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
+        this.board[firstRow][5] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
+        this.board[firstRow][6] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
+        this.board[firstRow][7] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
 
+        for (int i = 0; i <= 7; i++){
+            this.board[secondRow][i] = new ChessPiece(teamColor, ChessPiece.PieceType.PAWN);
+        }
     }
 
     /**
@@ -74,16 +62,19 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        this.board = new ChessPiece[8][8];
         resetHelper(ChessGame.TeamColor.WHITE);
         resetHelper(ChessGame.TeamColor.BLACK);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChessBoard that=(ChessBoard) o;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessBoard that = (ChessBoard) o;
         return Objects.deepEquals(board, that.board);
     }
 
