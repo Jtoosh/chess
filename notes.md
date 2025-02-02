@@ -455,6 +455,19 @@ There are different types of inner classes. Here are the fundamental ones that w
 
 Keep in mind that Inner classes were originally developed and added to Java for event handling, so that is where they really shine. They certainly have other uses, but that is their primary one.
 
+**Design Principles:**
+Software design has 3 primary goals, to create systems that: **1.** work and satisfy the customer, **2.** easy to understand, debug, test and maintain, and **3.** are robust and durable to changes.
+
+**Domain Driven Design** is the idea of focusing on the customer/user's context, often referred to as "domain", first, then the technical implementations after. It can be thought of as focusing on SKUs, retail prices, inventory items, etc., before thinking of data structures, class and interface relationships, and algorithms to use.
+
+**Top Level Design** involves making a few non-exhaustive diagrams that outline the fundamental pieces of the software, to maintain a clear vision of the desired end product for the team.
+
+1. **Design is inherently iterative**
+  There is a natural and effective loop of designing, implementing, and testing. Each step leads to an fuels the next. It doesn't work to design everything before doing any implementation, and niether does trying to implement without doing any designing. The best pattern to follow is to move naturally between both several times.
+2. **Abstraction**
+  Abstraction is one of the tools for dealing with complexity. Programming languages provide low-level classes for dealing with simpler tasks. Handling complex tasks in terms of just these built-in, low level classes would carry too much cognitive burden, so the developer creates higher level classes out of these lower level ones, to abstract out details and make complex systems more understandable. Abstraction is created by using interfaces and classes. Abstractions generally represent real-world objects and their relationships and actions, whether those objects are internal to the program (`HttpServer`, `Database`), or a representation of an external object (`User`, `Car`, `Store`).
+3.
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -486,5 +499,3 @@ I want to start this new practice that I just thought of, which is documenting/j
 The **Javadoc from Oracle** also proved pretty helpful and comprehensive. Something else that helped was "lurking", per se, in **the Slack channel**, and reading up on threads from TAs and fellow students who had similar ideas, thoughts, and questions as me.
 
 ### Phase 1 Notes
-
-

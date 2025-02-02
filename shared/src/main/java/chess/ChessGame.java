@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -9,16 +10,20 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
-
+    private TeamColor turnTeam;
+    private ChessBoard gameBoard;
+    private ChessPiece[][] gameBoardPieceStorage;
     public ChessGame() {
-
+        this.turnTeam = TeamColor.WHITE;
+        setBoard(new ChessBoard());
+        this.gameBoard.resetBoard();
     }
 
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        return this.turnTeam;
     }
 
     /**
@@ -27,7 +32,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        this.turnTeam = team;
     }
 
     /**
@@ -46,7 +51,12 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece pieceToValidate = this.gameBoardPieceStorage[startPosition.getRow()-1][startPosition.getColumn()-1];
+        Collection<ChessMove> movesToValidate = pieceToValidate.pieceMoves(this.gameBoard, startPosition);
+        for (ChessMove move : movesToValidate){
+            System.out.println("Party time (once I finish coding this)");
+        }
+        return movesToValidate;
     }
 
     /**
@@ -56,7 +66,16 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        if (validMoves(move.getStartPosition()).contains(move)){
+            int startPosRowIndex = move.getStartPosition().getRow()-1;
+            int startPosColIndex = move.getStartPosition().getColumn()-1;
+            ChessPiece tmp = this.gameBoardPieceStorage[startPosRowIndex][startPosColIndex];
+            this.gameBoardPieceStorage[startPosRowIndex][startPosColIndex] = null;
+
+            int endPosRowIndex = move.getEndPosition().getRow()-1;
+            int endPosColIndex = move.getEndPosition().getColumn()-1;
+            this.gameBoardPieceStorage[endPosRowIndex][endPosColIndex] = tmp;
+        } else { throw new InvalidMoveException("That is an invalid move.");}
     }
 
     /**
@@ -96,7 +115,8 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+        this.gameBoard = board;
+        this.gameBoardPieceStorage = this.gameBoard.getBoard();
     }
 
     /**
@@ -105,6 +125,6 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        throw new RuntimeException("Not implemented");
+        return this.gameBoard;
     }
 }
