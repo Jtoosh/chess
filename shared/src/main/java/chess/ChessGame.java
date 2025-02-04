@@ -13,6 +13,8 @@ public class ChessGame {
     private TeamColor turnTeam;
     private ChessBoard gameBoard;
     private ChessPiece[][] gameBoardPieceStorage;
+    private ChessPosition whiteKingPosition = new ChessPosition(1, 5);
+    private ChessPosition blackKingPosition = new ChessPosition(8, 5);
     public ChessGame() {
         this.turnTeam = TeamColor.WHITE;
         setBoard(new ChessBoard());
@@ -85,6 +87,23 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        if (teamColor == TeamColor.BLACK){
+            for (int row = 0; row <= 7; row++){
+                for (int col = 0; col <= 7; col++){
+                    if (this.gameBoardPieceStorage[row][col].getTeamColor() == TeamColor.BLACK){ continue;}
+                    else{
+                        Collection<ChessMove> thisPieceMoves = this.gameBoardPieceStorage[row][col].pieceMoves(this.gameBoard, new ChessPosition(row+1, col +1),);
+                        for (ChessMove move : thisPieceMoves){
+                            if (move.getEndPosition() == this.blackKingPosition){
+                                return false;
+                            }
+                        }
+                    }
+
+                }
+            }
+            return false;
+        }
         throw new RuntimeException("Not implemented");
     }
 
