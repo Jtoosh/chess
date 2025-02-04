@@ -281,10 +281,10 @@ When an exception is never caught, a _stack trace_ is given. This is a list of a
 
 - The `Collection` interface is the built-in method for implementing some common data structures in Java.
 - Here is a chart that shows the inheritance of various types:
-    ![Collection inheritance chart](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9780135404522/files/html/images/collection-interfaces.jpg)
+  ![Collection inheritance chart](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9780135404522/files/html/images/collection-interfaces.jpg)
 - [This doc](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html) shows the methods in the Collection interface.
 - A useful method that the book mentions:
-    > the method `Collections.nCopies(n, o)` returns a `List` object with `n` copies of the object `o`. That object “cheats” in that it doesn’t actually store `n` copies but, when you ask about any one of them, returns `o`.
+  > the method `Collections.nCopies(n, o)` returns a `List` object with `n` copies of the object `o`. That object “cheats” in that it doesn’t actually store `n` copies but, when you ask about any one of them, returns `o`.
 - This is an example of one of the many useful methods of the `Collections` utility class, whose methods operate on any `Collection` object. [Here](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html) is a link to the doc for this class.
 
 **Lists:**
@@ -463,10 +463,53 @@ Software design has 3 primary goals, to create systems that: **1.** work and sat
 **Top Level Design** involves making a few non-exhaustive diagrams that outline the fundamental pieces of the software, to maintain a clear vision of the desired end product for the team.
 
 1. **Design is inherently iterative**
-  There is a natural and effective loop of designing, implementing, and testing. Each step leads to an fuels the next. It doesn't work to design everything before doing any implementation, and niether does trying to implement without doing any designing. The best pattern to follow is to move naturally between both several times.
+   There is a natural and effective loop of designing, implementing, and testing. Each step leads to an fuels the next. It doesn't work to design everything before doing any implementation, and niether does trying to implement without doing any designing. The best pattern to follow is to move naturally between both several times.
 2. **Abstraction**
-  Abstraction is one of the tools for dealing with complexity. Programming languages provide low-level classes for dealing with simpler tasks. Handling complex tasks in terms of just these built-in, low level classes would carry too much cognitive burden, so the developer creates higher level classes out of these lower level ones, to abstract out details and make complex systems more understandable. Abstraction is created by using interfaces and classes. Abstractions generally represent real-world objects and their relationships and actions, whether those objects are internal to the program (`HttpServer`, `Database`), or a representation of an external object (`User`, `Car`, `Store`).
+   Abstraction is one of the tools for dealing with complexity. Programming languages provide low-level classes for dealing with simpler tasks. Handling complex tasks in terms of just these built-in, low level classes would carry too much cognitive burden, so the developer creates higher level classes out of these lower level ones, to abstract out details and make complex systems more understandable. Abstraction is created by using interfaces and classes. Abstractions generally represent real-world objects and their relationships and actions, whether those objects are internal to the program (`HttpServer`, `Database`), or a representation of an external object (`User`, `Car`, `Store`).
 3.
+
+### Lecture: File I/O
+
+Spiritual thought: Prof. Wilkerson had a friend and member of his ward that had some heavy questions about polygamy. His friend took a doubtful approach, was exposed to false information online, and discounted his existing faith because of faith he didn't yet have. He left the church and Prof. Wilkerson had to cut off contact with him.
+
+Prof. Wilkerson decided to find these answers, using a faithful approach. He started by studying the whole of the triple combination, focusing on anything about polygamy. Then he read just about every faithful and informed publication about polygamy. This was what he referred to as a faithful approach. It is important to note that he didn't doubt his existing faith in the process. It is also important to note that he didn't get an answer any of his questions for 1.5 years. After 3.5 years he got about 4/5 answers, but even now he doesn't have all of the answers, but he still has a strong testimony.
+
+**I/O**
+There are 4 main ways to read/write files:
+
+1. Streams: read or write a file or other souce of bytes, sequentially
+2. `Scanner` class: tokenize data, read/write 1 token at a time
+3. `Files` class: read, copy, create entire files
+4. `RandomAccessFile` class: creates a file pointer to read/write to or from any point of a file.
+
+**`File` class**
+Used to create, delete, or check existence of a file.
+`File file = new File("user/myDoc.txt");`, `file.createNewFile();`, `file.delete();`
+
+[_Java I/O Streams_](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html)
+This is the most common way to handle I/O. Data can be _binary formatted_ or _text formatted_.
+Included the [InputStream](https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/io/InputStream.html) and [OutputStream](https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/io/OutputStream.html) interfaces, and a host of implementing classes like `FileInputStream`, `URLConnection.getInputStream()`, and others.
+I'll need to fact check, but I believe `Reader` and `Writer` are other implemeting classes, but I'll need to check. In any case, `Reader`s and `Writer`s are for I/O of characters/text formatted data.
+There is a 1-1 correspondence between `InputStream` implementing classes and `OutputStream` implementing classes, having a matching type for each one.
+
+Different Stream objects can be linked together to manipulate data during the entire read/write process. A `FileInputStream` can be connected immediately to a `GZIPInputStream` so compressed files can be read in and decompressed all together, and compressed and written out all together. These input and output streams with different features are called **Filter Input Streams** and **Filter Output Streams**. These are created by creating an instance of a `InputStream` or `OutputStream` implementing class, then passing that instance into the constructor for one of these Filter Streams.
+
+A standard in I/O is to use `BufferedInputStream` instances, instead of a basic `FileInputStream`. This is because a `BufferedInputStream` will go to the file/byte source, and grab a chunk of bytes at a time, storing them in an array. When all of the stored bytes are read in, the stream will grab another chunk. This prevents having to read from the file an excessive ammount.
+
+A note for `BufferedOutputStream` is that if _the last group of bytes to be written out_ is less than the size of storage in the `OutputStream`'s array, it may not get written. To flush out the leftout bytes, either **1**. close the `BufferedOutputStream` object, or **2**. call the `.flush()` method on the `BufferedOutputStream` object.
+
+`DataStream` objects are useful for writing binary-formatted data in certain data types, like floats, ints, longs, etc.
+
+Streams can be converted into `Reader`s and `Writer`s using the `InputStreamReader` and `OutputStreamWriter` classes.
+
+[_Scanner_](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
+Tokenize the data and read one token at a time.
+Read from a File, InputStream, or a Reader.
+Getting the read in data works similar to an iterator. The method `.hasNext()` returns a boolean if the end of file has been reached or not, and `.next()` returns the next token.
+Whitespace characters are the default delimiters, but custom delimiters can be passed in as a regex string to the `use.Delimiter()` method. The delimiter defines how the input source is tokenized.
+
+[_Files_](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html)
+This method writeds an entire file into a List.
 
 ## Project Notes
 
@@ -488,7 +531,7 @@ Software design has 3 primary goals, to create systems that: **1.** work and sat
 - Something that helped with abstraction was learning this technique: When the body of a loop is the same and the only thing that differs is direction of iteration in 2 different uses, abstract the loop body into a method, and pass in the iterator variable as a parameter. Then just have the loop body be calling that abstracted method.
 
 **Phase 0 Retrospective**
-So, I finished up Phase 0 on the due date, and got 100%. I ran the code quality check as well, just out of curiousity, and got 70%, which I'm very satisfied with, since we haven't lectured on that yet, and I'm not graded on it for this phase. The details said I did well with _Naming_, _Code Decompisition_, and _Package Structure*, but need to improve on _Code readability_. That checks out, to be honest. Some of the conditional statements that I used are pretty unpleasant to the eye.
+So, I finished up Phase 0 on the due date, and got 100%. I ran the code quality check as well, just out of curiousity, and got 70%, which I'm very satisfied with, since we haven't lectured on that yet, and I'm not graded on it for this phase. The details said I did well with _Naming_, _Code Decompisition_, and _Package Structure\*, but need to improve on \_Code readability_. That checks out, to be honest. Some of the conditional statements that I used are pretty unpleasant to the eye.
 
 I want to start this new practice that I just thought of, which is documenting/journalling a short retrospective of my experience with the project. I think I'll outline the biggest obstacle(s) and how I overcame them, and also what helped me out during the project.
 
