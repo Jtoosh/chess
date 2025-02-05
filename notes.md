@@ -542,3 +542,8 @@ I want to start this new practice that I just thought of, which is documenting/j
 The **Javadoc from Oracle** also proved pretty helpful and comprehensive. Something else that helped was "lurking", per se, in **the Slack channel**, and reading up on threads from TAs and fellow students who had similar ideas, thoughts, and questions as me.
 
 ### Phase 1 Notes
+
+As I was wrangling with copy constructors and such for copying the `ChessBoard` for checking game status, I discovered the `System.arraycopy()` method. It takes 5 parameters: `src`: the source array, `srcPos`: the starting position in the src array, `dest`: the destination array, `destPost`: the starting position in the destination array, and `length`: the number of array elements to be copied.
+
+**_CURRENT STATE_**
+I believe I have copying and checking moves down, but my current issue is that the tests often set up in a non-default situation, so the king positions are not correct, so the game status is not being evaluated correctly.

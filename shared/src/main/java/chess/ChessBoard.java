@@ -9,10 +9,19 @@ import java.util.Objects;
  * Note: You can add to this class, but you may not alter
  * signature of the existing methods.
  */
-public class ChessBoard {
+public class ChessBoard{
     private ChessPiece[][] board;
     public ChessBoard() {
         this.board = new ChessPiece[8][8];
+    }
+
+
+    public ChessBoard(ChessBoard boardToCopy){
+        ChessPiece [][] cloneBoard = new ChessPiece[8][8];
+        for (int row = 0; row <= 7; row++){
+            System.arraycopy(boardToCopy.board[row], 0, cloneBoard[row], 0, 8);
+        }
+        this.board = cloneBoard;
     }
 
     /**
@@ -82,4 +91,6 @@ public class ChessBoard {
     public int hashCode() {
         return Arrays.deepHashCode(board);
     }
+
+
 }

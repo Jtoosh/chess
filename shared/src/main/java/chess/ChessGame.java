@@ -45,6 +45,22 @@ public class ChessGame {
         BLACK
     }
 
+    private void editPieceStorage(ChessMove move, ChessPiece[][] boardStorage){
+        int startPosRowIndex = move.getStartPosition().getRow()-1;
+        int startPosColIndex = move.getStartPosition().getColumn()-1;
+        ChessPiece tmp = boardStorage[startPosRowIndex][startPosColIndex];
+        boardStorage[startPosRowIndex][startPosColIndex] = null;
+
+        int endPosRowIndex = move.getEndPosition().getRow()-1;
+        int endPosColIndex = move.getEndPosition().getColumn()-1;
+        boardStorage[endPosRowIndex][endPosColIndex] = tmp;
+        if (tmp.getPieceType() == ChessPiece.PieceType.KING && tmp.getTeamColor()==TeamColor.WHITE){
+            this.whiteKingPosition = move.getEndPosition();
+        } else{
+            this.blackKingPosition = move.getEndPosition();
+        }
+    }
+
     /**
      * Gets a valid moves for a piece at the given location
      *
@@ -56,6 +72,11 @@ public class ChessGame {
         ChessPiece pieceToValidate = this.gameBoardPieceStorage[startPosition.getRow()-1][startPosition.getColumn()-1];
         Collection<ChessMove> movesToValidate = pieceToValidate.pieceMoves(this.gameBoard, startPosition);
         for (ChessMove move : movesToValidate){
+            ChessPiece[][] gameBoardPieceStorageCopy = new ChessBoard(this.gameBoard).getBoard();
+            editPieceStorage(move, gameBoardPieceStorageCopy);
+            if (inCheckLoopBody(pieceToValidate.getTeamColor(), gameBoardPieceStorageCopy)){
+                movesToValidate.remove(move);
+            }
             System.out.println("Party time (once I finish coding this)");
         }
         return movesToValidate;
@@ -69,14 +90,7 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         if (validMoves(move.getStartPosition()).contains(move)){
-            int startPosRowIndex = move.getStartPosition().getRow()-1;
-            int startPosColIndex = move.getStartPosition().getColumn()-1;
-            ChessPiece tmp = this.gameBoardPieceStorage[startPosRowIndex][startPosColIndex];
-            this.gameBoardPieceStorage[startPosRowIndex][startPosColIndex] = null;
-
-            int endPosRowIndex = move.getEndPosition().getRow()-1;
-            int endPosColIndex = move.getEndPosition().getColumn()-1;
-            this.gameBoardPieceStorage[endPosRowIndex][endPosColIndex] = tmp;
+           editPieceStorage(move, this.gameBoardPieceStorage);
         } else { throw new InvalidMoveException("That is an invalid move.");}
     }
 
@@ -88,23 +102,30 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         if (teamColor == TeamColor.BLACK){
-            for (int row = 0; row <= 7; row++){
-                for (int col = 0; col <= 7; col++){
-                    if (this.gameBoardPieceStorage[row][col].getTeamColor() == TeamColor.BLACK){ continue;}
-                    else{
-                        Collection<ChessMove> thisPieceMoves = this.gameBoardPieceStorage[row][col].pieceMoves(this.gameBoard, new ChessPosition(row+1, col +1),);
-                        for (ChessMove move : thisPieceMoves){
-                            if (move.getEndPosition() == this.blackKingPosition){
-                                return false;
-                            }
+            return inCheckLoopBody(TeamColor.BLACK, this.gameBoardPieceStorage);
+        } else {
+            return inCheckLoopBody(TeamColor.WHITE, this.gameBoardPieceStorage);
+        }
+
+    }
+
+    private boolean inCheckLoopBody (TeamColor teamColor, ChessPiece[][] boardStorage){
+        ChessPosition teamKingPosition = (teamColor == TeamColor.WHITE) ? this.whiteKingPosition : this.blackKingPosition;
+        for (int row = 0; row <= 7; row++){
+            for (int col = 0; col <= 7; col++){
+                if (boardStorage[row][col] == null){ continue;}
+                if (boardStorage[row][col].getTeamColor() != teamColor){
+                    Collection<ChessMove> thisPieceMoves = boardStorage[row][col].pieceMoves(this.gameBoard, new ChessPosition(row+1, col +1));
+                    for (ChessMove move : thisPieceMoves){
+
+                        if (move.getEndPosition() == teamKingPosition){
+                            return true;
                         }
                     }
-
                 }
             }
-            return false;
         }
-        throw new RuntimeException("Not implemented");
+        return false;
     }
 
     /**
