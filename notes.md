@@ -314,7 +314,14 @@ When an exception is never caught, a _stack trace_ is given. This is a list of a
   2. A HashMap hashes the keys, which is efficient but traversal visits the entries in an unpredictable order.
   3. A LinkedHashMap traverses entries in in insertion order.
   4. A ConcurrentHashMap allows safe concurrent updates
--
+
+### JSON Reading
+
+JSON is handled in Java using Google's open-source `GSON` library. To create a JSON string, you must create a `gson` object, which is done using the `GsonBuilder` object. Simply call `new GsonBuilder();` and then to create the string, just use the `.create()` method on the GsonBuilder object. The `.setPrettyPrinting()` method makes the JSON string more readable.
+
+To create a `gson` object for parsing, just create a new `gson` object, and then use the `gson.fromJson()` method with the needed arguments.
+
+The main methods used are the `.fromJson(jsonString, classType)` and `.toJson(object)` methods, which are used for deserialization and serialization, respectively.
 
 ## Class Notes
 
@@ -511,6 +518,35 @@ Whitespace characters are the default delimiters, but custom delimiters can be p
 [_Files_](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html)
 This method writeds an entire file into a List.
 
+### Lecture: JSON and Serialization, Phase 2
+
+Questions for phase 1:
+When checking for CheckMate: First check if the king is in Check. Then get all of the moves for all of your pieces, and iteratively perform all of them and if just 1 gets out of check, then return false.
+
+There are three main ways to get out of check: **1** capture the threatening pass, **2** block the threatening piece's path, or **3** move the king out of danger.
+
+**Structure of JSON Docs**
+Objects are delimited by `{...}`, and arrays by `[...]`.
+
+Most languages provide built-in JSON parsers, so I don't have to make my own.
+The 3 Major types of parses:
+
+1. DOM Parsers
+  - Convert the JSON text into a DOM tree, then traverse the tree to extract the data wanted
+
+2.Stream Parsers
+  - Tokenizers that return one token at a time from the JSON data file
+
+3.Serializers / Deserializers
+  - Use a libarays to convert JSON to Java Objects, and vice versa
+  - Gson and Jackson are popular choices
+
+Using `.class` returns a `Class Object` which is an object describing the structure of the attached class. This is called Java reflection.
+
+The `@SerializedName("STRING")` annotation can be used before an object field to provide what the name of that field's key will be in the JSON. document.
+
+Certain aspects of each JSON property can be controlled, such as decimal point lengths. This is done using a variety of tools, but an essential is the `.registerTypeAdapter()`
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -547,3 +583,9 @@ As I was wrangling with copy constructors and such for copying the `ChessBoard` 
 
 **_CURRENT STATE_**
 I believe I have copying and checking moves down, but my current issue is that the tests often set up in a non-default situation, so the king positions are not correct, so the game status is not being evaluated correctly.
+
+### Phase 2 Notes
+
+I can only get 0, 50, or 100 on this phase. If I get a 50 on the first submit, I have 1 week to adjust, resubmit, and get up to 100.
+
+I need to read and understand the phase 3 spec to do phase 2 effectively.
