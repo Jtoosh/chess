@@ -532,14 +532,12 @@ Most languages provide built-in JSON parsers, so I don't have to make my own.
 The 3 Major types of parses:
 
 1. DOM Parsers
-  - Convert the JSON text into a DOM tree, then traverse the tree to extract the data wanted
-
-2.Stream Parsers
-  - Tokenizers that return one token at a time from the JSON data file
-
-3.Serializers / Deserializers
-  - Use a libarays to convert JSON to Java Objects, and vice versa
-  - Gson and Jackson are popular choices
+   - Convert the JSON text into a DOM tree, then traverse the tree to extract the data wanted
+2. Stream Parsers
+   - Tokenizers that return one token at a time from the JSON data file
+3. Serializers / Deserializers
+   - Use a libraries to convert JSON to Java Objects, and vice versa
+   - Gson and Jackson are popular choices
 
 Using `.class` returns a `Class Object` which is an object describing the structure of the attached class. This is called Java reflection.
 
@@ -580,6 +578,8 @@ The **Javadoc from Oracle** also proved pretty helpful and comprehensive. Someth
 ### Phase 1 Notes
 
 As I was wrangling with copy constructors and such for copying the `ChessBoard` for checking game status, I discovered the `System.arraycopy()` method. It takes 5 parameters: `src`: the source array, `srcPos`: the starting position in the src array, `dest`: the destination array, `destPost`: the starting position in the destination array, and `length`: the number of array elements to be copied.
+
+Okay, one bug that I found was that my method for looping through the board and checking the opposite team's pieces to see if the king was in their possible moves (indicating the opponent being in check), called `inCheckLoopBody` was that I was calling piece moves on the unmodified field `board` not the copy of the board with the move made. Making this change worked, but now I'm getting concurrent modification exceptions in my for-each loop, because I'm trying to remove the invalid, check-inducing moves before the iterator working in the for-each loop is finished. So, I'll need to find another approach for that part.
 
 **_CURRENT STATE_**
 I believe I have copying and checking moves down, but my current issue is that the tests often set up in a non-default situation, so the king positions are not correct, so the game status is not being evaluated correctly.

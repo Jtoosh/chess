@@ -49,6 +49,10 @@ public class ChessBoard{
         return board;
     }
 
+    public void setBoard (ChessPiece[][] newBoard){
+        this.board = newBoard;
+    }
+
     private void resetHelper (ChessGame.TeamColor teamColor){
         int firstRow = (teamColor == ChessGame.TeamColor.WHITE) ? 0 : 7;
         int secondRow = (teamColor == ChessGame.TeamColor.WHITE) ? 1 : 6;

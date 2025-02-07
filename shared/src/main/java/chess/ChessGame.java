@@ -12,7 +12,6 @@ import java.util.Collection;
 public class ChessGame {
     private TeamColor turnTeam;
     private ChessBoard gameBoard;
-    private ChessPiece[][] gameBoardPieceStorage;
     private ChessPosition whiteKingPosition = new ChessPosition(1, 5);
     private ChessPosition blackKingPosition = new ChessPosition(8, 5);
     public ChessGame() {
@@ -45,7 +44,7 @@ public class ChessGame {
         BLACK
     }
 
-    private void editPieceStorage(ChessMove move, ChessPiece[][] boardStorage){
+    private ChessPiece[][] editPieceStorage(ChessMove move, ChessPiece[][] boardStorage){
         int startPosRowIndex = move.getStartPosition().getRow()-1;
         int startPosColIndex = move.getStartPosition().getColumn()-1;
         ChessPiece tmp = boardStorage[startPosRowIndex][startPosColIndex];
@@ -59,6 +58,7 @@ public class ChessGame {
         } else{
             this.blackKingPosition = move.getEndPosition();
         }
+        return boardStorage;
     }
 
     /**
@@ -69,16 +69,18 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        ChessPiece pieceToValidate = this.gameBoardPieceStorage[startPosition.getRow()-1][startPosition.getColumn()-1];
+        ChessPiece pieceToValidate = this.gameBoard.getBoard()[startPosition.getRow()-1][startPosition.getColumn()-1];
         Collection<ChessMove> movesToValidate = pieceToValidate.pieceMoves(this.gameBoard, startPosition);
+        Collection <ChessMove> movesToRemove = new ArrayList<>();
         for (ChessMove move : movesToValidate){
-            ChessPiece[][] gameBoardPieceStorageCopy = new ChessBoard(this.gameBoard).getBoard();
-            editPieceStorage(move, gameBoardPieceStorageCopy);
-            if (inCheckLoopBody(pieceToValidate.getTeamColor(), gameBoardPieceStorageCopy)){
-                movesToValidate.remove(move);
+            ChessBoard gameBoardCopy = new ChessBoard(this.gameBoard);
+            gameBoardCopy.setBoard(editPieceStorage(move, gameBoardCopy.getBoard()));
+            if (inCheckLoopBody(pieceToValidate.getTeamColor(), gameBoardCopy)){
+                movesToRemove.add(move);
             }
             System.out.println("Party time (once I finish coding this)");
         }
+        movesToValidate.removeAll(movesToRemove);
         return movesToValidate;
     }
 
@@ -89,8 +91,13 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        ChessPiece pieceToMove = this.gameBoard.getBoard()[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
+        if (pieceToMove == null){throw new InvalidMoveException("There is no piece to move at " + move.getStartPosition().toString());}
+
+        if (pieceToMove.getTeamColor() != this.turnTeam){throw new InvalidMoveException("It is not this piece's turn. It is " + this.turnTeam.toString() + "'s turn");}
+
         if (validMoves(move.getStartPosition()).contains(move)){
-           editPieceStorage(move, this.gameBoardPieceStorage);
+           this.gameBoard.setBoard(editPieceStorage(move, this.gameBoard.getBoard()));
         } else { throw new InvalidMoveException("That is an invalid move.");}
     }
 
@@ -102,23 +109,23 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         if (teamColor == TeamColor.BLACK){
-            return inCheckLoopBody(TeamColor.BLACK, this.gameBoardPieceStorage);
+            return inCheckLoopBody(TeamColor.BLACK, this.gameBoard);
         } else {
-            return inCheckLoopBody(TeamColor.WHITE, this.gameBoardPieceStorage);
+            return inCheckLoopBody(TeamColor.WHITE, this.gameBoard);
         }
 
     }
 
-    private boolean inCheckLoopBody (TeamColor teamColor, ChessPiece[][] boardStorage){
-        ChessPosition teamKingPosition = (teamColor == TeamColor.WHITE) ? this.whiteKingPosition : this.blackKingPosition;
+    private boolean inCheckLoopBody (TeamColor teamColor, ChessBoard board){
+        ChessPiece[][] boardStorage = board.getBoard();
         for (int row = 0; row <= 7; row++){
             for (int col = 0; col <= 7; col++){
                 if (boardStorage[row][col] == null){ continue;}
                 if (boardStorage[row][col].getTeamColor() != teamColor){
-                    Collection<ChessMove> thisPieceMoves = boardStorage[row][col].pieceMoves(this.gameBoard, new ChessPosition(row+1, col +1));
+                    Collection<ChessMove> thisPieceMoves = boardStorage[row][col].pieceMoves(board, new ChessPosition(row+1, col +1));
                     for (ChessMove move : thisPieceMoves){
-
-                        if (move.getEndPosition() == teamKingPosition){
+                        ChessPiece moveEndSquare = boardStorage[move.getEndPosition().getRow()-1][move.getEndPosition().getColumn()-1];
+                        if (moveEndSquare != null && moveEndSquare.getPieceType() == ChessPiece.PieceType.KING){
                             return true;
                         }
                     }
@@ -156,7 +163,6 @@ public class ChessGame {
      */
     public void setBoard(ChessBoard board) {
         this.gameBoard = board;
-        this.gameBoardPieceStorage = this.gameBoard.getBoard();
     }
 
     /**
