@@ -48,6 +48,9 @@ public class ChessGame {
         int startPosRowIndex = move.getStartPosition().getRow()-1;
         int startPosColIndex = move.getStartPosition().getColumn()-1;
         ChessPiece tmp = boardStorage[startPosRowIndex][startPosColIndex];
+        if (move.getPromotionPiece() != null){
+            tmp = new ChessPiece(boardStorage[startPosRowIndex][startPosColIndex].getTeamColor(), move.getPromotionPiece());
+        }
         boardStorage[startPosRowIndex][startPosColIndex] = null;
 
         int endPosRowIndex = move.getEndPosition().getRow()-1;
@@ -99,6 +102,7 @@ public class ChessGame {
         if (validMoves(move.getStartPosition()).contains(move)){
            this.gameBoard.setBoard(editPieceStorage(move, this.gameBoard.getBoard()));
         } else { throw new InvalidMoveException("That is an invalid move.");}
+        this.turnTeam = (this.turnTeam == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
     }
 
     /**
@@ -142,6 +146,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+        if (!isInCheck(teamColor)){ return false;}
         throw new RuntimeException("Not implemented");
     }
 
