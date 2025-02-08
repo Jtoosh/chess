@@ -131,25 +131,7 @@ public class ChessGame {
         return false;
     }
 
-    /**
-     * Determines if the given team is in checkmate
-     *
-     * @param teamColor which team to check for checkmate
-     * @return True if the specified team is in checkmate
-     */
-    public boolean isInCheckmate(TeamColor teamColor) {
-        if (!isInCheck(teamColor)){ return false;}
-      return isInStalemate(teamColor);
-    }
-
-    /**
-     * Determines if the given team is in stalemate, which here is defined as having
-     * no valid moves
-     *
-     * @param teamColor which team to check for stalemate
-     * @return True if the specified team is in stalemate, otherwise false
-     */
-    public boolean isInStalemate(TeamColor teamColor) {
+    public boolean stalemateLoop(TeamColor teamColor) {
         ChessPiece[][] boardStorage =this.gameBoard.getBoard();
         for (int row = 0; row <= 7; row++){
             for (int col = 0; col <= 7; col++){
@@ -162,6 +144,29 @@ public class ChessGame {
             }
         }
         return true;
+    }
+
+    /**
+     * Determines if the given team is in checkmate
+     *
+     * @param teamColor which team to check for checkmate
+     * @return True if the specified team is in checkmate
+     */
+    public boolean isInCheckmate(TeamColor teamColor) {
+        if (!isInCheck(teamColor)){ return false;}
+      return stalemateLoop(teamColor);
+    }
+
+    /**
+     * Determines if the given team is in stalemate, which here is defined as having
+     * no valid moves
+     *
+     * @param teamColor which team to check for stalemate
+     * @return True if the specified team is in stalemate, otherwise false
+     */
+    public boolean isInStalemate(TeamColor teamColor) {
+        if (isInCheck(teamColor)) {return false;}
+        else {return stalemateLoop(teamColor);}
     }
 
     /**
