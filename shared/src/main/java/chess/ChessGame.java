@@ -12,8 +12,6 @@ import java.util.Collection;
 public class ChessGame {
     private TeamColor turnTeam;
     private ChessBoard gameBoard;
-    private ChessPosition whiteKingPosition = new ChessPosition(1, 5);
-    private ChessPosition blackKingPosition = new ChessPosition(8, 5);
     public ChessGame() {
         this.turnTeam = TeamColor.WHITE;
         setBoard(new ChessBoard());
@@ -56,11 +54,6 @@ public class ChessGame {
         int endPosRowIndex = move.getEndPosition().getRow()-1;
         int endPosColIndex = move.getEndPosition().getColumn()-1;
         boardStorage[endPosRowIndex][endPosColIndex] = tmp;
-        if (tmp.getPieceType() == ChessPiece.PieceType.KING && tmp.getTeamColor()==TeamColor.WHITE){
-            this.whiteKingPosition = move.getEndPosition();
-        } else{
-            this.blackKingPosition = move.getEndPosition();
-        }
         return boardStorage;
     }
 
@@ -81,7 +74,6 @@ public class ChessGame {
             if (inCheckLoopBody(pieceToValidate.getTeamColor(), gameBoardCopy)){
                 movesToRemove.add(move);
             }
-            System.out.println("Party time (once I finish coding this)");
         }
         movesToValidate.removeAll(movesToRemove);
         return movesToValidate;
@@ -147,7 +139,7 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamColor) {
         if (!isInCheck(teamColor)){ return false;}
-        throw new RuntimeException("Not implemented");
+      return isInStalemate(teamColor);
     }
 
     /**
@@ -158,7 +150,18 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece[][] boardStorage =this.gameBoard.getBoard();
+        for (int row = 0; row <= 7; row++){
+            for (int col = 0; col <= 7; col++){
+                if (boardStorage[row][col] == null){continue;}
+                if (boardStorage[row][col].getTeamColor() != teamColor) {continue;}
+                else{
+                    Collection<ChessMove> thisPieceValidMoves = this.validMoves(new ChessPosition(row+1, col+1));
+                    if (!thisPieceValidMoves.isEmpty()) {return false;}
+                }
+            }
+        }
+        return true;
     }
 
     /**
