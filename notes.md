@@ -579,6 +579,30 @@ To create a lambda expression and pass it as a parameter or store it as a variab
 
 The way that lambda expression work behind the scenes, is that the JVM looks at the type assigned to the parameter or variable containing the lambda expression, and will make an in-memory instantiation of that class, and the code given in the block part of the lambda expression will be the implementation of the functional interfaces abstract method.
 
+### Lecture: HTTP and cURL
+
+**Brief notes on Phase 2**: The main part of phase 3 is the web api, which contains the 7 endpoints that the console client will call to register, login, and play chess games.
+The design principles that phase 3 focuses on are **SRP**, **DRY/Avoid duplication**, and **Encapsulation/Information hiding**. One way to avoid duplication is to make a separate class for shared methods, and import and call to it. To encapsulate well, _keep class fields private_, and also name classes, methods, and variables in a way that highlights role, function, or behavior, not implementation. Example: use `ClassRoll` instead of `StudentLinkedList`. The reasoning here is because if you decide to refactor and use a different data structure, you have to worry about renaming as well to keep things clear and readable.
+
+The main components of the server are: **Model classes**, **Data access object classes (DAO classes)**, **Service classes**, **HTTP handlers**, **Request/response classes**.
+These are all broken down well in the _Phase 3 spec_.
+
+**HTTP**:
+A device's IP address is not enough to connect to a specific program, as one device can have thousands of programs running. So, _ports_ are assigned to each network connected program on a device. So, using an IP address and a port, you can connect to a specific program on a device.
+
+**cURL**:
+This is a terminal command which is an essential tool for testing HTTP endpoints. Here is a list of some of the parameters to use with `curl`:
+
+| Parameter | Description |
+|-----------|-------------|
+| `-X` | Specifies the request method to use (e.g., GET, POST, PUT, DELETE). |
+| `-H` | Adds a header to the request (e.g., `-H "Content-Type: application/json"`). |
+| `-d` | Sends the specified data in a POST request (e.g., `-d '{"key":"value"}'`). |
+| `--data-binary` | Sends binary data in a POST request. |
+| `-o` | Writes the output to a file instead of stdout (e.g., `-o output.txt`). |
+| `-D` | Writes the protocol headers to the specified file. |
+| `-v` | Makes the operation more talkative (verbose). |
+
 ## Project Notes
 
 ### Phase 0 Notes
