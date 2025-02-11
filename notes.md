@@ -545,6 +545,40 @@ The `@SerializedName("STRING")` annotation can be used before an object field to
 
 Certain aspects of each JSON property can be controlled, such as decimal point lengths. This is done using a variety of tools, but an essential is the `.registerTypeAdapter()`
 
+### Lecture: Java Generics
+
+Generic programming is a way to make classes and methods functional for a wider range of classes and data types. Simply stated, a **generic class** is a class that takes in type parameters. These are given in the class signature, inside of angle brackets, like this: `public class Entry<K, V>`. Then, when instantiating the generic class, the type parameters are filled in the type declaration (the type parameters can be filled in the constructor too, but is not necesary.) Example: `Entry<String, Integer> entry1 = new Entry<> ("JST", 2234);`.
+
+Notice that the `Integer` wrapper class was used. Generics cannot use primitives as valid type parameters.
+
+Generic methods work similarly. A method can be made generic inside of generic or regular classes. The type parameters are given in between the method modifiers and the return type in the signature. Example: `public static <T> void swap (T[] array, int i, int j){` Unlike generic classes, the type being used for certain type parameters does not need to be stated at all, and can be inferred. If a `Date` array is declared and then passed as an argument to this `swap` method, the compiler can infer that `Date` is being given for the type parameter `T`.
+
+When type parameters are employed in methods and classes, they can be utilized anywhere that a type declaration would be used, such as field instantiation, method signatures, and parameter specification.
+
+Type parameters in generics can also use bounds and wildcards. To add a bound, simply include it in the angle brackets, such as `<T extends Person>` or `<T implements Collection>`. A type parameter can have unlimited interface bounds, but only one class bound, and it must come first in the list of bounds, like this: `<T extends Person & implements Collection>`
+
+Wildcards are used to accept the passed in class and any of its subclasses or parent classes. `public static <? super T>` would accept `T` and any parent classes, while `public static <? extends T>` would accept `T` and any subclasses.
+
+### Lecture: Lambda Expressions
+
+A **lambda expression** is a block of code that can be stored, passed as a parameter, and executed later. They were introduced in Java 8. The syntax is the following:
+
+```java
+Predicate<String> strPred = s -> s.length() > 10;
+
+Array.sort(string array, (String value1, String value2) -> {
+  Integer.compare(value1.length() - value2.length())
+});
+```
+
+Each lambda expression starts with a _parameter list_, which is comma-separated and placed inside of parenthesis. Next, the arrow token, `->` is required, followed by either a single line expression to execute, or a code block placed inside `{}` braces. If only a single parameter is used, parenthesis can be omitted. If no parameters are used, empty parenthesis are required.
+
+Type annotations are not needed on lambda expressions, because they can be inferred by the JVM.
+
+To create a lambda expression and pass it as a parameter or store it as a variable, it must be stored or passed as a data type that implements a **functional interface**. A functional interface is one that has **exactly** one abstract method. It can have any number of static or default methods, but there must be exactly one abstract method to be a functional interface, and for lambda expressions to be created with that type.
+
+The way that lambda expression work behind the scenes, is that the JVM looks at the type assigned to the parameter or variable containing the lambda expression, and will make an in-memory instantiation of that class, and the code given in the block part of the lambda expression will be the implementation of the functional interfaces abstract method.
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -583,6 +617,13 @@ Okay, one bug that I found was that my method for looping through the board and 
 
 **_CURRENT STATE_**
 I believe I have copying and checking moves down, but my current issue is that the tests often set up in a non-default situation, so the king positions are not correct, so the game status is not being evaluated correctly.
+
+**Phase 1 Retrospective**
+Phase 1 I was also able to get done on the due date, and I got an identical score as Phase 0: 100% on passoff tests, and 3/4 on the code quality check, with the same code quality check, _Code Readability_, being the one that I failed.
+
+**Biggest Obstacle:** I think the biggest obstacle in this phase was starting on my implementation of `isInCheck` and then recognizing that it wouldn't work with the passoff tests. I think this highlights the upside of TDD, and exposes a lack of its implmentation on my part for this phase. Going forward, **I can work in a more explicit TDD manner**.
+
+**Biggest Helps:** I think what helped me most was **The spec on the rules of Chess**, and **taking some time to ponder and deeply understand the rules of Chess**. This helped me make realizations that made the design/implementation stages easier. I think that this highlights the good effects and, really, the **necessity of studying and understanding well the product's behavior**.
 
 ### Phase 2 Notes
 
