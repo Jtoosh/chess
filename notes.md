@@ -603,6 +603,50 @@ This is a terminal command which is an essential tool for testing HTTP endpoints
 | `-D` | Writes the protocol headers to the specified file. |
 | `-v` | Makes the operation more talkative (verbose). |
 
+### Lecture Notes: Web API and Phase 3
+
+There is a prebuilt web application for testing the endpoints. Place it in `server/resources`
+
+**Spark Java**:
+This is an open-source framework for making Java web apps and APIs. It creates routes and handles HTTP requests, and uses Java Lambdas to do so.
+
+>Note: Spark Java is no longer maintained, as a fork of it, called **Java Link** has become more popular, so use that in the future.
+
+Simply import Spark, and then it uses methods for the HTTP methods. For example, to handle a GET request, use `Spark.get(<path>, <handler function>)`.
+Passing in the handler functions can be done in a few ways:
+
+- Most related to JavaScript, and the standard is to use a lambda.
+- Another method is a method reference. This uses syntax `className::methodName`
+- A third major option is making a routing class and calling the method.
+
+The `Spark.port()` method can set the port number.
+
+When matching routes, they are matched in the order that they are defined.
+
+**Named parameters:** `Spark.get("/get/:name)`, with "hello/james", the request.params('name') would return 'james'.
+**Useful Req and Response methods:** Requests: `body()`, `headers()`, `header(specific header)`. Response: `body(...)` (sets response body), `status(code)` (sets the status code).
+**Serving Static files:** This is done adding about 1 line of code, `Spark.staticFiles.location("filepath")`. This _must be done before mapping/creating routes_ to correctly serve the files. I need to study a bit more how the location and file path gets mapped.
+**Custom 404 Pages:** Use `Spark.NotFound(html)` to override the browser's default 404 page.
+**Filters:** These provide a way to execute common code for multiple routes, either before or after the route handler. This is done using `before(handler function)` or `after(handler function)`. Filters can also receive an optional parameter of a pattern to restrict where the filter applies.
+**Making Spark Java available:** 3 main ways:
+
+1. Add the dependency from File / Project Structure
+2. Create a Maven project, add the dependency to the pom.xml file.
+3. Create a Gradle project, add the dependency to your build.gradle file.
+
+**Dr. Wilkerson's Server Implementation Tips:**
+
+1. Pass Java request objects from handlers to Service classes, which should return Java response objects. Deserialize and serialize.
+2. It is best to create a separate class with fromJson and toJson methods instead of calling them from gson directly.
+3. Instantiate each class one layer above, ie, instantiate all of the service classes in the Server as fields, and instantiate the DAOs in each service as fields, to avoid making a new object with every single request.
+4. Avoid code duplication using **inheritance**. Areas of potential code duplication:
+   - HTTP Handler classes
+   - Service classes
+   - Request/Result classes
+   - DAO classes
+5. Use the `java.util.UUID` package, and the `.randomUUID()` method to make authTokens.
+6. Get test app to work **first**
+
 ## Project Notes
 
 ### Phase 0 Notes
