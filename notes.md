@@ -705,3 +705,5 @@ Here is my personal TA feedback:
 - On clearData, because UserData, GameData, and AuthData are going to be on 3 separate SQL tables, it is accurate, and better practice, to have 3 separate clear methods, and call each of those, rather than one method that tries to clear all three.
 
 ### Phase 3 Notes
+
+- I had to figure out how the `.class` attribute works. My understanding now is that it only exists on Classes, and is a sort of static field that can be referenced. To get the class of an object, use `.getClass()`. To store/access a Class itself (I _**think**_), use the `Class<classname>` syntax. So `Class<T> genericClass` is a sort of static object of that class that can be passed around.
