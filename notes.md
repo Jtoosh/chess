@@ -547,7 +547,7 @@ Certain aspects of each JSON property can be controlled, such as decimal point l
 
 ### Lecture: Java Generics
 
-Generic programming is a way to make classes and methods functional for a wider range of classes and data types. Simply stated, a **generic class** is a class that takes in type parameters. These are given in the class signature, inside of angle brackets, like this: `public class Entry<K, V>`. Then, when instantiating the generic class, the type parameters are filled in the type declaration (the type parameters can be filled in the constructor too, but is not necesary.) Example: `Entry<String, Integer> entry1 = new Entry<> ("JST", 2234);`.
+Generic programming is a way to make classes and methods functional for a wider range of classes and data types. Simply stated, a **generic class** is a class that takes in type parameters. These are given in the class signature, inside of angle brackets, like this: `public class Entry<K, V>`. Then, when instantiating the generic class, the type parameters are filled in the type declaration (the type parameters can be filled in the constructor too, but is not neccesary.) Example: `Entry<String, Integer> entry1 = new Entry<> ("JST", 2234);`.
 
 Notice that the `Integer` wrapper class was used. Generics cannot use primitives as valid type parameters.
 
@@ -698,3 +698,10 @@ Phase 1 I was also able to get done on the due date, and I got an identical scor
 I can only get 0, 50, or 100 on this phase. If I get a 50 on the first submit, I have 1 week to adjust, resubmit, and get up to 100.
 
 I need to read and understand the phase 3 spec to do phase 2 effectively.
+
+Here is my personal TA feedback:
+
+- authToken is passed to Logout, ListGames, CreateGame, and JoinGame but never used. Make sure to include it in my diagram. It may seem redundant, but I need to make clear that each of those needs to verify authentication to be performed.
+- On clearData, because UserData, GameData, and AuthData are going to be on 3 separate SQL tables, it is accurate, and better practice, to have 3 separate clear methods, and call each of those, rather than one method that tries to clear all three.
+
+### Phase 3 Notes
