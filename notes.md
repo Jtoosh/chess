@@ -707,3 +707,5 @@ Here is my personal TA feedback:
 ### Phase 3 Notes
 
 - I had to figure out how the `.class` attribute works. My understanding now is that it only exists on Classes, and is a sort of static field that can be referenced. To get the class of an object, use `.getClass()`. To store/access a Class itself (I _**think**_), use the `Class<classname>` syntax. So `Class<T> genericClass` is a sort of static object of that class that can be passed around.
+
+STATUS 2.19 - Working on how to create, store, and use lambda handlers correctly.
