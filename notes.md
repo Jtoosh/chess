@@ -647,6 +647,23 @@ When matching routes, they are matched in the order that they are defined.
 5. Use the `java.util.UUID` package, and the `.randomUUID()` method to make authTokens.
 6. Get test app to work **first**
 
+## Lecture: Code Quality
+
+The autograder for code quality represents the minimum bar. I should try and do more than what the autograder demands.
+
+Here are the **principles of clean code** covered in class. They cover some of the biggest sources of bugs in programming:
+
+- **Strong Cohesion**: The behavior of each method should be very related and not overextended. "Cohesion" describes the relevance and relatedness of the code behavior. Good method naming helps determine cohesion.
+- **Good method names**: Methods should be named with a **verb or verb phrase**, avoiding meaningless verbs like `handleInput()`. If the method returns a value, naming the method after the return value is also acceptable. **Avoid "stuttering".** Ex: `person.copyPerson(Person person)` vs `person.clone()`. Methods should be able to have their behavior well-described in the name, but avoid too much abbreviating (make the names long enough).
+- **Reasons for method creation**: There are 3 main ones: 1. **Decomposition of algorithms.** Make complex algorithms easy or almost trivial to understand by breaking into digestible pieces. _Often times doing this well makes code self-commenting_ 2. **Avoiding code duplication.** Packaging often-used code so that it can simply be reused instead of copied. And 3. **Avoiding deep nesting.** Deep nesting is classified as any of the keywords that create separate code blocks (`if`, `for`, `switch`, etc.). Avoid more than ~3 levels of nesting. I ran into this in phase 0 and 1, making submethods and calling them inside different nesting levels is much better.
+- **Parameter Usage**: Ensure to use all parameters. The more parameters, the more confusing the method. The fewer the better.
+- **Initializing Data**: Initialize variables when they are declared. Declare and initialize as close to where data is used as is reasonable. Check for the need to re-initialize.
+- **Code Layout**: Good layout helps make the logical structure of a program clearer. One of the keys is to **pick a style, and stick to it consistently**. First follow your organization's style, and if there isn't one, then follow the conventional style of the language.
+  - _Whitespace_: Use whitespace to enhance readability. Put **methods** into "paragraphs", separated by 1 or more blank lines. In **expressions**, place spaces _around_ operands, operators, and parenthesis. Put separate **conditions** on new lines (even better is to put complex conditionals, or even just parts of them, into submethods). In parameters, place a space _between_ each one. Only declare one variable per line, don't do multiple assignment.
+  - _Variable Names_: They shouldn't be too long, or too short. They should be noun words. There are some cases where short variable names are okay, such as loop iterators, temporary variables, or naturally short names (x, y, z for coordinates). Variables and methods are generally in lower CamelCase, and Class names in Upper CamelCase. And constants are generally all caps, with underscores for spaces.
+  - _Creating Readable Names_: Avoid words that are commonly misspelled. Avoid characters that are hard to distinguish, like 1 and l. Avoid using "Dr. Seuss" naming.
+  - _Abbreviation guidelines_: Only abbreviate when you have to. When you have to: remove non-leading vowels, or just use the first few letters of a word. Don't just remove one letter. Create names that can be pronounced, and be consistent.
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -707,5 +724,6 @@ Here is my personal TA feedback:
 ### Phase 3 Notes
 
 - I had to figure out how the `.class` attribute works. My understanding now is that it only exists on Classes, and is a sort of static field that can be referenced. To get the class of an object, use `.getClass()`. To store/access a Class itself (I _**think**_), use the `Class<classname>` syntax. So `Class<T> genericClass` is a sort of static object of that class that can be passed around.
+- As I wrote my service test for the `clear` endpoint, I found it hard to instantiate the `ClearService` in a state that could be tested in isolation, rather than instantiating the full, end-to-end process. I wonder if I might need a `testUtilities` class like the passoff tests for the past phases. Maybe what Dr. Wilkerson mentioned about static utility classes could help.
 
 STATUS 2.19 - Working on how to create, store, and use lambda handlers correctly.
