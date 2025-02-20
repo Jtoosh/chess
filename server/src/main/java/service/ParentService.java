@@ -10,6 +10,16 @@ public class ParentService {
   private AuthDAO authDataAccess = new MemoryAuthDAO();
   private GameDAO gameDataAccess = new MemoryGameDAO();
 
+  public ParentService(){
+
+  }
+
+  public ParentService(UserDAO userDao, AuthDAO authDao, GameDAO gameDao){
+    this.userDataAccess = userDao;
+    this.authDataAccess = authDao;
+    this.gameDataAccess = gameDao;
+  }
+
   //Getters
   public UserData getUser(String username){
     return userDataAccess.getUserData(username);

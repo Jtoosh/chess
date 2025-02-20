@@ -4,9 +4,10 @@ import chess.ChessGame;
 import model.GameData;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class MemoryGameDAO implements GameDAO{
-  private ArrayList<GameData> gameList;
+  private ArrayList<GameData> gameList = new ArrayList<>();
 
   @Override
   public GameData getGameData(int gameID) {
@@ -19,12 +20,19 @@ public class MemoryGameDAO implements GameDAO{
   }
 
   @Override
+  public Collection<GameData> getGameList() {
+    return gameList;
+  }
+
+  @Override
   public void createGame() {
     this.gameList.add(new GameData(10, "WhitePlaceholder", "BlackPlaceholder", "Game1", new ChessGame()));
   }
 
   @Override
   public void clearGameData() {
-    this.gameList.clear();
+    if (this.gameList != null){
+      this.gameList.clear();
+    }
   }
 }

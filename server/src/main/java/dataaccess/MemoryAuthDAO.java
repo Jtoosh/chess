@@ -3,10 +3,12 @@ package dataaccess;
 import model.AuthData;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO{
-  private ArrayList<AuthData> authDataList;
+  private ArrayList<AuthData> authDataList = new ArrayList<>();
 
   @Override
   public AuthData getAuthData(String username) {
@@ -24,7 +26,14 @@ public class MemoryAuthDAO implements AuthDAO{
   }
 
   @Override
+  public Collection<AuthData> getAuthDataList() {
+    return this.authDataList;
+  }
+
+  @Override
   public void clearAuthData() {
-  this.authDataList.clear();
+    if (this.authDataList != null){
+      this.authDataList.clear();
+    }
   }
 }
