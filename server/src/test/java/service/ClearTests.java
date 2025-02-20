@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ClearTests {
-  ClearService clearService = new ClearService();
-  GameDAO gameDAO = new MemoryGameDAO();
-  AuthDAO authDAO = new MemoryAuthDAO();
-  UserDAO userDAO = new MemoryUserDAO();
+class ClearTests {
+  ClearService clearService=new ClearService();
+  GameDAO gameDAO=new MemoryGameDAO();
+  AuthDAO authDAO=new MemoryAuthDAO();
+  UserDAO userDAO=new MemoryUserDAO();
 
   //Comparison arrays
   GameData[] gameExpected = {};
@@ -21,16 +21,16 @@ public class ClearTests {
   UserData[] userExpected = {};
 
   @BeforeEach
-  public void setup(){
+  public void setup() {
 
     gameDAO.createGame();
     userDAO.createUser("jtoosh", "jtoosh111", "email.com");
     authDAO.createAuth("jtoosh");
-    this.clearService = new ClearService(userDAO, authDAO, gameDAO);
+    this.clearService=new ClearService(userDAO, authDAO, gameDAO);
   }
 
   @Test
-  public void ClearTest(){
+  void ClearTest() {
     Assertions.assertNotNull(gameDAO.getGameList());
     Assertions.assertNotNull(userDAO.getUserList());
     Assertions.assertNotNull(authDAO.getAuthDataList());
