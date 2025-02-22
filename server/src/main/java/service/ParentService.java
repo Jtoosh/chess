@@ -34,6 +34,13 @@ public class ParentService {
   }
 
   //Setters/Create methods
+  public void createUser(String username, String password, String email){
+    userDataAccess.createUser(username, password, email);
+  }
+
+  public void createAuthData (String username){
+    authDataAccess.createAuth(username);
+  }
 
   //Clear methods
   public void clearUserData(){

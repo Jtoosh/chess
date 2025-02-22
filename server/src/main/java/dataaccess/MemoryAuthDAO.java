@@ -4,7 +4,6 @@ import model.AuthData;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO{
@@ -12,6 +11,7 @@ public class MemoryAuthDAO implements AuthDAO{
 
   @Override
   public AuthData getAuthData(String username) {
+    System.out.println(authDataList);
     for (AuthData authData : this.authDataList){
       if (authData.username().equals(username)){
         return authData;
@@ -22,7 +22,7 @@ public class MemoryAuthDAO implements AuthDAO{
 
   @Override
   public void createAuth(String username) {
-    this.authDataList.add(new AuthData(username, UUID.randomUUID().toString()));
+    this.authDataList.add(new AuthData(UUID.randomUUID().toString(), username));
   }
 
   @Override
