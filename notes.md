@@ -664,6 +664,19 @@ Here are the **principles of clean code** covered in class. They cover some of t
   - _Creating Readable Names_: Avoid words that are commonly misspelled. Avoid characters that are hard to distinguish, like 1 and l. Avoid using "Dr. Seuss" naming.
   - _Abbreviation guidelines_: Only abbreviate when you have to. When you have to: remove non-leading vowels, or just use the first few letters of a word. Don't just remove one letter. Create names that can be pronounced, and be consistent.
 
+### Lecture: Unit Tests and Code Coverage
+
+Unit tests should be **fast**, **cohesive**, **independent**, and **unique**. _Independent_ means that I should be able to run any test in any arbitrary order, without any form of dependency on another test.
+
+In Phase 4 when I write Database unit tests, I'll have a couple other things to make sure I'm aware of.
+
+1. I'll need to put the database driver JAR file on the class path (I don't know what this means yet).
+2. I'll need to start each test with a pristine database, so that the **independence** characteristic can uphold. This can be done by re-creating tables before each test, or having set-up methods "rollback" the effects of previous tests.
+
+**Code Coverage**
+The main point here is that I need 90% statement coverage on my code.
+Another good guideline is to have 100% branch coverage on non-IDE generated code.
+
 ## Project Notes
 
 ### Phase 0 Notes
