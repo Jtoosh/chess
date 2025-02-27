@@ -42,6 +42,12 @@ public class ParentService {
     authDataAccess.createAuth(username);
   }
 
+
+  //Delete methods
+  public void deleteAuth(String authToken){
+    authDataAccess.deleteAuth(authToken);
+  }
+
   //Clear methods
   public void clearUserData(){
     userDataAccess.clearUserData();

@@ -677,6 +677,73 @@ In Phase 4 when I write Database unit tests, I'll have a couple other things to 
 The main point here is that I need 90% statement coverage on my code.
 Another good guideline is to have 100% branch coverage on non-IDE generated code.
 
+### Lecture: Relational Databases and SQL
+
+#### The Relational Model
+
+- Relational DBs are managed using Database Management Systems (DBMS). In Java, this is JDBC.
+- DBMS can have a couple of different models: Embedded or Client/Server. The **Embedded model** means that the database and corresponding files are stored locally, and programs will interact with DBs via local file access. In a **Client/Server model**, the program will make a network request to a DB server, which then accesses the local files of the DB.
+- There are also 2 methods of interaction with a DB. **Interactive** and **Programmatic**. Interactive involves an end user utilizing a management console to directly query a DB. Programmatic involves a program using a DB API and DB driver to access a DB.
+
+**Keys:**
+
+- A **key** in a relational database is how relationships are represented.
+- A **primary key** is an attribute in a table that is used to uniquely represent each row.
+- A **foreign key** is an attribute in a different table, T1, that stores the values of the primary keys of another table, T2.
+  - Example: the `Book` table has attributes for `Category` and `Genre`. The values in each of these constitute the primary keys in the `Category` and `Genre` tables.
+- A primary key whose significance only exists in the context of the DB is called an **artificial primary key**. Conversely, a primary key that holds significance in the world outside of the DB context is called a **natural key**.
+- When a table does not have any one attribute that adequately acts as a primary key, but 2 or more attributes, that when observed together can uniquely identify each row, create a **composite primary key** or **compound primary key**.
+
+**Modeling Object Relationships:**
+
+There are 3 main types of relationships seen in RDBs, and the way to store keys for these relationships differ:
+
+- One-to-One Relationships
+  - Examples: Husband and Wife. Each husband has one wife, each wife has one husband. Person and SSN. Each SSN assigned to exactly 1 person, each person has 1 SSN.
+  - In these relationships, store a foreign key of the other in each table. The `Person` table will have a `ssn` attribute, and the `SSN` table will have a `person` attribute
+- One-to-Many Relationships
+  - Examples: Categories. Each category has exactly one parent, but each category may have many child categories. States and counties. Each state has many counties, but each county belongs to exactly one state.
+  - How to model: Rather than having an attribute for the "many" in the one table, to save space, just have a foreign key for the "one" in the table for the many. The `State` table _won't_ have a `counties` attribute, but each row(object) in the `Counties` table will have a `state` or `state_id` attribute.
+- Many-to-Many Relationships
+  - Examples: Books and Club Members. Each book may be read/owned by many club members, and each club member may own/have read many books.
+  - How to model: Have a **join table** (also called an _intersecting entity_) that contains 2 attributes, one that represents the primary key of each table in the relationship.
+  - Make a `Books_Read` table, which has a `member` attribute, and a `book` attribute.
+
+**Diagrams:**
+
+Entity Relationship Diagrams (ERDs) and UML class diagrams are the 2 de facto diagrams for modeling DB behavior. In an ERD, many is represented with a "crow's foot" and one is respresented with a straight line. Optionality in ERDs is shown with a circle next to the crows foot or line.
+
+**Modeling Inheritance Relationships:**
+
+3 main methods of doing this:
+
+- Horizontal Paritioning: Each concrete class is mapped to its own table, with a foreign key referencing its parent.
+- Vertical Partitioning: Each class, abstract or concrete, is mapped to a table, with a foreign key referencing its parent.
+- Unification: Each subclass is mapped to the same table.
+
+Each method has its advantages and disadvantages.
+
+#### Structured Query Language (SQL)
+
+Used to create, delete, query tables, rows, and columns.
+
+**Data Types:**
+Copy from slides later
+
+- `CHAR(n)` and `VARCHAR(n)` for character strings: `CHAR(n)` is used for fixed-length strings, where `n` specifies the length, while `VARCHAR(n)` is used for variable-length strings, up to length `n`.
+- `TEXT` for large character strings: Used for storing large amounts of text data.
+- `INT` and `INTEGER` for whole numbers: Used for storing whole numbers.
+- `SMALLINT` for smaller whole numbers: Used for storing smaller range whole numbers.
+- `BIGINT` for large whole numbers: Used for storing larger range whole numbers.
+- `FLOAT` and `REAL` for floating-point numbers: Used for storing single-precision floating-point numbers.
+- `DOUBLE` for double-precision floating-point numbers: Used for storing double-precision floating-point numbers.
+- `DECIMAL` and `NUMERIC` for fixed-point numbers: Used for storing exact numeric values with fixed precision and scale.
+- `DATE` for dates: Used for storing calendar dates.
+- `TIME` for time of day: Used for storing time values.
+- `TIMESTAMP` for date and time: Used for storing date and time values.
+- `BOOLEAN` for true/false values: Used for storing boolean values.
+- `BLOB` for binary large objects: Used for storing binary data, such as images or multimedia files.
+
 ## Project Notes
 
 ### Phase 0 Notes

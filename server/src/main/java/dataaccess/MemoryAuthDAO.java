@@ -10,10 +10,9 @@ public class MemoryAuthDAO implements AuthDAO{
   private ArrayList<AuthData> authDataList = new ArrayList<>();
 
   @Override
-  public AuthData getAuthData(String username) {
-    System.out.println(authDataList);
+  public AuthData getAuthData(String stringToFind) {
     for (AuthData authData : this.authDataList){
-      if (authData.username().equals(username)){
+      if (authData.username().equals(stringToFind) || authData.authToken().equals(stringToFind)){
         return authData;
       }
     }
@@ -28,6 +27,11 @@ public class MemoryAuthDAO implements AuthDAO{
   @Override
   public Collection<AuthData> getAuthDataList() {
     return this.authDataList;
+  }
+
+  @Override
+  public void deleteAuth(String authTokenParameter) {
+    this.authDataList.removeIf(authData -> authData.authToken().equals(authTokenParameter));
   }
 
   @Override
