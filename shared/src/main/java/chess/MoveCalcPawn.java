@@ -6,11 +6,11 @@ import java.util.Collection;
 public class MoveCalcPawn implements MoveCalcPiece{
     private final ChessPiece[][] board;
     private final ChessPosition pawnPosition;
-    private ArrayList<ChessMove> validMovePositions;
+    private final ArrayList<ChessMove> validMovePositions;
     private final int pawnRow;
     private final int pawnCol;
     private final ChessGame.TeamColor pawnColor;
-    private boolean initialMove;
+    private final boolean initialMove;
     private final int direction;
 
     public MoveCalcPawn(ChessBoard board, ChessPosition position){

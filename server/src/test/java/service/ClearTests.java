@@ -9,18 +9,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import response.ClearResponse;
 
 class ClearTests {
   ClearService clearService=new ClearService();
-  GameDAO gameDAO=new MemoryGameDAO();
-  AuthDAO authDAO=new MemoryAuthDAO();
-  UserDAO userDAO=new MemoryUserDAO();
+  final GameDAO gameDAO=new MemoryGameDAO();
+  final AuthDAO authDAO=new MemoryAuthDAO();
+  final UserDAO userDAO=new MemoryUserDAO();
 
   //Comparison arrays
-  GameData[] gameExpected = {};
-  AuthData[] authExpected = {};
-  UserData[] userExpected = {};
+  final GameData[] gameExpected = {};
+  final AuthData[] authExpected = {};
+  final UserData[] userExpected = {};
 
   @BeforeEach
   public void setup() {

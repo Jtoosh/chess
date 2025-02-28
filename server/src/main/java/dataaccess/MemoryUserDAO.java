@@ -4,10 +4,9 @@ import model.UserData;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class MemoryUserDAO implements UserDAO{
-  private ArrayList<UserData> userData = new ArrayList<>();
+  private final ArrayList<UserData> userData = new ArrayList<>();
 
   @Override
   public UserData getUserData(String username) {

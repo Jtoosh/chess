@@ -6,9 +6,9 @@ import java.util.Collection;
 public class MoveCalcKing implements MoveCalcPiece{
     private final ChessPiece[][] board;
     private final ChessPosition kingPosition;
-    private ArrayList<ChessMove> validMovePositions;
-    private int kingRow;
-    private int kingCol;
+    private final ArrayList<ChessMove> validMovePositions;
+    private final int kingRow;
+    private final int kingCol;
 
     public MoveCalcKing (ChessBoard board, ChessPosition position){
         this.board = board.getBoard();

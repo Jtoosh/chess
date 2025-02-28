@@ -8,9 +8,9 @@ import service.*;
 import spark.*;
 
 public class Server {
-    private UserDAO userDataAccess = new MemoryUserDAO();
-    private AuthDAO authDataAccess = new MemoryAuthDAO();
-    private GameDAO gameDataAccess = new MemoryGameDAO();
+    private final UserDAO userDataAccess = new MemoryUserDAO();
+    private final AuthDAO authDataAccess = new MemoryAuthDAO();
+    private final GameDAO gameDataAccess = new MemoryGameDAO();
 
     private final Serializer serializer = new Serializer();
     private final ClearService clearService = new ClearService();

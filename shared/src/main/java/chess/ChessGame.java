@@ -136,7 +136,8 @@ public class ChessGame {
         for (int row = 0; row <= 7; row++){
             for (int col = 0; col <= 7; col++){
                 if (boardStorage[row][col] == null){continue;}
-                if (boardStorage[row][col].getTeamColor() != teamColor) {continue;}
+                if (boardStorage[row][col].getTeamColor() != teamColor) {
+                }
                 else{
                     Collection<ChessMove> thisPieceValidMoves = this.validMoves(new ChessPosition(row+1, col+1));
                     if (!thisPieceValidMoves.isEmpty()) {return false;}

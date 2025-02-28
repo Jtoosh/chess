@@ -17,17 +17,16 @@ import java.util.UUID;
 
 public class LogoutTests {
   AuthData authExpected;
-  UserData userExpected = new UserData("jtoosh","jtoosh111", "email.com");
-  AuthDAO authDAO = new MemoryAuthDAO();
+  private final AuthDAO authDAO = new MemoryAuthDAO();
   LogoutService logoutService;
 
   @BeforeEach
   void setup(){
     UserDAO userDAO = new MemoryUserDAO();
-    userDAO.createUser(userExpected.username(), userExpected.password(), userExpected.email());
+    userDAO.createUser("jtoosh","jtoosh111", "email.com");
 
-    authDAO.createAuth(userExpected.username());
-    authExpected = authDAO.getAuthData(userExpected.username());
+    authDAO.createAuth("jtoosh");
+    authExpected = authDAO.getAuthData("jtoosh");
     logoutService = new LogoutService(authDAO);
   }
 

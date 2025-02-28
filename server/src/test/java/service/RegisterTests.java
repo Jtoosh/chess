@@ -12,7 +12,7 @@ import response.RegisterResponse;
 
 class RegisterTests {
   AuthData[] authExpected = {};
-  UserData userExpected = new UserData("jtoosh","jtoosh111", "email.com");
+  final UserData userExpected = new UserData("jtoosh","jtoosh111", "email.com");
 
   @Test
   @DisplayName("Register Service, Positive")

@@ -5,13 +5,13 @@ import model.AuthData;
 import java.util.Collection;
 
 public interface AuthDAO {
-  public AuthData getAuthData(String Username);
+  AuthData getAuthData(String Username);
 
-  public void createAuth(String username);
+  void createAuth(String username);
 
-  public Collection<AuthData> getAuthDataList();
+  Collection<AuthData> getAuthDataList();
 
-  public void deleteAuth(String authToken);
+  void deleteAuth(String authToken);
 
-  public void clearAuthData();
+  void clearAuthData();
 }

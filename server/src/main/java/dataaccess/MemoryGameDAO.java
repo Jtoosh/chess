@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class MemoryGameDAO implements GameDAO{
-  private ArrayList<GameData> gameList = new ArrayList<>();
+  private final ArrayList<GameData> gameList = new ArrayList<>();
 
   @Override
   public GameData getGameData(int gameID) {

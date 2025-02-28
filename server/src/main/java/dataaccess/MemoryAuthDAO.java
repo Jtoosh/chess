@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 public class MemoryAuthDAO implements AuthDAO{
-  private ArrayList<AuthData> authDataList = new ArrayList<>();
+  private final ArrayList<AuthData> authDataList = new ArrayList<>();
 
   @Override
   public AuthData getAuthData(String stringToFind) {

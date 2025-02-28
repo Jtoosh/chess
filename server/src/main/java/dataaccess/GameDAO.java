@@ -5,8 +5,8 @@ import model.GameData;
 import java.util.Collection;
 
 public interface GameDAO {
-  public GameData getGameData(int gameID);
-  public Collection<GameData> getGameList();
-  public void createGame();
-  public void clearGameData();
+  GameData getGameData(int gameID);
+  Collection<GameData> getGameList();
+  void createGame();
+  void clearGameData();
 }

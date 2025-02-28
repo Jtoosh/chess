@@ -2,8 +2,6 @@ package server;
 
 import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
-
 public class Serializer {
   public String toJSON(Object o){
       var gson = new Gson();

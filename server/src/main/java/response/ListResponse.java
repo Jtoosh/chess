@@ -1,4 +1,6 @@
 package response;
 
-public record ListResponse() {
+import model.GameData;
+
+public record ListResponse(GameData[] games) {
 }

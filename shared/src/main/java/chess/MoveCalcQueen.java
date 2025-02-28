@@ -6,7 +6,7 @@ import java.util.Collection;
 public class MoveCalcQueen implements MoveCalcPiece{
     private final ChessPiece[][] board;
     private final ChessPosition queenPosition;
-    private ArrayList validMovesCollection;
+    private final ArrayList validMovesCollection;
     private final int queenRowIndex;
     private final int queenColIndex;
 

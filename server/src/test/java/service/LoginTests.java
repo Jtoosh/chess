@@ -6,14 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import request.LoginRequest;
 import response.LoginResponse;
 
 public class LoginTests {
   AuthData authExpected;
-  UserData userExpected = new UserData("jtoosh","jtoosh111", "email.com");
+  final UserData userExpected = new UserData("jtoosh","jtoosh111", "email.com");
   LoginService loginService;
 
   @BeforeEach
