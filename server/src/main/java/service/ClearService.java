@@ -3,6 +3,7 @@ package service;
 import dataaccess.AuthDAO;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
+import response.ClearResponse;
 
 public class ClearService extends ParentService{
 
@@ -14,10 +15,13 @@ public class ClearService extends ParentService{
     super(userDAO, authDAO, gameDAO);
   }
 
-  public void clear(){
-
-    super.clearUserData();
-    super.clearAuthData();
-    super.clearGameData();
+  public ClearResponse clear() {
+    if (super.clearUserData() &&
+            super.clearAuthData() &&
+            super.clearGameData()) {
+      return new ClearResponse(200, null);
+    } else {
+      return new ClearResponse(500, "Error: DB already empty");
+    }
   }
 }

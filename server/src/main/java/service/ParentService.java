@@ -49,15 +49,15 @@ public class ParentService {
   }
 
   //Clear methods
-  public void clearUserData(){
-    userDataAccess.clearUserData();
+  public boolean clearUserData(){
+    return userDataAccess.clearUserData();
   }
 
-  public void clearAuthData(){
-    authDataAccess.clearAuthData();
+  public boolean clearAuthData(){
+    return authDataAccess.clearAuthData();
   }
 
-  public void clearGameData(){
-    gameDataAccess.clearGameData();
+  public boolean clearGameData(){
+    return gameDataAccess.clearGameData();
   }
 }

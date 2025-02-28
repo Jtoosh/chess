@@ -15,7 +15,7 @@ class RegisterTests {
   final UserData userExpected = new UserData("jtoosh","jtoosh111", "email.com");
 
   @Test
-  @DisplayName("Register Service, Positive")
+  @DisplayName("Positive")
   void RegisterTest(){
 
     RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
@@ -32,7 +32,7 @@ class RegisterTests {
   }
 
   @Test
-  @DisplayName("Register Service, Negative: UsernameTaken")
+  @DisplayName("Negative: Username Taken")
   void UsernameTakenTest(){
     //Add initial user
     RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());

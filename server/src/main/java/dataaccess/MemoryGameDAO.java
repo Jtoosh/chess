@@ -30,9 +30,10 @@ public class MemoryGameDAO implements GameDAO{
   }
 
   @Override
-  public void clearGameData() {
-    if (this.gameList != null){
+  public boolean clearGameData() {
+    if (!this.gameList.isEmpty()){
       this.gameList.clear();
-    }
+      return true;
+    } else {return false;}
   }
 }

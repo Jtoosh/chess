@@ -27,8 +27,7 @@ public class Server {
         // Register your endpoints and handle exceptions here.
         //Clear Endpoint
         Spark.delete("/db", (req, res) ->{
-            clearService.clear();
-            ClearResponse response = new ClearResponse(200, null);
+            ClearResponse response = clearService.clear();
             res.status(response.statusCode());
             res.body("");
             if (response.errMsg() != null){

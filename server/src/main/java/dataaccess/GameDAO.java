@@ -8,5 +8,5 @@ public interface GameDAO {
   GameData getGameData(int gameID);
   Collection<GameData> getGameList();
   void createGame();
-  void clearGameData();
+  boolean clearGameData();
 }

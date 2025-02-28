@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import response.ClearResponse;
 
 class ClearTests {
   ClearService clearService=new ClearService();
@@ -31,7 +32,7 @@ class ClearTests {
   }
 
   @Test
-  @DisplayName("Clear Service, Positive Test")
+  @DisplayName("Positive Test")
   void ClearPositiveTest() {
     Assertions.assertNotNull(gameDAO.getGameList());
     Assertions.assertNotNull(userDAO.getUserList());
@@ -43,11 +44,12 @@ class ClearTests {
   }
 
   @Test
-  @DisplayName("Clear Service, Negative Test")
+  @DisplayName("Negative: Already cleared")
   void ClearNegativeTest(){
     clearService.clear();
     // Check that clear doesn't execute when db is already empty.
-    // ClearResponse response = clearService.clear();
-    // Assertions.assertEquals("Error: db already empty", response.errMsg);
+    ClearResponse response = clearService.clear();
+    Assertions.assertEquals(500, response.statusCode());
+    Assertions.assertEquals("Error: DB already empty", response.errMsg());
   }
 }
