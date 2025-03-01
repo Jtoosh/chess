@@ -744,6 +744,32 @@ Copy from slides later
 - `BOOLEAN` for true/false values: Used for storing boolean values.
 - `BLOB` for binary large objects: Used for storing binary data, such as images or multimedia files.
 
+**Creating tables**
+Delete restrict, update cascade, set default, null
+foreign key constraints, optional
+
+create and drop if exists
+
+**inserting and updating**
+insert into table (col names) values (csep values, same order)
+update table, set col = value, where clause
+w/o where clause chsnges are placed on ALL rows
+delete renoves entire rows, use where clause
+
+**querying**
+basic formst is SELECT FROM WHERE
+Select specifies cols, From soecifies table, where specifies row
+watch oyt for carresian prods
+
+AND can br used in where clause to avoud cart prod and ensure join
+inner join also iseful, INNER JOIN table ON cond
+
+transactions
+sometimes you need multiple statements to pass together or fail together
+default is each statement in sql is its own transaction
+use BEGIN TRANSACTION to start then COMMIT or ROLLBACK TRANSACTION 
+
+
 ## Project Notes
 
 ### Phase 0 Notes
