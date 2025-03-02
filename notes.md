@@ -744,11 +744,21 @@ Copy from slides later
 - `BOOLEAN` for true/false values: Used for storing boolean values.
 - `BLOB` for binary large objects: Used for storing binary data, such as images or multimedia files.
 
-**Creating tables**
-Delete restrict, update cascade, set default, null
-foreign key constraints, optional
+#### Creating and dropping tables
 
-create and drop if exists
+The command for creating tables is straightforward: `CREATE TABLE <table name> (fields)`
+Deleting a table is done using the `DROP` command, which has virtually identical syntax: `drop table <table name>`. You can also add conditional clauses like `if exists`
+
+When creating tables, you must specify the different columns of the table. When specifying the column you must include the name and data type, but can also include other useful modifiers like `not null`, which requires a value to be not null, or `auto_increment` which will automatically track and increment that value each time a row is added to the table.
+There are also modifiers to specify primary and foreign keys. To specify a column as the table's primary key, just use the keywords `primary key`. The syntax for specifying a foreign key is the following: `foreign key(<col name>) references <table>(<field of table>)`
+
+**Foreign key constraints**
+If foreign keys are not handled correctly, some problems can occur. For example, in the book club example, we have a table `members`, a table `books`, and a join table `books_read`. Imagine `memberID` is made as a foreign key in `books_read`, and is the primary key in `members`. If a member is deleted from `members` then there will be a number of rows in `books_read` that have a foreign key that relates to a row in `members` that no longer exists. This is referred to as an **orphaned foreign key**.
+Another issue can occur if the foreign key is updated in its primary key location, so `memberID` is updated in `members` to be something different, like `member_id`. Now all of the foreign keys in `books_read` are orphaned.
+
+Some configurations for foregin keys exist to help mitigate these bad effects. A foreign key specification can include `on update` and `on delete` clauses, followed by a number of modifiers like `restrict` (blocks the operation from happening), `cascade`(will propogate any changes to a primary key to foreign keys that reference it), `set null`, `set default`, and `no action`. The default behavior for a foreign key is `on update cascade on delete restrict`.
+
+A common method is to drop each table if it exists. This is common in scripts that set up databases, because SQL will throw an error if programmed to create a table that already exists, or drop a table that does not exist.
 
 **inserting and updating**
 insert into table (col names) values (csep values, same order)
@@ -768,7 +778,6 @@ transactions
 sometimes you need multiple statements to pass together or fail together
 default is each statement in sql is its own transaction
 use BEGIN TRANSACTION to start then COMMIT or ROLLBACK TRANSACTION 
-
 
 ## Project Notes
 
