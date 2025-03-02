@@ -777,7 +777,7 @@ inner join also iseful, INNER JOIN table ON cond
 transactions
 sometimes you need multiple statements to pass together or fail together
 default is each statement in sql is its own transaction
-use BEGIN TRANSACTION to start then COMMIT or ROLLBACK TRANSACTION 
+use BEGIN TRANSACTION to start then COMMIT or ROLLBACK TRANSACTION
 
 ## Project Notes
 

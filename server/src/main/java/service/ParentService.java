@@ -8,7 +8,7 @@ import model.UserData;
 public class ParentService {
   private UserDAO userDataAccess = new MemoryUserDAO();
   private AuthDAO authDataAccess = new MemoryAuthDAO();
-  private GameDAO gameDataAccess = new MemoryGameDAO();
+  protected GameDAO gameDataAccess = new MemoryGameDAO();
 
   public ParentService(){
 
@@ -25,8 +25,8 @@ public class ParentService {
     return userDataAccess.getUserData(username);
   }
 
-  public AuthData getAuthData(String username){
-    return authDataAccess.getAuthData(username);
+  public AuthData getAuthData(String stringToFind){
+    return authDataAccess.getAuthData(stringToFind);
   }
 
   public GameData getGameData(int gameID){

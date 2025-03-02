@@ -17,7 +17,7 @@ public class Server {
     private final RegisterService registerService = new RegisterService(userDataAccess, authDataAccess);
     private final LoginService loginService = new LoginService(userDataAccess, authDataAccess);
     private final LogoutService logoutService = new LogoutService(authDataAccess);
-
+    private final ListService listService = new ListService(authDataAccess, gameDataAccess);
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -31,7 +31,7 @@ public class Server {
             res.status(response.statusCode());
             res.body("");
             if (response.errMsg() != null){
-                res.body(response.errMsg());
+                res.body(serializer.toJSON(response.errMsg()));
             }
             return serializer.toJSON(res.body());
         });
@@ -64,6 +64,19 @@ public class Server {
                 res.body(response.errMsg());
             }
          return res.body();
+        });
+
+        //List Games endpoint
+        Spark.get("/game", (req, res) ->{
+            ListRequest listRequest = new ListRequest(req.headers("Authorization"));
+            ListResponse response = listService.listGames(listRequest);
+            res.status(response.statusCode());
+            if (response.errMsg() != null){
+                res.body(serializer.toJSON(response.errMsg()));
+            } else{
+                res.body(serializer.toJSON(response.games()));
+            }
+            return res.body();
         });
 
         //This line initializes the server and can be removed once you have a functioning endpoint 

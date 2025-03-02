@@ -2,5 +2,7 @@ package response;
 
 import model.GameData;
 
-public record ListResponse(GameData[] games) {
+import java.util.Collection;
+
+public record ListResponse(int statusCode, Collection<GameData> games, String errMsg) {
 }
