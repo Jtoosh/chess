@@ -39,30 +39,52 @@ public class Server {
         //Register Endpoint
         Spark.post("/user", (req, res) ->{
             RegisterRequest registerRequest = serializer.fromJSON(req.body(), RegisterRequest.class);
-            RegisterResponse response = registerService.register(registerRequest);
-            res.status(response.Statuscode());
+          RegisterResponse response =null;
+          try {
+            response=registerService.register(registerRequest);
+              res.status(200);
             res.body(serializer.toJSON(response));
+          } catch (AuthorizationException e) {
+            res.status(401);
+            res.body(serializer.toJSON(new ErrorResponse("Error: unauthorized")));
+          } catch (DataAccessException e){
+            res.status(403);
+            res.body(serializer.toJSON(new ErrorResponse("Error: already taken")));
+          }
+
             return res.body();
         });
 
         //Login Endpoint
         Spark.post("/session", (req, res) ->{
             LoginRequest loginRequest = serializer.fromJSON(req.body(), LoginRequest.class);
-            LoginResponse response = loginService.login(loginRequest);
-            res.status(response.statusCode());
+          LoginResponse response =null;
+          try {
+            response=loginService.login(loginRequest);
+            res.status(200);
             res.body(serializer.toJSON(response));
+          } catch (AuthorizationException e) {
+            res.status(401);
+            res.body(serializer.toJSON(new ErrorResponse("Error: unauthorized")));
+          } catch (DataAccessException e){
+            res.status(500);
+            res.body(serializer.toJSON(new ErrorResponse("Error: user not found")));
+          }
             return res.body();
         });
 
         //Logout endpoint
         Spark.delete("/session", (req, res) ->{
          LogoutRequest logoutRequest = new LogoutRequest(req.headers("Authorization"));
-         LogoutResponse response = logoutService.logout(logoutRequest);
-         res.status(response.statusCode());
-         res.body("");
-            if (response.errMsg() != null){
-                res.body(response.errMsg());
-            }
+          LogoutResponse response =null;
+          try {
+            response=logoutService.logout(logoutRequest);
+            res.status(200);
+            res.body(serializer.toJSON(response.errMsg()));
+          } catch (AuthorizationException e) {
+            res.status(401);
+            res.body(serializer.toJSON(new ErrorResponse("Error: unauthorized")));
+          }
          return res.body();
         });
 

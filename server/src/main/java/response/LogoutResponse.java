@@ -1,4 +1,4 @@
 package response;
 
-public record LogoutResponse(int statusCode, String errMsg) {
+public record LogoutResponse( String errMsg) {
 }

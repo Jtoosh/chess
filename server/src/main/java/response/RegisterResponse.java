@@ -1,4 +1,4 @@
 package response;
 
-public record RegisterResponse(int Statuscode, String username, String authToken, String errMsg) {
+public record RegisterResponse(String username, String authToken) {
 }

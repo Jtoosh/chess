@@ -1,9 +1,6 @@
 package service;
 
-import dataaccess.AuthDAO;
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryUserDAO;
-import dataaccess.UserDAO;
+import dataaccess.*;
 import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
@@ -36,7 +33,6 @@ public class LogoutTests {
     LogoutRequest request = new LogoutRequest(authExpected.authToken());
     LogoutResponse response = logoutService.logout(request);
 
-    Assertions.assertEquals(200, response.statusCode(), "Wrong status code, expected: 200");
     Assertions.assertNull(response.errMsg());
     Assertions.assertNull(authDAO.getAuthData(authExpected.authToken()));
   }
@@ -45,10 +41,6 @@ public class LogoutTests {
   @DisplayName("Negative: authToken not in db")
   void logoutTestAuthNotFound(){
     LogoutRequest request = new LogoutRequest(UUID.randomUUID().toString());
-    LogoutResponse response = logoutService.logout(request);
-
-    Assertions.assertEquals(401, response.statusCode());
-    Assertions.assertEquals("Error: provided authToken not found", response.errMsg());
-    Assertions.assertNotNull(authDAO.getAuthData(authExpected.authToken()));
+    Assertions.assertThrows(AuthorizationException.class, () -> logoutService.logout(request));
   }
 }

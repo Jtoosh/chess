@@ -1,5 +1,6 @@
 package service;
 
+import dataaccess.DataAccessException;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
 import model.AuthData;
@@ -16,7 +17,7 @@ class RegisterTests {
 
   @Test
   @DisplayName("Positive")
-  void RegisterTest(){
+  void RegisterTest() throws DataAccessException {
 
     RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
     RegisterRequest request = new RegisterRequest(userExpected.username(), userExpected.password(), userExpected.email());
@@ -33,15 +34,13 @@ class RegisterTests {
 
   @Test
   @DisplayName("Negative: Username Taken")
-  void UsernameTakenTest(){
+  void UsernameTakenTest() throws DataAccessException {
     //Add initial user
     RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
     RegisterRequest request = new RegisterRequest(userExpected.username(), userExpected.password(), userExpected.email());
     service.register(request);
 
     RegisterRequest request2 = new RegisterRequest(userExpected.username(), "jtoosh222", "other_email.com");
-    RegisterResponse response = service.register(request2);
-
-    Assertions.assertEquals("Error: already taken", response.errMsg(), "Error messages don't match");
+    Assertions.assertThrows(DataAccessException.class, ()-> service.register(request2));
   }
 }

@@ -841,4 +841,4 @@ Here is my personal TA feedback:
 - I had to figure out how the `.class` attribute works. My understanding now is that it only exists on Classes, and is a sort of static field that can be referenced. To get the class of an object, use `.getClass()`. To store/access a Class itself (I _**think**_), use the `Class<classname>` syntax. So `Class<T> genericClass` is a sort of static object of that class that can be passed around.
 - As I wrote my service test for the `clear` endpoint, I found it hard to instantiate the `ClearService` in a state that could be tested in isolation, rather than instantiating the full, end-to-end process. I wonder if I might need a `testUtilities` class like the passoff tests for the past phases. Maybe what Dr. Wilkerson mentioned about static utility classes could help.
 
-STATUS 2.19 - Working on how to create, store, and use lambda handlers correctly.
+STATUS 3.1 - I have finished 5/7 endpoints. I just need to implement 2 more, then run passoff testing and debug accordingly. I also want to see if I can implement inner classes for the Request and Response classes, to apply some of what I'm learning.

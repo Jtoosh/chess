@@ -1,6 +1,8 @@
 package service;
 
 import dataaccess.AuthDAO;
+import dataaccess.AuthorizationException;
+import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
@@ -13,17 +15,17 @@ public class LoginService extends ParentService{
     super(userDAO, authDAO, null);
   }
 
-  public LoginResponse login (LoginRequest request){
+  public LoginResponse login (LoginRequest request) throws DataAccessException {
     UserData user = getUser(request.username());
     if (user == null){
-      return new LoginResponse(500, null, null, "Error: user not found");
+      throw new DataAccessException("Error: user not found");
     }
     else if (!user.password().equals(request.password())){
-      return new LoginResponse(401, user.username(), null, "Error: unauthorized");
+      throw new AuthorizationException("Error: unauthorized");
     }
     else{
       AuthData userAuth = getAuthData(user.username());
-      return new LoginResponse(200, user.username(), userAuth.authToken(), null);
+      return new LoginResponse(user.username(), userAuth.authToken());
     }
   }
 }

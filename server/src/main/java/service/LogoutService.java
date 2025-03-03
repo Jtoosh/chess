@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.AuthDAO;
 
+import dataaccess.AuthorizationException;
 import model.AuthData;
 import request.LogoutRequest;
 import response.LogoutResponse;
@@ -13,11 +14,11 @@ public class LogoutService extends ParentService{
   public LogoutResponse logout (LogoutRequest request){
     AuthData userAuth = getAuthData(request.authToken());
     if (userAuth == null){
-      return new LogoutResponse(401, "Error: provided authToken not found");
+      throw new AuthorizationException("Error: unauthorized");
     }
     else{
       deleteAuth(request.authToken());
-      return new LogoutResponse(200, null);
+      return new LogoutResponse(null);
     }
   }
 }
