@@ -47,27 +47,38 @@ public interface MoveCalcPiece {
         }
     }
 
-    static void checkMovesRight (int colIndex, ChessPosition piecePosition, ChessPiece[][] board, Collection<ChessMove> validMovesCollection){
+    static void checkMovesRight (int colIndex,
+                                 ChessPosition piecePosition,
+                                 ChessPiece[][] board,
+                                 Collection<ChessMove> validMovesCollection){
         for (int i = (colIndex + 1); i <= 7; i++){
             boolean result = MoveCalcPiece.loopBody(piecePosition.getRow()-1, i, piecePosition, board, validMovesCollection);
             if (result) {break;}
         }
     }
 
-    static void checkMovesLeft (int colIndex, ChessPosition piecePosition, ChessPiece[][] board, Collection<ChessMove> validMovesCollection){
+    static void checkMovesLeft (int colIndex,
+                                ChessPosition piecePosition,
+                                ChessPiece[][] board,
+                                Collection<ChessMove> validMovesCollection){
         for (int i = (colIndex - 1); i >= 0; i--){
             boolean result = MoveCalcPiece.loopBody(piecePosition.getRow()-1, i, piecePosition, board, validMovesCollection);
             if (result) {break;}
         }
     }
 
-    static void checkMovesUpRight(int rowIndex, int colIndex, ChessPosition piecePosition, ChessPiece[][] board, Collection<ChessMove> validMovesCollection){
+    static void checkMovesUpRight(int rowIndex,
+                                  int colIndex,
+                                  ChessPosition piecePosition,
+                                  ChessPiece[][] board,
+                                  Collection<ChessMove> validMovesCollection)
+    {
         int rowOffset = 1;
         int colOffset = 1;
         while(rowOffset + rowIndex <= 7 && colOffset + colIndex <= 7){
-            rowIndex = rowIndex + rowOffset;
-            colIndex = rowIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, piecePosition, board, validMovesCollection);
+            int newRowIndex = rowIndex + rowOffset;
+            int newColIndex = rowIndex + colOffset;
+            boolean result = MoveCalcPiece.loopBody(newRowIndex, newColIndex, piecePosition, board, validMovesCollection);
             if (result){break;}
             rowOffset++;
             colOffset++;

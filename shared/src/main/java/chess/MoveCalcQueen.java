@@ -31,7 +31,8 @@ public class MoveCalcQueen implements MoveCalcPiece{
         checkMovesUpLeft();
         return validMovesCollection;
     }
-    
+
+
     private void checkMovesUpRight(){
         int rowOffset = 1;
         int colOffset = 1;

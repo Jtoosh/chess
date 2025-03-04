@@ -158,4 +158,8 @@ public class Server {
         Spark.stop();
         Spark.awaitStop();
     }
+
+    private void handleResponse(Record response){
+
+    }
 }
