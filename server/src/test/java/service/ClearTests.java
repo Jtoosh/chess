@@ -30,7 +30,7 @@ class ClearTests {
 
   @Test
   @DisplayName("Positive Test")
-  void ClearPositiveTest() {
+  void clearPositiveTest() {
     Assertions.assertNotNull(gameDAO.getGameList());
     Assertions.assertNotNull(userDAO.getUserList());
     Assertions.assertNotNull(authDAO.getAuthDataList());
@@ -44,7 +44,7 @@ class ClearTests {
   @Test
   @DisplayName("Negative: Already cleared")
   @Disabled
-  void ClearNegativeTest(){
+  void clearNegativeTest(){
     clearService.clear();
     // Check that clear doesn't execute when db is already empty.
     ClearResponse response = clearService.clear();

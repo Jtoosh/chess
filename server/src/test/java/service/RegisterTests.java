@@ -18,7 +18,7 @@ class RegisterTests {
 
   @Test
   @DisplayName("Positive")
-  void RegisterTest() {
+  void registerTest() {
 
     RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
     RegisterRequest request = new RegisterRequest(userExpected.username(), userExpected.password(), userExpected.email());
@@ -35,7 +35,7 @@ class RegisterTests {
 
   @Test
   @DisplayName("Negative: Username Taken")
-  void UsernameTakenTest() throws DataAccessException {
+  void usernameTakenTest() throws DataAccessException {
     //Add initial user
     RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
     RegisterRequest request = new RegisterRequest(userExpected.username(), userExpected.password(), userExpected.email());

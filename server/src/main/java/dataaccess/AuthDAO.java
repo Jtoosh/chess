@@ -5,7 +5,7 @@ import model.AuthData;
 import java.util.Collection;
 
 public interface AuthDAO {
-  AuthData getAuthData(String Username);
+  AuthData getAuthData(String username);
 
   AuthData createAuth(String username);
 
