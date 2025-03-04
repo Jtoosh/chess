@@ -42,6 +42,10 @@ public class ParentService {
     authDataAccess.createAuth(username);
   }
 
+  public int createGame(){
+    gameDataAccess.createGame();
+  }
+
 
   //Delete methods
   public void deleteAuth(String authToken){

@@ -3,19 +3,19 @@ package service;
 import dataaccess.AuthDAO;
 import dataaccess.AuthorizationException;
 import dataaccess.GameDAO;
-import request.ListRequest;
-import response.ListResponse;
+import request.CreateRequest;
+import response.CreateResponse;
 
-public class ListService extends ParentService{
+public class CreateService extends ParentService{
 
-  public ListService (AuthDAO authDAO, GameDAO gameDAO){
+  public CreateService(AuthDAO authDAO, GameDAO gameDAO){
     super(null, authDAO, gameDAO);
   }
 
-  public ListResponse listGames(ListRequest request){
+  public CreateResponse createGame(CreateRequest request){
     if (getAuthData(request.authToken()) == null){
       throw new AuthorizationException("Error: unauthorized");
     }
-    return new ListResponse(super.gameDataAccess.getGameList());
+
   }
 }

@@ -8,5 +8,8 @@ public interface GameDAO {
   GameData getGameData(int gameID);
   Collection<GameData> getGameList();
   void createGame();
+
+  int createGame(String whiteUsername, String blackUsername, String gameName);
+
   boolean clearGameData();
 }

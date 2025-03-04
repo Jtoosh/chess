@@ -18,6 +18,7 @@ public class Server {
     private final LoginService loginService = new LoginService(userDataAccess, authDataAccess);
     private final LogoutService logoutService = new LogoutService(authDataAccess);
     private final ListService listService = new ListService(authDataAccess, gameDataAccess);
+    private final CreateService createService = new CreateService(authDataAccess, gameDataAccess);
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -91,14 +92,30 @@ public class Server {
         //List Games endpoint
         Spark.get("/game", (req, res) ->{
             ListRequest listRequest = new ListRequest(req.headers("Authorization"));
+          try {
             ListResponse response = listService.listGames(listRequest);
-            res.status(response.statusCode());
-            if (response.errMsg() != null){
-                res.body(serializer.toJSON(response.errMsg()));
-            } else{
-                res.body(serializer.toJSON(response.games()));
-            }
-            return res.body();
+            res.status(200);
+            res.body(serializer.toJSON(response));
+          } catch (AuthorizationException e) {
+            res.status(401);
+            res.body(serializer.toJSON(e.getMessage()));
+          }
+
+          return res.body();
+        });
+
+        //Create game endpoint
+        Spark.post("/game", (req, res) -> {
+          CreateRequest createRequest = new CreateRequest(req.headers("Authorization"), serializer.fromJSON(req.body(), String.class));
+          try{
+            CreateResponse response = createService.createGame((createRequest));
+            res.status(200);
+            res.body(serializer.toJSON(response));
+          } catch (AuthorizationException e) {
+            res.status(401);
+            res.body(serializer.toJSON(e.getMessage()));
+          }
+          return res.body();
         });
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
