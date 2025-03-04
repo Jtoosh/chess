@@ -18,7 +18,8 @@ public class JoinService extends ParentService{
   } else if (teamColorCollision(request)){
     throw new AlreadyInUseException("Error: already taken");
   }
-  return null;
+  updateGame(request.gameID(), request.playerColor(), getAuthData(request.authToken()).username());
+  return new JoinResponse(200);
   }
 
   private boolean teamColorCollision(JoinRequest request){

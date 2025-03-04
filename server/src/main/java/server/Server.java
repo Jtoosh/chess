@@ -19,6 +19,7 @@ public class Server {
     private final LogoutService logoutService = new LogoutService(authDataAccess);
     private final ListService listService = new ListService(authDataAccess, gameDataAccess);
     private final CreateService createService = new CreateService(authDataAccess, gameDataAccess);
+    private final JoinService joinService = new JoinService(userDataAccess, authDataAccess, gameDataAccess);
 
     public int run(int desiredPort) {
         Spark.port(desiredPort);
@@ -126,6 +127,25 @@ public class Server {
         });
 
         //Join game endpoint
+        Spark.put("/game", (req,res)->{
+          JoinRequest tempRequest = serializer.fromJSON(req.body(), JoinRequest.class);
+          JoinRequest joinRequest = new JoinRequest(req.headers("Authorization"), tempRequest.playerColor(), tempRequest.gameID());
+          try{
+            JoinResponse response = joinService.joinGame(joinRequest);
+            res.status(200);
+            res.body("");
+          } catch (AuthorizationException e) {
+            res.status(401);
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
+          } catch (IllegalArgumentException e) {
+            res.status(400);
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
+          } catch (AlreadyInUseException e) {
+            res.status(403);
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
+          }
+          return res.body();
+        });
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();

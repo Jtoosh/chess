@@ -46,6 +46,10 @@ public class ParentService {
     return gameDataAccess.createGame(whiteUsername, blackUsername, gameName);
   }
 
+  public void updateGame(int gameID, String teamColorRequest, String username){
+    gameDataAccess.updateGame(gameID, teamColorRequest, username);
+  }
+
 
   //Delete methods
   public void deleteAuth(String authToken){
