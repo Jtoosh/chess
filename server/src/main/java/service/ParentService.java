@@ -38,8 +38,8 @@ public class ParentService {
     userDataAccess.createUser(username, password, email);
   }
 
-  public void createAuthData (String username){
-    authDataAccess.createAuth(username);
+  public AuthData createAuthData (String username){
+    return authDataAccess.createAuth(username);
   }
 
   public int createGame(String whiteUsername, String blackUsername, String gameName){
@@ -57,15 +57,15 @@ public class ParentService {
   }
 
   //Clear methods
-  public boolean clearUserData(){
-    return userDataAccess.clearUserData();
+  public void clearUserData(){
+    userDataAccess.clearUserData();
   }
 
-  public boolean clearAuthData(){
-    return authDataAccess.clearAuthData();
+  public void clearAuthData(){
+    authDataAccess.clearAuthData();
   }
 
-  public boolean clearGameData(){
-    return gameDataAccess.clearGameData();
+  public void clearGameData(){
+    gameDataAccess.clearGameData();
   }
 }

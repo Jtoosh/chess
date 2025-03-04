@@ -24,7 +24,7 @@ public class LoginService extends ParentService{
       throw new AuthorizationException("Error: unauthorized");
     }
     else{
-      AuthData userAuth = getAuthData(user.username());
+      AuthData userAuth = createAuthData(user.username());
       return new LoginResponse(user.username(), userAuth.authToken());
     }
   }

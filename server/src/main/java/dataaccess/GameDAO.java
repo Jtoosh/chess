@@ -12,5 +12,5 @@ public interface GameDAO {
 
   void updateGame(int gameID, String teamColorRequest, String username);
 
-  boolean clearGameData();
+  void clearGameData();
 }

@@ -14,18 +14,18 @@ public class RegisterService extends ParentService{
   }
 
   public RegisterResponse register(RegisterRequest request) {
-    if (getUser(request.username()) == null) {
+    if (request.password() == null) {
+      throw new IllegalArgumentException("Error: bad request");
+    }
+    else if (getUser(request.username())!= null){
+      throw new AlreadyInUseException("Error: already taken");
+    }
+    else {
       String username =request.username();
       createUser(username, request.password(), request.email());
       createAuthData(username);
       String authToken = getAuthData(username).authToken();
       return new RegisterResponse(username, authToken);
-    }
-    if (request.password() == null) {
-      throw new IllegalArgumentException("Error: bad request");
-    }
-    else{
-      throw new AlreadyInUseException("Error: already taken");
     }
   }
 

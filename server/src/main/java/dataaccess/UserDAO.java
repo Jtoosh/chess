@@ -8,6 +8,6 @@ public interface UserDAO {
 
   UserData getUserData(String username);
   void createUser(String username, String password, String email);
-  boolean clearUserData();
+  void clearUserData();
   Collection<UserData> getUserList();
 }

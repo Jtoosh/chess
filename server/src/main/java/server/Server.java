@@ -13,7 +13,7 @@ public class Server {
     private final GameDAO gameDataAccess = new MemoryGameDAO();
 
     private final Serializer serializer = new Serializer();
-    private final ClearService clearService = new ClearService();
+    private final ClearService clearService = new ClearService(userDataAccess, authDataAccess, gameDataAccess);
     private final RegisterService registerService = new RegisterService(userDataAccess, authDataAccess);
     private final LoginService loginService = new LoginService(userDataAccess, authDataAccess);
     private final LogoutService logoutService = new LogoutService(authDataAccess);

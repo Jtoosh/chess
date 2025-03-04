@@ -20,8 +20,10 @@ public class MemoryAuthDAO implements AuthDAO{
   }
 
   @Override
-  public void createAuth(String username) {
-    this.authDataList.add(new AuthData(UUID.randomUUID().toString(), username));
+  public AuthData createAuth(String username) {
+    AuthData newAuthData = new AuthData(UUID.randomUUID().toString(), username);
+    this.authDataList.add(newAuthData);
+    return newAuthData;
   }
 
   @Override
@@ -35,12 +37,8 @@ public class MemoryAuthDAO implements AuthDAO{
   }
 
   @Override
-  public boolean clearAuthData() {
-//    if (!this.authDataList.isEmpty()){
-//      this.authDataList.clear();
-//      return true;
-//    } else {return false;}
+  public void clearAuthData() {
     this.authDataList.clear();
-    return true;
+
   }
 }
