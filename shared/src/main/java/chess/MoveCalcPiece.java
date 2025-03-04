@@ -20,4 +20,32 @@ public interface MoveCalcPiece {
             return true;
         } else {return true;}
     }
+
+    static void checkMovesUp (int rowIndex, ChessPosition piecePosition, ChessPiece[][] board, Collection<ChessMove> validMovesCollection){
+        for (int i = rowIndex + 1; i <= 7; i ++){
+            boolean result = MoveCalcPiece.loopBody(i, piecePosition.getColumn() -1, piecePosition, board, validMovesCollection);
+            if (result) {break;}
+        }
+    }
+
+    static void checkMovesDown (int rowIndex, ChessPosition piecePosition, ChessPiece[][] board, Collection<ChessMove> validMovesCollection){
+        for (int i = rowIndex - 1; i >= 0; i --){
+            boolean result = MoveCalcPiece.loopBody(i, piecePosition.getColumn() -1, piecePosition, board, validMovesCollection);
+            if (result) {break;}
+        }
+    }
+
+    static void checkMovesRight (int colIndex, ChessPosition piecePosition, ChessPiece[][] board, Collection<ChessMove> validMovesCollection){
+        for (int i = (colIndex + 1); i <= 7; i++){
+            boolean result = MoveCalcPiece.loopBody(piecePosition.getRow()-1, i, piecePosition, board, validMovesCollection);
+            if (result) {break;}
+        }
+    }
+
+    static void checkMovesLeft (int colIndex, ChessPosition piecePosition, ChessPiece[][] board, Collection<ChessMove> validMovesCollection){
+        for (int i = (colIndex - 1); i >= 0; i--){
+            boolean result = MoveCalcPiece.loopBody(piecePosition.getRow()-1, i, piecePosition, board, validMovesCollection);
+            if (result) {break;}
+        }
+    }
 }

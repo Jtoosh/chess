@@ -21,38 +21,11 @@ public class MoveCalcRook implements MoveCalcPiece{
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        checkMovesUp();
-        checkMovesDown();
-        checkMovesRight();
-        checkMovesLeft();
+        MoveCalcPiece.checkMovesUp(rookRowIndex, rookPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesDown(rookRowIndex, rookPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesRight(rookColIndex, rookPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesLeft(rookColIndex, rookPosition, this.board, validMovesCollection);
         return validMovesCollection;
     }
 
-    private void checkMovesUp (){
-        for (int i = rookRowIndex + 1; i <= 7; i ++){
-            boolean result = MoveCalcPiece.loopBody(i, rookColIndex,rookPosition, this.board, validMovesCollection);
-            if (result) {break;}
-        }
-    }
-
-    private void checkMovesDown (){
-        for (int i = rookRowIndex - 1; i >= 0; i --){
-            boolean result = MoveCalcPiece.loopBody(i, rookColIndex,rookPosition, this.board, validMovesCollection);
-            if (result) {break;}
-        }
-    }
-
-    private void checkMovesRight (){
-        for (int i = (rookColIndex + 1); i <= 7; i++){
-            boolean result = MoveCalcPiece.loopBody(rookRowIndex, i, rookPosition, this.board, validMovesCollection);
-            if (result) {break;}
-        }
-    }
-
-    private void checkMovesLeft (){
-        for (int i = (rookColIndex - 1); i >= 0; i--){
-            boolean result = MoveCalcPiece.loopBody(rookRowIndex, i, rookPosition, this.board, validMovesCollection);
-            if (result) {break;}
-        }
-    }
 }
