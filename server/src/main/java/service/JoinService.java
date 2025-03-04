@@ -25,7 +25,7 @@ public class JoinService extends ParentService{
   private boolean teamColorCollision(JoinRequest request){
     if (request.playerColor().equals("WHITE") && getGameData(request.gameID()).whiteUsername() != null){
       return true;
-    } else return request.playerColor().equals("BLACK") && getGameData(request.gameID()).blackUsername() != null;
+    } else {return request.playerColor().equals("BLACK") && getGameData(request.gameID()).blackUsername() != null;}
   }
 
   private boolean isTeamColor(String teamColorRequest){

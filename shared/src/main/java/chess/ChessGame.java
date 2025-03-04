@@ -89,7 +89,9 @@ public class ChessGame {
         ChessPiece pieceToMove = this.gameBoard.getBoard()[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
         if (pieceToMove == null){throw new InvalidMoveException("There is no piece to move at " + move.getStartPosition().toString());}
 
-        if (pieceToMove.getTeamColor() != this.turnTeam){throw new InvalidMoveException("It is not this piece's turn. It is " + this.turnTeam.toString() + "'s turn");}
+        if (pieceToMove.getTeamColor() != this.turnTeam){
+            throw new InvalidMoveException("It is not this piece's turn. It is " + this.turnTeam.toString() + "'s turn");
+        }
 
         if (validMoves(move.getStartPosition()).contains(move)){
            this.gameBoard.setBoard(editPieceStorage(move, this.gameBoard.getBoard()));
@@ -119,12 +121,7 @@ public class ChessGame {
                 if (boardStorage[row][col] == null){ continue;}
                 if (boardStorage[row][col].getTeamColor() != teamColor){
                     Collection<ChessMove> thisPieceMoves = boardStorage[row][col].pieceMoves(board, new ChessPosition(row+1, col +1));
-                    for (ChessMove move : thisPieceMoves){
-                        ChessPiece moveEndSquare = boardStorage[move.getEndPosition().getRow()-1][move.getEndPosition().getColumn()-1];
-                        if (moveEndSquare != null && moveEndSquare.getPieceType() == ChessPiece.PieceType.KING){
-                            return true;
-                        }
-                    }
+                    if (checkForCheck(thisPieceMoves, boardStorage)){return true;}
                 }
             }
         }
@@ -186,5 +183,15 @@ public class ChessGame {
      */
     public ChessBoard getBoard() {
         return this.gameBoard;
+    }
+
+    private boolean checkForCheck(Collection<ChessMove> moves, ChessPiece[][]boardStorage){
+        for (ChessMove move : moves){
+            ChessPiece moveEndSquare = boardStorage[move.getEndPosition().getRow()-1][move.getEndPosition().getColumn()-1];
+            if (moveEndSquare != null && moveEndSquare.getPieceType() == ChessPiece.PieceType.KING){
+                return true;
+            }
+        }
+        return false;
     }
 }
