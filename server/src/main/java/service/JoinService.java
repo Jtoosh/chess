@@ -13,7 +13,7 @@ public class JoinService extends ParentService{
   public JoinResponse joinGame(JoinRequest request){
   if (getAuthData(request.authToken()) == null){
     throw new AuthorizationException("Error: unauthorized");
-  } else if (getGameData(request.gameID()) == null ||request.playerColor() == null ){
+  } else if (getGameData(request.gameID()) == null || request.playerColor() == null || !isTeamColor(request.playerColor()) ){
     throw new IllegalArgumentException("Error: bad request");
   }else if (teamColorCollision(request)){
     throw new AlreadyInUseException("Error: already taken");
@@ -26,5 +26,11 @@ public class JoinService extends ParentService{
     if (request.playerColor().equals("WHITE") && getGameData(request.gameID()).whiteUsername() != null){
       return true;
     } else return request.playerColor().equals("BLACK") && getGameData(request.gameID()).blackUsername() != null;
+  }
+
+  private boolean isTeamColor(String teamColorRequest){
+    if (teamColorRequest.equals("WHITE") || teamColorRequest.equals("BLACK")){
+      return true;
+    } else {return false;}
   }
 }
