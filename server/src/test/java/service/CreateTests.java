@@ -19,7 +19,6 @@ public class CreateTests {
   void setup(){
     authDAO.createAuth("jtoosh");
     this.authDataForReq = authDAO.getAuthData("jtoosh");
-    gameDAO.createGame();
   }
 
   @Test

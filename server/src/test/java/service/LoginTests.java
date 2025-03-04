@@ -45,8 +45,8 @@ public class LoginTests {
 
   @Test
   @DisplayName("Negative: Unknown Username")
-  void loginTestNonexistantUser() {
+  void loginTestNonexistentUser() {
     LoginRequest request = new LoginRequest("jteuscher", "jtoosh111");
-    Assertions.assertThrows(DataAccessException.class, ()->loginService.login(request));
+    Assertions.assertThrows(AuthorizationException.class, ()->loginService.login(request));
   }
 }

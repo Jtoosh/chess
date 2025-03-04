@@ -16,6 +16,6 @@ public class CreateService extends ParentService{
     if (getAuthData(request.authToken()) == null){
       throw new AuthorizationException("Error: unauthorized");
     }
-
+    return new CreateResponse(createGame(null,null, request.gameName()));
   }
 }

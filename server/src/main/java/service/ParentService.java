@@ -42,8 +42,8 @@ public class ParentService {
     authDataAccess.createAuth(username);
   }
 
-  public int createGame(){
-    gameDataAccess.createGame();
+  public int createGame(String whiteUsername, String blackUsername, String gameName){
+    return gameDataAccess.createGame(whiteUsername, blackUsername, gameName);
   }
 
 

@@ -1,5 +1,6 @@
 package service;
 
+import dataaccess.AlreadyInUseException;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
@@ -12,7 +13,7 @@ public class RegisterService extends ParentService{
     super(userDAO, authDAO, null);
   }
 
-  public RegisterResponse register(RegisterRequest request) throws DataAccessException {
+  public RegisterResponse register(RegisterRequest request) {
     if (getUser(request.username()) == null) {
       String username =request.username();
       createUser(username, request.password(), request.email());
@@ -20,8 +21,11 @@ public class RegisterService extends ParentService{
       String authToken = getAuthData(username).authToken();
       return new RegisterResponse(username, authToken);
     }
+    if (request.password() == null) {
+      throw new IllegalArgumentException("Error: bad request");
+    }
     else{
-      throw new DataAccessException("Error: already taken");
+      throw new AlreadyInUseException("Error: already taken");
     }
   }
 

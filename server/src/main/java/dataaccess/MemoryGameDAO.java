@@ -26,15 +26,17 @@ public class MemoryGameDAO implements GameDAO{
 
   @Override
   public int createGame(String whiteUsername, String blackUsername, String gameName) {
-    this.gameList.add(new GameData(10, whiteUsername, blackUsername, gameName, new ChessGame()));
-    return 4;
+    this.gameList.add(new GameData(this.gameList.size() + 1, whiteUsername, blackUsername, gameName, new ChessGame()));
+    return this.gameList.size();
   }
 
   @Override
   public boolean clearGameData() {
-    if (!this.gameList.isEmpty()){
-      this.gameList.clear();
-      return true;
-    } else {return false;}
+//    if (!this.gameList.isEmpty()){
+//      this.gameList.clear();
+//      return true;
+//    } else {return false;}
+    this.gameList.clear();
+    return true;
   }
 }

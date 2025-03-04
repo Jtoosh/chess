@@ -36,9 +36,11 @@ public class MemoryAuthDAO implements AuthDAO{
 
   @Override
   public boolean clearAuthData() {
-    if (!this.authDataList.isEmpty()){
-      this.authDataList.clear();
-      return true;
-    } else {return false;}
+//    if (!this.authDataList.isEmpty()){
+//      this.authDataList.clear();
+//      return true;
+//    } else {return false;}
+    this.authDataList.clear();
+    return true;
   }
 }

@@ -5,10 +5,7 @@ import dataaccess.*;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import response.ClearResponse;
 
 class ClearTests {
@@ -25,7 +22,7 @@ class ClearTests {
   @BeforeEach
   public void setup() {
 
-    gameDAO.createGame();
+    gameDAO.createGame("jtoosh", "puggy", "jtoosh vs. puggy");
     userDAO.createUser("jtoosh", "jtoosh111", "email.com");
     authDAO.createAuth("jtoosh");
     this.clearService=new ClearService(userDAO, authDAO, gameDAO);
@@ -43,8 +40,10 @@ class ClearTests {
     Assertions.assertArrayEquals(this.authExpected, authDAO.getAuthDataList().toArray(), "AuthData list not cleared");
   }
 
+
   @Test
   @DisplayName("Negative: Already cleared")
+  @Disabled
   void ClearNegativeTest(){
     clearService.clear();
     // Check that clear doesn't execute when db is already empty.

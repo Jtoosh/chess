@@ -1,5 +1,6 @@
 package service;
 
+import dataaccess.AlreadyInUseException;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
@@ -17,7 +18,7 @@ class RegisterTests {
 
   @Test
   @DisplayName("Positive")
-  void RegisterTest() throws DataAccessException {
+  void RegisterTest() {
 
     RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
     RegisterRequest request = new RegisterRequest(userExpected.username(), userExpected.password(), userExpected.email());
@@ -41,6 +42,6 @@ class RegisterTests {
     service.register(request);
 
     RegisterRequest request2 = new RegisterRequest(userExpected.username(), "jtoosh222", "other_email.com");
-    Assertions.assertThrows(DataAccessException.class, ()-> service.register(request2));
+    Assertions.assertThrows(AlreadyInUseException.class, ()-> service.register(request2));
   }
 }

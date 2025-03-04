@@ -28,13 +28,16 @@ public class Server {
         // Register your endpoints and handle exceptions here.
         //Clear Endpoint
         Spark.delete("/db", (req, res) ->{
-            ClearResponse response = clearService.clear();
-            res.status(response.statusCode());
+          ClearResponse response =null;
+          try {
+            response=clearService.clear();
+            res.status(200);
             res.body("");
-            if (response.errMsg() != null){
-                res.body(serializer.toJSON(response.errMsg()));
-            }
-            return serializer.toJSON(res.body());
+          } catch (Exception e) {
+            res.status(500);
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
+          }
+          return res.body();
         });
 
         //Register Endpoint
@@ -47,10 +50,13 @@ public class Server {
             res.body(serializer.toJSON(response));
           } catch (AuthorizationException e) {
             res.status(401);
-            res.body(serializer.toJSON(new ErrorResponse("Error: unauthorized")));
-          } catch (DataAccessException e){
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
+          } catch (AlreadyInUseException e){
             res.status(403);
-            res.body(serializer.toJSON(new ErrorResponse("Error: already taken")));
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
+          } catch (IllegalArgumentException e){
+            res.status(400);
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
           }
 
             return res.body();
@@ -66,10 +72,10 @@ public class Server {
             res.body(serializer.toJSON(response));
           } catch (AuthorizationException e) {
             res.status(401);
-            res.body(serializer.toJSON(new ErrorResponse("Error: unauthorized")));
-          } catch (DataAccessException e){
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
+          } catch (Exception e){
             res.status(500);
-            res.body(serializer.toJSON(new ErrorResponse("Error: user not found")));
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
           }
             return res.body();
         });
@@ -81,10 +87,10 @@ public class Server {
           try {
             response=logoutService.logout(logoutRequest);
             res.status(200);
-            res.body(serializer.toJSON(response.errMsg()));
+            res.body("");
           } catch (AuthorizationException e) {
             res.status(401);
-            res.body(serializer.toJSON(new ErrorResponse("Error: unauthorized")));
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
           }
          return res.body();
         });
@@ -98,7 +104,7 @@ public class Server {
             res.body(serializer.toJSON(response));
           } catch (AuthorizationException e) {
             res.status(401);
-            res.body(serializer.toJSON(e.getMessage()));
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
           }
 
           return res.body();
@@ -106,17 +112,20 @@ public class Server {
 
         //Create game endpoint
         Spark.post("/game", (req, res) -> {
-          CreateRequest createRequest = new CreateRequest(req.headers("Authorization"), serializer.fromJSON(req.body(), String.class));
+          CreateRequest testRequest = serializer.fromJSON(req.body(), CreateRequest.class);
+          CreateRequest createRequest = new CreateRequest(req.headers("Authorization"), testRequest.gameName());
           try{
             CreateResponse response = createService.createGame((createRequest));
             res.status(200);
             res.body(serializer.toJSON(response));
           } catch (AuthorizationException e) {
             res.status(401);
-            res.body(serializer.toJSON(e.getMessage()));
+            res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
           }
           return res.body();
         });
+
+        //Join game endpoint
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();

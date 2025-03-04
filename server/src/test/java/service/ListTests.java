@@ -22,7 +22,7 @@ class ListTests {
     void setup(){
       authDAO.createAuth("jtoosh");
       this.authDataForReq = authDAO.getAuthData("jtoosh");
-      gameDAO.createGame();
+      gameDAO.createGame("jtoosh", "puggy", "jtoosh vs. puggy");
     }
 
   @Test

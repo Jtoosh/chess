@@ -15,10 +15,10 @@ public class LoginService extends ParentService{
     super(userDAO, authDAO, null);
   }
 
-  public LoginResponse login (LoginRequest request) throws DataAccessException {
+  public LoginResponse login (LoginRequest request) {
     UserData user = getUser(request.username());
     if (user == null){
-      throw new DataAccessException("Error: user not found");
+      throw new AuthorizationException("Error: unauthorized");
     }
     else if (!user.password().equals(request.password())){
       throw new AuthorizationException("Error: unauthorized");
