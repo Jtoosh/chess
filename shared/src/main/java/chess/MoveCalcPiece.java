@@ -67,21 +67,71 @@ public interface MoveCalcPiece {
         }
     }
 
-    static void checkMovesUpRight(int rowIndex,
-                                  int colIndex,
+    static void checkMovesUpRight(int pieceRowIndex,
+                                  int pieceColIndex,
                                   ChessPosition piecePosition,
                                   ChessPiece[][] board,
                                   Collection<ChessMove> validMovesCollection)
     {
         int rowOffset = 1;
         int colOffset = 1;
-        while(rowOffset + rowIndex <= 7 && colOffset + colIndex <= 7){
-            int newRowIndex = rowIndex + rowOffset;
-            int newColIndex = rowIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(newRowIndex, newColIndex, piecePosition, board, validMovesCollection);
+        while(rowOffset + pieceRowIndex <= 7 && colOffset + pieceColIndex <= 7){
+            int rowIndex = pieceRowIndex + rowOffset;
+            int colIndex = pieceColIndex + colOffset;
+            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, piecePosition, board, validMovesCollection);
             if (result){break;}
             rowOffset++;
             colOffset++;
+        }
+    }
+    static void checkMovesDownRight(int pieceRowIndex,
+                                     int pieceColIndex,
+                                     ChessPosition piecePosition,
+                                     ChessPiece[][] board,
+                                     Collection<ChessMove> validMovesCollection){
+        int rowOffset = -1;
+        int colOffset = 1;
+        while(rowOffset + pieceRowIndex >= 0 && colOffset + pieceColIndex <= 7){
+            int rowIndex = pieceRowIndex + rowOffset;
+            int colIndex = pieceColIndex + colOffset;
+            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, piecePosition, board,validMovesCollection );
+            if (result){break;}
+            rowOffset--;
+            colOffset++;
+        }
+    }
+
+    static void checkMovesDownLeft(int pieceRowIndex,
+                                   int pieceColIndex,
+                                   ChessPosition piecePosition,
+                                   ChessPiece[][] board,
+                                   Collection<ChessMove> validMovesCollection){
+        int rowOffset = -1;
+        int colOffset = -1;
+        while(rowOffset + pieceRowIndex >= 0 && colOffset + pieceColIndex >= 0){
+            int rowIndex = pieceRowIndex + rowOffset;
+            int colIndex = pieceColIndex + colOffset;
+            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, piecePosition, board,validMovesCollection );
+            if (result){break;}
+            rowOffset--;
+            colOffset--;
+        }
+    }
+
+    static void checkMovesUpLeft(int pieceRowIndex,
+                                  int pieceColIndex,
+                                  ChessPosition piecePosition,
+                                  ChessPiece[][] board,
+                                  Collection<ChessMove> validMovesCollection){
+        int rowOffset = 1;
+        int colOffset = -1;
+        while(rowOffset + pieceRowIndex <= 7 && colOffset + pieceColIndex >= 0){
+            int rowIndex = pieceRowIndex + rowOffset;
+            int colIndex = pieceColIndex + colOffset;
+            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex,piecePosition, board, validMovesCollection);
+            if (result){break;}
+            rowOffset++;
+            colOffset--;
         }
     }
 }

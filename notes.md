@@ -885,3 +885,15 @@ Here is my personal TA feedback:
 STATUS 3.1 - I have finished 5/7 endpoints. I just need to implement 2 more, then run passoff testing and debug accordingly. I also want to see if I can implement inner classes for the Request and Response classes, to apply some of what I'm learning.
 
 ### Phase 3 Retrospective
+
+James the TA helped me to get the history of all of the commits from my old chess repo with some handy git commmands. Here is a list of the ones that we used:
+
+- `git remote -v` : shows the remote branches the local repo is connected to
+- `git remote add <name> <url>`: add a remote branch with the given name
+- `git fetch <name>` : fetch updates for a given remote branch
+- `git log <remote/branch>` : view the git log for a given remote branch's branch
+- `--abort` flag on `git merge`: undo a merge
+- `-allow-unrelated-histories <remote/branch> s ours` flag on `git merge`: will only merge commit histories, not file changes
+- `--oneline --graph` flag on `git log`: will print prettier git log that takes up less space
+- `git tag <TAG-NAME>` : will apply a tag to the current or specified commit
+- `--tags` flag on `git push`: will include tags in the commit.

@@ -19,64 +19,11 @@ public class MoveCalcBishop implements MoveCalcPiece{
     }
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        checkMovesUpRight();
-        checkMovesDownRight();
-        checkMovesDownLeft();
-        checkMovesUpLeft();
+        MoveCalcPiece.checkMovesUpRight(bishopRowIndex, bishopColIndex, bishopPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesDownRight(bishopRowIndex, bishopColIndex, bishopPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesDownLeft(bishopRowIndex, bishopColIndex, bishopPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesUpLeft(bishopRowIndex, bishopColIndex, bishopPosition, this.board, validMovesCollection);
         return validMovesCollection;
 
     }
-
-    private void checkMovesUpRight(){
-        int rowOffset = 1;
-        int colOffset = 1;
-        while(rowOffset + bishopRowIndex <= 7 && colOffset + bishopColIndex <= 7){
-            int rowIndex = bishopRowIndex + rowOffset;
-            int colIndex = bishopColIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex,bishopPosition, board, validMovesCollection);
-            if (result){break;}
-            rowOffset++;
-            colOffset++;
-        }
-    }
-
-    private void checkMovesDownRight(){
-        int rowOffset = -1;
-        int colOffset = 1;
-        while(rowOffset + bishopRowIndex >= 0 && colOffset + bishopColIndex <= 7){
-         int rowIndex = bishopRowIndex + rowOffset;
-         int colIndex = bishopColIndex + colOffset;
-         boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, bishopPosition, board,validMovesCollection );
-         if (result){break;}
-         rowOffset--;
-         colOffset++;
-        }
-    }
-
-    private void checkMovesDownLeft(){
-        int rowOffset = -1;
-        int colOffset = -1;
-        while(rowOffset + bishopRowIndex >= 0 && colOffset + bishopColIndex >= 0){
-            int rowIndex = bishopRowIndex + rowOffset;
-            int colIndex = bishopColIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, bishopPosition, board,validMovesCollection );
-            if (result){break;}
-            rowOffset--;
-            colOffset--;
-        }
-    }
-
-    private void checkMovesUpLeft(){
-        int rowOffset = 1;
-        int colOffset = -1;
-        while(rowOffset + bishopRowIndex <= 7 && colOffset + bishopColIndex >= 0){
-            int rowIndex = bishopRowIndex + rowOffset;
-            int colIndex = bishopColIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex,bishopPosition, board, validMovesCollection);
-            if (result){break;}
-            rowOffset++;
-            colOffset--;
-        }
-    }
-
 }

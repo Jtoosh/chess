@@ -25,63 +25,10 @@ public class MoveCalcQueen implements MoveCalcPiece{
         MoveCalcPiece.checkMovesDown(queenRowIndex, queenPosition, this.board, validMovesCollection);
         MoveCalcPiece.checkMovesLeft(queenColIndex, queenPosition, this.board, validMovesCollection);
         MoveCalcPiece.checkMovesRight(queenColIndex, queenPosition, this.board, validMovesCollection);
-        checkMovesUpRight();
-        checkMovesDownLeft();
-        checkMovesDownRight();
-        checkMovesUpLeft();
+        MoveCalcPiece.checkMovesUpRight(queenRowIndex, queenColIndex, queenPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesDownLeft(queenRowIndex, queenColIndex, queenPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesDownRight(queenRowIndex, queenColIndex, queenPosition, this.board, validMovesCollection);
+        MoveCalcPiece.checkMovesUpLeft(queenRowIndex, queenColIndex, queenPosition, this.board, validMovesCollection);
         return validMovesCollection;
-    }
-
-
-    private void checkMovesUpRight(){
-        int rowOffset = 1;
-        int colOffset = 1;
-        while(rowOffset + queenRowIndex <= 7 && colOffset + queenColIndex <= 7){
-            int rowIndex = queenRowIndex + rowOffset;
-            int colIndex = queenColIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex,queenPosition, board, validMovesCollection);
-            if (result){break;}
-            rowOffset++;
-            colOffset++;
-        }
-    }
-
-    private void checkMovesDownRight(){
-        int rowOffset = -1;
-        int colOffset = 1;
-        while(rowOffset + queenRowIndex >= 0 && colOffset + queenColIndex <= 7){
-            int rowIndex = queenRowIndex + rowOffset;
-            int colIndex = queenColIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, queenPosition, board,validMovesCollection );
-            if (result){break;}
-            rowOffset--;
-            colOffset++;
-        }
-    }
-
-    private void checkMovesDownLeft(){
-        int rowOffset = -1;
-        int colOffset = -1;
-        while(rowOffset + queenRowIndex >= 0 && colOffset + queenColIndex >= 0){
-            int rowIndex = queenRowIndex + rowOffset;
-            int colIndex = queenColIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex, queenPosition, board,validMovesCollection );
-            if (result){break;}
-            rowOffset--;
-            colOffset--;
-        }
-    }
-
-    private void checkMovesUpLeft(){
-        int rowOffset = 1;
-        int colOffset = -1;
-        while(rowOffset + queenRowIndex <= 7 && colOffset + queenColIndex >= 0){
-            int rowIndex = queenRowIndex + rowOffset;
-            int colIndex = queenColIndex + colOffset;
-            boolean result = MoveCalcPiece.loopBody(rowIndex, colIndex,queenPosition, board, validMovesCollection);
-            if (result){break;}
-            rowOffset++;
-            colOffset--;
-        }
     }
 }
