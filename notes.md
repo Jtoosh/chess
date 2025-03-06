@@ -820,6 +820,27 @@ Dr. Wilkerson found enough common code between his 3 SQL DAO classes that he fou
 
 Loading the DB does not create tables, so Dr. Wilkerson recommends making a `createTables()` method, and call it in the createDatabase method that is provided.
 
+### Lecture: MySQL and Securing Passwords
+
+**MySQL:** released in 1995, purchased in 2008 by Sun for $1B. Oracle acquired Sun in 2010. Voted 2019 DBMS of the year.
+
+I'll need to download the community server, and I can install a client shell to administer the DB via the command line.
+Here is a table of the essential client shell commands
+
+| Command                   | Description              | Example                       |
+|---------------------------|--------------------------|-------------------------------|
+| mysql -u `<username>` -p  | Login to the shell       | `mysql -u root -p`            |
+| help or ?                 | Get help                 | `?`                           |
+| connect `<connecton URL>` | Connect to MySQL server  | `connect user@locahost:33060` |
+| sql                       | Change to SQL mode       | `sql`                         |
+| use `<name>`              | Open database            | `use student`                 |
+| quit                      | Exit MySQL client        | `quit`                        |
+
+For a comprehensive table of SQL commands, consult the slides [here](https://docs.google.com/presentation/d/1w5bcntrExgMnB92uLJL52uuutLLQABSt/edit#slide=id.g25cad1383f2_3_0)
+
+**Securing Passwords:** This is done in Phase 4 using the Bcrypt algorithm. Import the library and then use the needed methods.
+`Bcrypt.hashpw(<password string>, <salt string>)` hashes and returns the password, taking the password string and a salt string as arguments. There is also a `Bcrypt.gensalt()` method to generate a salt string for you. Then, to check passwords, use the `Bcrypt.checkpw(<password to check>, <stored hash>)` method, passing the password string to check, and the stored hash as arguments.
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -840,7 +861,7 @@ Loading the DB does not create tables, so Dr. Wilkerson recommends making a `cre
 - Something that helped with abstraction was learning this technique: When the body of a loop is the same and the only thing that differs is direction of iteration in 2 different uses, abstract the loop body into a method, and pass in the iterator variable as a parameter. Then just have the loop body be calling that abstracted method.
 
 **Phase 0 Retrospective**
-So, I finished up Phase 0 on the due date, and got 100%. I ran the code quality check as well, just out of curiousity, and got 70%, which I'm very satisfied with, since we haven't lectured on that yet, and I'm not graded on it for this phase. The details said I did well with _Naming_, _Code Decompisition_, and _Package Structure\*, but need to improve on \_Code readability_. That checks out, to be honest. Some of the conditional statements that I used are pretty unpleasant to the eye.
+So, I finished up Phase 0 on the due date, and got 100%. I ran the code quality check as well, just out of curiousity, and got 70%, which I'm very satisfied with, since we haven't lectured on that yet, and I'm not graded on it for this phase. The details said I did well with _Naming_, _Code Decompisition_, and _Package Structure_, but need to improve on _Code readability_. That checks out, to be honest. Some of the conditional statements that I used are pretty unpleasant to the eye.
 
 I want to start this new practice that I just thought of, which is documenting/journalling a short retrospective of my experience with the project. I think I'll outline the biggest obstacle(s) and how I overcame them, and also what helped me out during the project.
 
@@ -885,6 +906,8 @@ Here is my personal TA feedback:
 STATUS 3.1 - I have finished 5/7 endpoints. I just need to implement 2 more, then run passoff testing and debug accordingly. I also want to see if I can implement inner classes for the Request and Response classes, to apply some of what I'm learning.
 
 ### Phase 3 Retrospective
+
+Pushing myself to meet the quality code standards led me to trying something new, creating the `handleResponse` method in my Server class, which used lambda expressions as one of the parameters, which required making an interface to assign as the type for those lambdas. It was a good stretch that helped me try and learn new things.
 
 James the TA helped me to get the history of all of the commits from my old chess repo with some handy git commmands. Here is a list of the ones that we used:
 
