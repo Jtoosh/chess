@@ -743,6 +743,7 @@ Copy from slides later
 - `TIMESTAMP` for date and time: Used for storing date and time values.
 - `BOOLEAN` for true/false values: Used for storing boolean values.
 - `BLOB` for binary large objects: Used for storing binary data, such as images or multimedia files.
+- `CLOB` for large character objects: Used for storing large amounts of character data, similar to `TEXT`, but can handle larger sizes.
 
 #### Creating and dropping tables
 
@@ -920,3 +921,12 @@ James the TA helped me to get the history of all of the commits from my old ches
 - `--oneline --graph` flag on `git log`: will print prettier git log that takes up less space
 - `git tag <TAG-NAME>` : will apply a tag to the current or specified commit
 - `--tags` flag on `git push`: will include tags in the commit.
+
+### Phase 4 Notes
+
+I'm going to begin by identifying relationships and characteristics of my database, and what my tables should be.
+
+#### DB Schema
+
+- 3 tables: Users, containing UserData JSON strings. Games, containing GameData JSON strings, and Auth, containing AuthData JSON Strings.
+- There is a 1-to-1 relationship between Users and AuthDate. There is a Many-to-1 relationship between users and games.

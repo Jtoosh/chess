@@ -1,0 +1,22 @@
+Table Users {
+  username varchar [pk]
+  password varchar
+  email varchar
+}
+
+Table AuthData {
+  authToken varchar [pk]
+  username varchar
+}
+
+Table Games{
+  gameID int [pk, increment]
+  gameName varchar
+  whiteUsername varchar
+  blackUsername varchar
+  game Object
+}
+
+Ref: "Users"."username" - "AuthData"."username"
+Ref: "Users"."username" < "Games"."whiteUsername"
+Ref: "Users"."username" < "Games"."blackUsername"
