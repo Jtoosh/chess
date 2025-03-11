@@ -930,3 +930,11 @@ I'm going to begin by identifying relationships and characteristics of my databa
 
 - 3 tables: Users, containing UserData JSON strings. Games, containing GameData JSON strings, and Auth, containing AuthData JSON Strings.
 - There is a 1-to-1 relationship between Users and AuthDate. There is a Many-to-1 relationship between users and games.
+
+#### Current Status
+
+I am having an issue inmplementing SQL while maintaining modularity and minimizing dependecies in my code. My issue stems from the fact that my DAO interface and service classes don't do a lot of exception handling, that is done mostly in the ServiceHandler lambda in the Server class. I need to try and find a way to appropriately handle the exceptions in each DAO, while maintaining code cohesion and leaving things "hidden" to use Dr. Wilkerson's terms. Here are questions to consider:
+
+- What methods do I know of to handle exceptions that avoid me editing any code further up the object model? Are those methods helpful or harmful in the broader scope of my application?
+- Is not editing code further up the object model a sure possibility, or does it appear to be maybe a light necessity, with how I constructed the object model?
+- Is there a way to simply slightly adjust the error handling I already have to account for these `SQLException`s and `DataAccessException`s?
