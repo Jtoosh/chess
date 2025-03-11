@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.AlreadyInUseException;
 import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import request.RegisterRequest;
 import response.RegisterResponse;
@@ -14,7 +15,7 @@ public class RegisterService extends ParentService{
 
   public RegisterResponse register(RegisterRequest request) {
     if (request.password() == null) {
-      throw new IllegalArgumentException("Error: bad request");
+      throw new DataAccessException("Error: bad request");
     }
     else if (getUser(request.username())!= null){
       throw new AlreadyInUseException("Error: already taken");

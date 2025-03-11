@@ -26,7 +26,7 @@ public class Server {
         Record response = service.executeService(request);
         res.status(200);
         res.body(serializer.toJSON(response));
-      } catch (IllegalArgumentException e){
+      } catch (DataAccessException e){
         res.status(400);
         res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
       } catch (AuthorizationException e) {

@@ -761,11 +761,36 @@ Some configurations for foregin keys exist to help mitigate these bad effects. A
 
 A common method is to drop each table if it exists. This is common in scripts that set up databases, because SQL will throw an error if programmed to create a table that already exists, or drop a table that does not exist.
 
-**inserting and updating**
-insert into table (col names) values (csep values, same order)
-update table, set col = value, where clause
-w/o where clause chsnges are placed on ALL rows
-delete renoves entire rows, use where clause
+**Inserting and Updating**
+Syntax: `INSERT into <table name> (<col names>) VALUES (col values, same order)`
+
+```sql
+INSERT into books (title, author, genre, category_id) VALUES ("Assisted", "John Stockton", "Biography", 4)
+```
+
+**Update syntax**
+UPDATE table
+SET col = value
+WHERE condition
+
+```sql
+UPDATE games
+SET blackUsername = "Jtoosh"
+WHERE gameID = 4
+```
+
+A query without the WHERE clause places the specified changes onto ALL rows.
+
+**Delete syntax**
+DELETE FROM table
+WHERE value = targetValue
+
+```sql
+DELETE FROM authData
+WHERE username = "jtoosh"
+```
+
+DELETE will remove a row when used with a correct WHERE clause. Without a WHERE clause, it will delete all rows.
 
 **querying**
 basic formst is SELECT FROM WHERE
@@ -841,6 +866,13 @@ For a comprehensive table of SQL commands, consult the slides [here](https://doc
 
 **Securing Passwords:** This is done in Phase 4 using the Bcrypt algorithm. Import the library and then use the needed methods.
 `Bcrypt.hashpw(<password string>, <salt string>)` hashes and returns the password, taking the password string and a salt string as arguments. There is also a `Bcrypt.gensalt()` method to generate a salt string for you. Then, to check passwords, use the `Bcrypt.checkpw(<password to check>, <stored hash>)` method, passing the password string to check, and the stored hash as arguments.
+
+### Lecture: Debugging
+
+A lot of these tips are things that I already covered in CS 202, but that I can use a good review of and implement more often. I am going to make a goal of **effectively using at least 1 conditional breakpoint, and one watch in the remaining Phases of the class**.
+
+A second goal: **commit to memory how to access breakpoint settings in IntelliJ**.
+Right click on a breakpoint and click 'more', or access through "Run > View Breakpoints"
 
 ## Project Notes
 

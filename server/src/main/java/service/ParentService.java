@@ -21,7 +21,7 @@ public class ParentService {
   }
 
   //Getters
-  public UserData getUser(String username){
+  public UserData getUser(String username) {
     return userDataAccess.getUserData(username);
   }
 
