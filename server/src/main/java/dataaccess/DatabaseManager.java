@@ -43,6 +43,7 @@ public class DatabaseManager {
             try (var preparedStatement = conn.prepareStatement(statement)) {
                 preparedStatement.executeUpdate();
             }
+            createTables();
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
@@ -68,5 +69,38 @@ public class DatabaseManager {
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
+    }
+
+    private static void createTables() throws DataAccessException{
+        try {
+            var statement1 = "CREATE TABLE users (" +
+                    "username varchar not null primary key," +
+                    " password varchar not null," +
+                    " email varchar not null) " +
+                    "IF NOT EXISTS";
+            var statement2 = "CREATE TABLE authData (" +
+                    "authToken varchar not null, primary key," +
+                    "username varchar not null," +
+                    "foreign key(username) references users(username))";
+            var statement3 = "CREATE TABLE games (" +
+                    "id int auto_increment not null primary key," +
+                    "gameName varchar not null," +
+                    "whiteUsername varchar," +
+                    "blackUsername varchar,"+
+                    "game object," +
+                    "foreign key(whiteUsername) references users(username)," +
+                    "foreign key(blackUsername) references users(username)";
+            String[] statementArray = {statement1, statement2, statement3};
+            var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
+            for (String statement : statementArray){
+                try (var preparedStatement = conn.prepareStatement(statement)){
+                    preparedStatement.executeUpdate();
+            }
+            
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
