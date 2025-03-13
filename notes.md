@@ -977,3 +977,11 @@ I am having an issue inmplementing SQL while maintaining modularity and minimizi
 - What methods do I know of to handle exceptions that avoid me editing any code further up the object model? Are those methods helpful or harmful in the broader scope of my application?
 - Is not editing code further up the object model a sure possibility, or does it appear to be maybe a light necessity, with how I constructed the object model?
 - Is there a way to simply slightly adjust the error handling I already have to account for these `SQLException`s and `DataAccessException`s?
+
+My temporary fix for this issue was to make DataAccessException inherit from RuntimeException instead of exception, because that is what all of the other exceptions do that I handle.
+
+My current status is that I have enabled the server to create the DB and tables on startup if they don't already exist, and I have one method in the SQLUserDAO passing its positive test. I just need to keep developing the other methods, driven by the tests.
+
+The big obstacles I found was formatting the SQL commands correctly, there were some details that slipped my mind. That may have been due to my watching the SQL videos while on the treadmill. Some obstacles included forgetting to include columns after SELECT, forgetting closing parenthesis in long table creation commands, and some others. The slides, W3Schools, and JavaDoc was helpful.
+
+I also got tripped up thinking the Result set was observing a _column_ at a time, but remembered that the cursor points to a _**row**_. The column is selected in the `.get()` methods.
