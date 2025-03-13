@@ -36,7 +36,7 @@ public class DatabaseManager {
     /**
      * Creates the database if it does not already exist.
      */
-    static void createDatabase() throws DataAccessException {
+    public static void createDatabase() throws DataAccessException {
         try {
             var statement = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME;
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
@@ -73,30 +73,30 @@ public class DatabaseManager {
 
     private static void createTables() throws DataAccessException{
         try {
-            var statement1 = "CREATE TABLE users (" +
-                    "username varchar not null primary key," +
-                    " password varchar not null," +
-                    " email varchar not null) " +
-                    "IF NOT EXISTS";
-            var statement2 = "CREATE TABLE authData (" +
-                    "authToken varchar not null, primary key," +
-                    "username varchar not null," +
-                    "foreign key(username) references users(username))";
-            var statement3 = "CREATE TABLE games (" +
-                    "id int auto_increment not null primary key," +
-                    "gameName varchar not null," +
-                    "whiteUsername varchar," +
-                    "blackUsername varchar,"+
-                    "game object," +
-                    "foreign key(whiteUsername) references users(username)," +
-                    "foreign key(blackUsername) references users(username)";
-            String[] statementArray = {statement1, statement2, statement3};
+            var statement0 = "USE chess";
+
+            var statement1 = "CREATE TABLE IF NOT EXISTS users (" +
+                    "username varchar(255) NOT NULL PRIMARY KEY," +
+                    " password varchar(255) NOT NULL," +
+                    " email varchar(255) NOT NULL)";
+            var statement2 = "CREATE TABLE IF NOT EXISTS authData (" +
+                    "authToken varchar(255) NOT NULL PRIMARY KEY," +
+                    " username varchar(255) NOT NULL," +
+                    " foreign key(username) REFERENCES users(username))";
+            var statement3 = "CREATE TABLE IF NOT EXISTS games (" +
+                    "id int AUTO_INCREMENT NOT NULL PRIMARY KEY," +
+                    "gameName varchar(255) NOT NULL," +
+                    "whiteUsername varchar(255)," +
+                    "blackUsername varchar(255),"+
+                    "ChessGame varchar(255)," +
+                    "foreign key(whiteUsername) REFERENCES users(username)," +
+                    "foreign key(blackUsername) REFERENCES users(username))";
+            String[] statementArray = {statement0, statement1, statement2, statement3};
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
             for (String statement : statementArray){
                 try (var preparedStatement = conn.prepareStatement(statement)){
                     preparedStatement.executeUpdate();
-            }
-            
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
