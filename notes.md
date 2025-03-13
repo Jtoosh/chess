@@ -793,12 +793,19 @@ WHERE username = "jtoosh"
 DELETE will remove a row when used with a correct WHERE clause. Without a WHERE clause, it will delete all rows.
 
 **querying**
-basic formst is SELECT FROM WHERE
-Select specifies cols, From soecifies table, where specifies row
-watch oyt for carresian prods
 
-AND can br used in where clause to avoud cart prod and ensure join
-inner join also iseful, INNER JOIN table ON cond
+Syntax is `SELECT column1, column2... FROM table WHERE column = "value"`
+SELECT specifies the columns, FROM specifies the table, WHERE specifies the row
+Be cautious of creating Cartesian products when querying from multiple tables.
+
+```sql
+SELECT * FROM users WHERE username = "jtoosh"
+```
+
+The `*` wildcard character can be used to select all of the columns from the queried table.
+
+AND can be used in WHERE clauses to avoid Cartesian products and ensure join
+Inner join is also useful, syntax is `INNER JOIN table ON cond`
 
 transactions
 sometimes you need multiple statements to pass together or fail together
