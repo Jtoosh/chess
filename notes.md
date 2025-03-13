@@ -881,6 +881,41 @@ A lot of these tips are things that I already covered in CS 202, but that I can 
 A second goal: **commit to memory how to access breakpoint settings in IntelliJ**.
 Right click on a breakpoint and click 'more', or access through "Run > View Breakpoints"
 
+### Lecture: Console UI and Phase 5
+
+Dr. Wilkerson's spiritual/life thought: When you feel yourself avoiding a certain task or project because of its difficulty and/or magnitude, as soon as you recognize that avoidance is when to start working on it.
+
+The things that I need to do for Phase 5 are namely:
+
+- Draw menus and handle input
+- Draw ChessBoard
+- Invoke Server API Endpoints (Just like in 260, send a HTTP request to the url)
+- Write tests
+
+A few tidbits that can be helpful:
+
+- Use `System.exit()` to quit the program.
+- When listing the games on the Client UI, don't just show the gameIDs. Since those are artificial primary keys, they shouldn't be shown to the user. Have the numbering of games on the UI be independent of the gameIDs, and start at 1.
+- Dr. Wilkerson's recommendation for structure: Make a `ui` package, and make a `Client` class, which is responsible for drawing menus, and a separate class, `ChessBoard` for example, responsible for drawing the chess board. Also make the the `Client` class depend on the `ServerFacade` and a `Client Communicator` type of class.
+- Bascially, DON'T mix menu drawing-logic and board-drawing logic.
+- Create in Phase 5 the logic to look at each square and determine to draw a piece or not. This is more than what is required for Phase 5, but will help with Phase 6.
+
+**ServerFacade**
+This is a class that is used to make client requests to the server. Similar to the handlers being the only objects on the backend that deal with HTTP and JSON, this will be the only class on the frontend that deals with HTTP and JSON.
+
+#### Drawing Console UI
+
+This is accomplished primarily by using ANSI Escape Codes to set the text and background colors to certain colors.
+
+Many terminals can also display Unicode characters, which has Chess piece characters which can look a bit _fancier_. However, the chess piece characters might be wider than other charactes, causing them to misalign. To fix this, change a few settings in IntelliJ, described in the slides.
+
+An idea for order of construction:
+
+1. Draw Chess board
+2. Draw menus
+3. ServerFacade
+4. ClientCommunicator?
+
 ## Project Notes
 
 ### Phase 0 Notes
