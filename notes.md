@@ -1020,3 +1020,5 @@ My current status is that I have enabled the server to create the DB and tables 
 The big obstacles I found was formatting the SQL commands correctly, there were some details that slipped my mind. That may have been due to my watching the SQL videos while on the treadmill. Some obstacles included forgetting to include columns after SELECT, forgetting closing parenthesis in long table creation commands, and some others. The slides, W3Schools, and JavaDoc was helpful.
 
 I also got tripped up thinking the Result set was observing a _column_ at a time, but remembered that the cursor points to a _**row**_. The column is selected in the `.get()` methods.
+
+**Tip**: Use the keyword TRUNCATE instead of DROP for the clear methods.

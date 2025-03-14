@@ -56,6 +56,12 @@ public class UserDAOTest {
         Assertions.assertThrows(AlreadyInUseException.class, ()-> userDataAccess.createUser("logan", "newPassword", "newemail@email.com"));
     }
 
+    @Test
+    @DisplayName("Clear Users Positive")
+    void clearUsersTest(){
+
+    }
+
     @AfterEach
     void cleanUp(){
         try(Connection conn = DatabaseManager.getConnection()){
