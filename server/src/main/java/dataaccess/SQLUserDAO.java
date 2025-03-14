@@ -1,6 +1,7 @@
 package dataaccess;
 
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,20 +25,30 @@ public class SQLUserDAO implements UserDAO{
                 return new UserData(result.getString(1), result.getString(2), result.getString(3));
             }
         } catch (SQLException e){
-            throw new DataAccessException(e.getMessage()); //Something like this could work??
+            throw new DataAccessException(e.getMessage());
         }
     }
 
     @Override
     public void createUser(String username, String password, String email) {
-        /* try(Connection conn = DatabaseManager.getConnection()){
+         try(Connection conn = DatabaseManager.getConnection()){
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-            String query = `INSERT INTO users VALUES($username, $hashedPassword, $email`;
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
+            String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+            var preppedStmt = conn.prepareStatement(query);
+            preppedStmt.setString(1, username);
+            preppedStmt.setString(2, hashedPassword);
+            preppedStmt.setString(3, email);
+            int result = preppedStmt.executeUpdate();
+            if (result == 0){
+                throw new IllegalArgumentException("Error: bad request");
+            }
         } catch (SQLException e){
-             throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }*/
+             if (e.getMessage().equals("Duplicate entry 'logdog' for key 'users.PRIMARY'")){
+                 throw new AlreadyInUseException("Error: already in use");
+             } else{
+                 throw new DataAccessException(e.getMessage()); //Something like this could work??
+             }
+        }
     }
 
     @Override
