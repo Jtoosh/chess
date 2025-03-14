@@ -50,6 +50,12 @@ public class UserDAOTest {
         Assertions.assertEquals("email.com", result.email());
     }
 
+    @Test
+    @DisplayName("Create User Negative")
+    void createUserTestNegative(){
+        Assertions.assertThrows(AlreadyInUseException.class, ()-> userDataAccess.createUser("logan", "newPassword", "newemail@email.com"));
+    }
+
     @AfterEach
     void cleanUp(){
         try(Connection conn = DatabaseManager.getConnection()){

@@ -43,7 +43,7 @@ public class SQLUserDAO implements UserDAO{
                 throw new IllegalArgumentException("Error: bad request");
             }
         } catch (SQLException e){
-             if (e.getMessage().equals("Duplicate entry 'logdog' for key 'users.PRIMARY'")){
+             if (e.getMessage().equals(String.format("Duplicate entry '%s' for key 'users.PRIMARY'", username))){
                  throw new AlreadyInUseException("Error: already in use");
              } else{
                  throw new DataAccessException(e.getMessage()); //Something like this could work??
