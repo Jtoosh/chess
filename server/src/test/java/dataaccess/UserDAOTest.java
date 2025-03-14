@@ -1,14 +1,13 @@
 package dataaccess;
 
+import model.UserData;
 import org.junit.jupiter.api.*;
 
 import java.sql.*;
 
 public class UserDAOTest {
-//    @BeforeAll
-//    static void createDB(){
-//        DatabaseManager.createDatabase();
-//    }
+
+    private UserDAO userDataAccess = new SQLUserDAO();
 
     @BeforeEach
     void setup(){
@@ -27,18 +26,17 @@ public class UserDAOTest {
     @Test
     @DisplayName("Get User Positive")
     void getUserTest(){
-        try (Connection conn = DatabaseManager.getConnection()){
-            var getStatement = "SELECT * FROM users WHERE username = ?";
-            var preppedStmt = conn.prepareStatement(getStatement);
-            preppedStmt.setString(1, "logan");
-            ResultSet result = preppedStmt.executeQuery();
-            result.next();
-            Assertions.assertEquals("logan", result.getString(1));
-            Assertions.assertEquals("password", result.getString(2));
-            Assertions.assertEquals("email.com", result.getString(3));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+            UserData result = userDataAccess.getUserData("logan");
+            Assertions.assertEquals("logan", result.username());
+            Assertions.assertEquals("password", result.password());
+            Assertions.assertEquals("email.com", result.email());
+
+    }
+
+    @Test
+    @DisplayName("Get User Negative")
+    void getUserTestNegative(){
+        Assertions.assertThrows(IllegalArgumentException.class, ( ) -> userDataAccess.getUserData("nonExistent"));
     }
 
     @AfterEach

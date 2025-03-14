@@ -13,14 +13,19 @@ public class SQLUserDAO implements UserDAO{
     @Override
     public UserData getUserData(String username) {
         try(Connection conn = DatabaseManager.getConnection()){
-            String query = String.format("SELECT * FROM USERS WHERE USER = %s", username);
-            Statement stmt = conn.prepareStatement(query);
-            ResultSet result = stmt.executeQuery(query);
+            var query = "SELECT * FROM users WHERE username = ?";
+            var stmt = conn.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet result = stmt.executeQuery();
+            boolean emptyStatus = !result.next();
+            if (emptyStatus) {
+                throw new IllegalArgumentException("Error: user not found");
+            } else{
+                return new UserData(result.getString(1), result.getString(2), result.getString(3));
+            }
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage()); //Something like this could work??
         }
-
-        return null;
     }
 
     @Override
