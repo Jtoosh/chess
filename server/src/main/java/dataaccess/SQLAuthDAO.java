@@ -10,24 +10,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-public class SQLAuthDAO implements AuthDAO{
+public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
     @Override
     public AuthData getAuthData(String username) {
-        try(Connection conn = DatabaseManager.getConnection()){
-            var query = "SELECT * FROM authData WHERE username = ?";
-            var preppedStmt = conn.prepareStatement(query);
-            preppedStmt.setString(1, username);
-            ResultSet result = preppedStmt.executeQuery();
-            boolean emptyStatus = !result.next();
-            if (emptyStatus){
-                throw new IllegalArgumentException("Error: authData not found");
-            }
-            String retrievedUsername = result.getString(1);
-            String retrievedAuthToken = result.getString(2);
-            return new AuthData(retrievedUsername, retrievedAuthToken);
-        } catch (SQLException e){
-            throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }
+        return (AuthData) super.getViaUsername(username, "authData");
     }
 
     @Override

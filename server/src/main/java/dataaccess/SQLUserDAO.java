@@ -11,26 +11,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SQLUserDAO implements UserDAO{
+public class SQLUserDAO extends ParentSQLDAO implements UserDAO{
     @Override
     public UserData getUserData(String username) {
-        try(Connection conn = DatabaseManager.getConnection()){
-            var query = "SELECT * FROM users WHERE username = ?";
-            var stmt = conn.prepareStatement(query);
-            stmt.setString(1, username);
-            ResultSet result = stmt.executeQuery();
-            boolean emptyStatus = !result.next(); //True if ResultSet is empty
-            if (emptyStatus) {
-                throw new IllegalArgumentException("Error: user not found");
-            } else{
-                String retrievedUsername = result.getString(1);
-                String retrievedPasswordHash = result.getString(2);
-                String retrievedEmail = result.getString(3);
-                return new UserData(retrievedUsername, retrievedPasswordHash,retrievedEmail);
-            }
-        } catch (SQLException e){
-            throw new DataAccessException(e.getMessage());
-        }
+         return (UserData) super.getViaUsername(username, "users");
     }
 
     @Override
@@ -57,13 +41,7 @@ public class SQLUserDAO implements UserDAO{
 
     @Override
     public void clearUserData() {
-        try(Connection conn = DatabaseManager.getConnection()){
-            String query = "DELETE FROM users";
-            var stmt = conn.prepareStatement(query);
-            stmt.executeUpdate();
-        } catch (SQLException e){
-             throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }
+        super.clearTable("users");
     }
 
     @Override
