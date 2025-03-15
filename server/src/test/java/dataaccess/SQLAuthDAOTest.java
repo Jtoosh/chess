@@ -36,11 +36,26 @@ public class SQLAuthDAOTest {
     }
 
     @Test
-    @DisplayName("Get AuthData Positive")
+    @DisplayName("Get AuthData Positive with Username")
     void getAuthDataPos(){
         AuthData actualAuth = authDataAccess.getAuthData("logan");
         Assertions.assertEquals("logan", actualAuth.username());
         Assertions.assertNotNull(actualAuth.authToken());
+    }
+
+    @Test
+    @DisplayName("Get AuthData Positive with AuthToken")
+    void getAuthDataPos2(){
+        AuthData actualAuth = authDataAccess.getAuthData("logan");
+        AuthData getWithToken = authDataAccess.getAuthData(actualAuth.authToken());
+        Assertions.assertEquals("logan", getWithToken.username());
+        Assertions.assertEquals(actualAuth.authToken(), getWithToken.authToken());
+    }
+
+    @Test
+    @DisplayName("Get AuthData Negative")
+    void getAuthDataNegative(){
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData("goodAuth"));
     }
 
     @AfterEach

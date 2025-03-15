@@ -19,13 +19,15 @@ public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
     @Override
     public AuthData createAuth(String username) {
         try(Connection conn = DatabaseManager.getConnection()){
-            String query = String.format("INSERT INTO authData (authToken, username) VALUES (%s, %s)", UUID.randomUUID().toString(), username);
-            Statement stmt = conn.prepareStatement(query);
-            ResultSet result = stmt.executeQuery(query);
+            var query = "INSERT INTO authData (authToken, username) VALUES (?, ?)";
+            var preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, UUID.randomUUID().toString());
+            preparedStatement.executeUpdate();
+            return getAuthData(username);
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage()); //Something like this could work??
         }
-        return null;
     }
 
     @Override
