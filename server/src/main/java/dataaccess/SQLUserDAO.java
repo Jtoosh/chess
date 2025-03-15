@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -67,13 +68,20 @@ public class SQLUserDAO implements UserDAO{
 
     @Override
     public Collection<UserData> getUserList() {
-        return List.of();
-        /* try(Connection conn = DatabaseManager.getConnection()){
-            String query = "SELECT FROM users;
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
+         try(Connection conn = DatabaseManager.getConnection()){
+            var query = "SELECT * FROM users";
+            var stmt = conn.prepareStatement(query);
+            ResultSet result = stmt.executeQuery();
+             ArrayList<UserData> userDataList = new ArrayList<>();
+            while (result.next()){
+                String retrievedUsername = result.getString(1);
+                String retrievedPasswordHash = result.getString(2);
+                String retrievedEmail = result.getString(3);
+                userDataList.add(new UserData(retrievedUsername, retrievedPasswordHash,retrievedEmail));
+            }
+            return userDataList;
         } catch (SQLException e){
              throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }*/
+        }
     }
 }

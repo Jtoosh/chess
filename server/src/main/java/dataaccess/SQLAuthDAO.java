@@ -14,13 +14,20 @@ public class SQLAuthDAO implements AuthDAO{
     @Override
     public AuthData getAuthData(String username) {
         try(Connection conn = DatabaseManager.getConnection()){
-            String query = String.format("SELECT * FROM authData WHERE USER = %s", username);
-            Statement stmt = conn.prepareStatement(query);
-            ResultSet result = stmt.executeQuery(query);
+            var query = "SELECT * FROM authData WHERE username = ?";
+            var preppedStmt = conn.prepareStatement(query);
+            preppedStmt.setString(1, username);
+            ResultSet result = preppedStmt.executeQuery();
+            boolean emptyStatus = !result.next();
+            if (emptyStatus){
+                throw new IllegalArgumentException("Error: authData not found");
+            }
+            String retrievedUsername = result.getString(1);
+            String retrievedAuthToken = result.getString(2);
+            return new AuthData(retrievedUsername, retrievedAuthToken);
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage()); //Something like this could work??
         }
-        return null;
     }
 
     @Override

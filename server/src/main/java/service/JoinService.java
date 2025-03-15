@@ -14,7 +14,7 @@ public class JoinService extends ParentService{
   if (getAuthData(request.authToken()) == null){
     throw new AuthorizationException("Error: unauthorized");
   } else if (getGameData(request.gameID()) == null || request.playerColor() == null || !isTeamColor(request.playerColor()) ){
-    throw new DataAccessException("Error: bad request");
+    throw new IllegalArgumentException("Error: bad request");
   }else if (teamColorCollision(request)){
     throw new AlreadyInUseException("Error: already taken");
   }

@@ -5,10 +5,11 @@ import org.junit.jupiter.api.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.util.Collection;
 
-public class UserDAOTest {
+class SQLUserDAOTest {
 
-    private UserDAO userDataAccess = new SQLUserDAO();
+    private final UserDAO userDataAccess = new SQLUserDAO();
 
     @BeforeAll
     static void createDB(){
@@ -66,6 +67,13 @@ public class UserDAOTest {
     void clearUsersTest(){
         userDataAccess.clearUserData();
         Assertions.assertThrows(IllegalArgumentException.class, ()-> userDataAccess.getUserData("logan"));
+    }
+
+    @Test
+    @DisplayName("Get User List Positive")
+    void getUserList(){
+        Collection<UserData> userList = userDataAccess.getUserList();
+        Assertions.assertTrue(userList.size() == 1);
     }
 
     @AfterEach

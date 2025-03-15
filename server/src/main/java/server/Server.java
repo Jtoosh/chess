@@ -8,7 +8,7 @@ import service.*;
 import spark.*;
 
 public class Server {
-    private final UserDAO userDataAccess = new MemoryUserDAO();
+    private final UserDAO userDataAccess = new SQLUserDAO();
     private final AuthDAO authDataAccess = new MemoryAuthDAO();
     private final GameDAO gameDataAccess = new MemoryGameDAO();
 
@@ -26,7 +26,7 @@ public class Server {
         Record response = service.executeService(request);
         res.status(200);
         res.body(serializer.toJSON(response));
-      } catch (DataAccessException e){
+      } catch (IllegalArgumentException e){
         res.status(400);
         res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
       } catch (AuthorizationException e) {

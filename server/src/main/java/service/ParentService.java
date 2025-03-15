@@ -6,7 +6,7 @@ import model.GameData;
 import model.UserData;
 
 public class ParentService {
-  private UserDAO userDataAccess = new MemoryUserDAO();
+  private UserDAO userDataAccess = new SQLUserDAO();
   private AuthDAO authDataAccess = new MemoryAuthDAO();
   protected GameDAO gameDataAccess = new MemoryGameDAO();
 

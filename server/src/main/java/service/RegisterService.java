@@ -15,7 +15,7 @@ public class RegisterService extends ParentService{
 
   public RegisterResponse register(RegisterRequest request) {
     if (request.password() == null) {
-      throw new DataAccessException("Error: bad request");
+      throw new IllegalArgumentException("Error: bad request");
     }
     else if (getUser(request.username())!= null){
       throw new AlreadyInUseException("Error: already taken");
