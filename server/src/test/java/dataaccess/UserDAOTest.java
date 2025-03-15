@@ -10,6 +10,11 @@ public class UserDAOTest {
 
     private UserDAO userDataAccess = new SQLUserDAO();
 
+    @BeforeAll
+    static void createDB(){
+        DatabaseManager.createDatabase(); //Creates the DB if needed
+    }
+
     @BeforeEach
     void setup(){
         try(Connection conn = DatabaseManager.getConnection(); ){
@@ -59,7 +64,8 @@ public class UserDAOTest {
     @Test
     @DisplayName("Clear Users Positive")
     void clearUsersTest(){
-
+        userDataAccess.clearUserData();
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> userDataAccess.getUserData("logan"));
     }
 
     @AfterEach

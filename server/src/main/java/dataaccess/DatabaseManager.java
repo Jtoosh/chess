@@ -82,15 +82,15 @@ public class DatabaseManager {
             var statement2 = "CREATE TABLE IF NOT EXISTS authData (" +
                     "authToken varchar(255) NOT NULL PRIMARY KEY," +
                     " username varchar(255) NOT NULL," +
-                    " foreign key(username) REFERENCES users(username))";
+                    " foreign key(username) REFERENCES users(username) on delete cascade)";
             var statement3 = "CREATE TABLE IF NOT EXISTS games (" +
                     "id int AUTO_INCREMENT NOT NULL PRIMARY KEY," +
                     "gameName varchar(255) NOT NULL," +
                     "whiteUsername varchar(255)," +
                     "blackUsername varchar(255),"+
                     "ChessGame varchar(255)," +
-                    "foreign key(whiteUsername) REFERENCES users(username)," +
-                    "foreign key(blackUsername) REFERENCES users(username))";
+                    "foreign key(whiteUsername) REFERENCES users(username) on delete cascade," +
+                    "foreign key(blackUsername) REFERENCES users(username) on delete cascade)";
             String[] statementArray = {statement0, statement1, statement2, statement3};
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
             for (String statement : statementArray){

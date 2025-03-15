@@ -18,11 +18,14 @@ public class SQLUserDAO implements UserDAO{
             var stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet result = stmt.executeQuery();
-            boolean emptyStatus = !result.next();
+            boolean emptyStatus = !result.next(); //True if ResultSet is empty
             if (emptyStatus) {
                 throw new IllegalArgumentException("Error: user not found");
             } else{
-                return new UserData(result.getString(1), result.getString(2), result.getString(3));
+                String retrievedUsername = result.getString(1);
+                String retrievedPasswordHash = result.getString(2);
+                String retrievedEmail = result.getString(3);
+                return new UserData(retrievedUsername, retrievedPasswordHash,retrievedEmail);
             }
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage());
@@ -46,20 +49,20 @@ public class SQLUserDAO implements UserDAO{
              if (e.getMessage().equals(String.format("Duplicate entry '%s' for key 'users.PRIMARY'", username))){
                  throw new AlreadyInUseException("Error: already in use");
              } else{
-                 throw new DataAccessException(e.getMessage()); //Something like this could work??
+                 throw new DataAccessException(e.getMessage());
              }
         }
     }
 
     @Override
     public void clearUserData() {
-       /* try(Connection conn = DatabaseManager.getConnection()){
+        try(Connection conn = DatabaseManager.getConnection()){
             String query = "DELETE FROM users";
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
+            var stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
         } catch (SQLException e){
              throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }*/
+        }
     }
 
     @Override
