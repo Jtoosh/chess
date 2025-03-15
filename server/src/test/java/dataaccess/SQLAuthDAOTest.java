@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.UUID;
 
 public class SQLAuthDAOTest {
@@ -70,6 +71,12 @@ public class SQLAuthDAOTest {
     }
 
     @Test
+    @DisplayName("Create AuthData Negative")
+    void createAuthNegative(){
+        Assertions.assertThrows(IllegalArgumentException.class, ( )-> authDataAccess.createAuth("Lord Farquad"));
+    }
+
+    @Test
     @DisplayName("Clear AuthData Positive")
     void clearAuthData(){
         authDataAccess.clearAuthData();
@@ -83,6 +90,18 @@ public class SQLAuthDAOTest {
         authDataAccess.deleteAuth(createdAuth.authToken());
         Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData(createdAuth.authToken()));
     }
+
+    @Test
+    @DisplayName("Get AuthData List Positive ")
+    void getAuthListPos(){
+        authDataAccess.clearAuthData();
+        authDataAccess.createAuth("logan");
+        authDataAccess.createAuth("logan");
+        authDataAccess.createAuth("logan");
+        Collection <AuthData> authDataList = authDataAccess.getAuthDataList();
+        Assertions.assertEquals(3, authDataList.size());
+    }
+    
 
     @AfterEach
     void cleanUp(){

@@ -1,11 +1,13 @@
 package dataaccess;
 
 import model.AuthData;
+import model.UserData;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -26,20 +28,30 @@ public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
             preparedStatement.executeUpdate();
             return getAuthData(username);
         } catch (SQLException e){
-            throw new DataAccessException(e.getMessage());
+            if (e.getSQLState().equals("23000")){
+                throw new IllegalArgumentException("Error: user not found");
+            }else {
+                throw new DataAccessException(e.getMessage());
+            }
         }
     }
 
     @Override
     public Collection<AuthData> getAuthDataList() {
+        Collection<AuthData> authDataList = new ArrayList<>();
         try(Connection conn = DatabaseManager.getConnection()){
             String query = "SELECT * FROM authData";
             Statement stmt = conn.prepareStatement(query);
             ResultSet result = stmt.executeQuery(query);
+            while (result.next()){
+                String retrievedAuthToken = result.getString(1);
+                String retrievedUsername = result.getString(2);
+                authDataList.add(new AuthData(retrievedAuthToken, retrievedUsername));
+            }
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage());
         }
-        return List.of();
+        return authDataList;
     }
 
     @Override
