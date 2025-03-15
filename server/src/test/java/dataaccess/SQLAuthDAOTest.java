@@ -30,6 +30,8 @@ public class SQLAuthDAOTest {
             preppedStmt2.setString(1, "logan");
             preppedStmt2.setString(2, UUID.randomUUID().toString());
             preppedStmt2.executeUpdate();
+
+
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage());
         }
@@ -58,6 +60,22 @@ public class SQLAuthDAOTest {
         Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData("goodAuth"));
     }
 
+    @Test
+    @DisplayName("Create AuthData Positive")
+    void createAuthPos(){
+        AuthData createdAuth = authDataAccess.createAuth("logan");
+        Assertions.assertEquals("logan", createdAuth.username());
+        AuthData gotViaToken = authDataAccess.getAuthData(createdAuth.authToken());
+        Assertions.assertEquals(createdAuth.authToken(),gotViaToken.authToken());
+    }
+
+    @Test
+    @DisplayName("Clear AuthData Positive")
+    void clearAuthData(){
+        authDataAccess.clearAuthData();
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData("logan"));
+    }
+
     @AfterEach
     void cleanUp(){
         try(Connection conn = DatabaseManager.getConnection()){
@@ -70,8 +88,8 @@ public class SQLAuthDAOTest {
 
                 var cleanUpStatement2 = "DELETE FROM authData WHERE username = ?";
                 var preppedCleanUp2 = conn.prepareStatement(cleanUpStatement2);
-                preppedCleanUp.setString(1, username);
-                preppedCleanUp.executeUpdate();
+                preppedCleanUp2.setString(1, username);
+                preppedCleanUp2.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

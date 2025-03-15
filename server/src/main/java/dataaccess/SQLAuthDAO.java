@@ -55,12 +55,6 @@ public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
 
     @Override
     public void clearAuthData() {
-        try(Connection conn = DatabaseManager.getConnection()){
-            String query = "DELETE FROM authData";
-            Statement stmt = conn.prepareStatement(query);
-            ResultSet result = stmt.executeQuery(query);
-        } catch (SQLException e){
-            throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }
+        super.clearTable("authData");
     }
 }
