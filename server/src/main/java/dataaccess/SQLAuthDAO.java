@@ -45,9 +45,10 @@ public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
     @Override
     public void deleteAuth(String authToken) {
         try(Connection conn = DatabaseManager.getConnection()){
-            String query = String.format("DELETE FROM authData WHERE authToken = %s", authToken);
-            Statement stmt = conn.prepareStatement(query);
-            ResultSet result = stmt.executeQuery(query);
+            var query = "DELETE FROM authData WHERE authToken = ?";
+            var preppedStmt = conn.prepareStatement(query);
+            preppedStmt.setString(1, authToken);
+            preppedStmt.executeUpdate();
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage()); //Something like this could work??
         }

@@ -79,7 +79,9 @@ public class SQLAuthDAOTest {
     @Test
     @DisplayName("Delete AuthData Positive")
     void deleteAuthData(){
-        
+        AuthData createdAuth = authDataAccess.createAuth("logan");
+        authDataAccess.deleteAuth(createdAuth.authToken());
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData(createdAuth.authToken()));
     }
 
     @AfterEach
