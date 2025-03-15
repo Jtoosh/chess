@@ -21,12 +21,12 @@ public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
         try(Connection conn = DatabaseManager.getConnection()){
             var query = "INSERT INTO authData (authToken, username) VALUES (?, ?)";
             var preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, UUID.randomUUID().toString());
+            preparedStatement.setString(1, UUID.randomUUID().toString());
+            preparedStatement.setString(2, username);
             preparedStatement.executeUpdate();
             return getAuthData(username);
         } catch (SQLException e){
-            throw new DataAccessException(e.getMessage()); //Something like this could work??
+            throw new DataAccessException(e.getMessage());
         }
     }
 
@@ -37,7 +37,7 @@ public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
             Statement stmt = conn.prepareStatement(query);
             ResultSet result = stmt.executeQuery(query);
         } catch (SQLException e){
-            throw new DataAccessException(e.getMessage()); //Something like this could work??
+            throw new DataAccessException(e.getMessage());
         }
         return List.of();
     }
