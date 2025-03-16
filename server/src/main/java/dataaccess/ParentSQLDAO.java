@@ -28,7 +28,7 @@ public class ParentSQLDAO {
             ResultSet result = stmt.executeQuery();
             boolean emptyStatus = !result.next(); //True if ResultSet is empty
             if (emptyStatus) {
-                throw new IllegalArgumentException("Error: not found");
+                return null;
             } else {
                 switch (table){
                     case "users":

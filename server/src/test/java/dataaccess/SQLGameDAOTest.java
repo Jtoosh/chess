@@ -1,13 +1,12 @@
 package dataaccess;
 
 import chess.ChessGame;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import model.GameData;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-i
+
 
 import server.Serializer;
 
@@ -27,6 +26,16 @@ public class SQLGameDAOTest {
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("Get Game Positive")
+    void getGamePos(){
+        GameData retrievedGame = gameDataAccess.getGameData(1);
+        Assertions.assertEquals(1, retrievedGame.gameID());
+        Assertions.assertEquals("test Game",retrievedGame.gameName());
+        Assertions.assertEquals("logan", retrievedGame.whiteUsername());
+        Assertions.assertEquals("logdog", retrievedGame.blackUsername());
     }
 
     @AfterEach
