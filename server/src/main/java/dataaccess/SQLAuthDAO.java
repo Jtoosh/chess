@@ -23,10 +23,11 @@ public class SQLAuthDAO extends ParentSQLDAO implements AuthDAO{
         try(Connection conn = DatabaseManager.getConnection()){
             var query = "INSERT INTO authData (authToken, username) VALUES (?, ?)";
             var preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, UUID.randomUUID().toString());
+            String authToken = UUID.randomUUID().toString();
+            preparedStatement.setString(1, authToken);
             preparedStatement.setString(2, username);
             preparedStatement.executeUpdate();
-            return getAuthData(username);
+            return new AuthData(authToken, username);
         } catch (SQLException e){
             if (e.getSQLState().equals("23000")){
                 throw new IllegalArgumentException("Error: user not found");

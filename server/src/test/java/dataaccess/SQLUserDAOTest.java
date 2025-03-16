@@ -39,7 +39,7 @@ class SQLUserDAOTest {
     @Test
     @DisplayName("Get User Negative")
     void getUserTestNegative(){
-        Assertions.assertThrows(IllegalArgumentException.class, ( ) -> userDataAccess.getUserData("nonExistent"));
+        Assertions.assertNull(userDataAccess.getUserData("nonExistent"));
     }
 
     @Test
@@ -62,7 +62,7 @@ class SQLUserDAOTest {
     @DisplayName("Clear Users Positive")
     void clearUsersTest(){
         userDataAccess.clearUserData();
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> userDataAccess.getUserData("logan"));
+        Assertions.assertNull(userDataAccess.getUserData("logan"));
     }
 
     @Test

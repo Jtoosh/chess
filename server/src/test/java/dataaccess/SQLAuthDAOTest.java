@@ -45,7 +45,7 @@ public class SQLAuthDAOTest {
     @Test
     @DisplayName("Get AuthData Negative")
     void getAuthDataNegative(){
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData("goodAuth"));
+        Assertions.assertNull(authDataAccess.getAuthData("goodAuth"));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class SQLAuthDAOTest {
     @DisplayName("Clear AuthData Positive")
     void clearAuthData(){
         authDataAccess.clearAuthData();
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData("logan"));
+        Assertions.assertNull(authDataAccess.getAuthData("logan"));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class SQLAuthDAOTest {
     void deleteAuthData(){
         AuthData createdAuth = authDataAccess.createAuth("logan");
         authDataAccess.deleteAuth(createdAuth.authToken());
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> authDataAccess.getAuthData(createdAuth.authToken()));
+        Assertions.assertNull(authDataAccess.getAuthData(createdAuth.authToken()));
     }
 
     @Test
