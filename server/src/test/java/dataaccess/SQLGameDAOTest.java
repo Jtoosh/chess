@@ -38,6 +38,13 @@ public class SQLGameDAOTest {
         Assertions.assertEquals("logdog", retrievedGame.blackUsername());
     }
 
+    @Test
+    @DisplayName("Get Game Negative")
+    void getGameNegative(){
+        GameData retrievedGame = gameDataAccess.getGameData(-1);
+        Assertions.assertNull(retrievedGame);
+    }
+
     @AfterEach
     void cleanUp() {
         try (Connection conn = DatabaseManager.getConnection()) {

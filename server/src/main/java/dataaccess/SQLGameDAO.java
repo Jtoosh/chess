@@ -20,7 +20,10 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
             var preppedStmt = conn.prepareStatement(query);
             preppedStmt.setInt(1, gameID);
             ResultSet result = preppedStmt.executeQuery();
-            result.next();
+            boolean emptyStatus = !result.next();
+
+            if (emptyStatus) {return null;}
+
             int retGameID = result.getInt(1);
             String retGameName = result.getString(2);
             String retWhtUsername = result.getString(3);
