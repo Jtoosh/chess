@@ -19,20 +19,7 @@ public class SQLAuthDAOTest {
     @BeforeEach
     void setup(){
         try(Connection conn = DatabaseManager.getConnection(); ){
-            var setUpStatement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
-            var preppedStmt = conn.prepareStatement(setUpStatement);
-            preppedStmt.setString(1, "logan");
-            preppedStmt.setString(2, "password");
-            preppedStmt.setString(3, "email.com");
-            preppedStmt.executeUpdate();
-
-            var setUpStatement2 = "INSERT INTO authData (username, authToken) VALUES (?, ?)";
-            var preppedStmt2 = conn.prepareStatement(setUpStatement2);
-            preppedStmt2.setString(1, "logan");
-            preppedStmt2.setString(2, UUID.randomUUID().toString());
-            preppedStmt2.executeUpdate();
-
-
+            TestUtilities.setUp(conn);
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage());
         }
@@ -101,23 +88,12 @@ public class SQLAuthDAOTest {
         Collection <AuthData> authDataList = authDataAccess.getAuthDataList();
         Assertions.assertEquals(3, authDataList.size());
     }
-    
+
 
     @AfterEach
     void cleanUp(){
         try(Connection conn = DatabaseManager.getConnection()){
-            String[] usersMade = {"logan"};
-            for (String username : usersMade) {
-                var cleanUpStatement = "DELETE FROM users WHERE username = ?";
-                var preppedCleanUp = conn.prepareStatement(cleanUpStatement);
-                preppedCleanUp.setString(1, username);
-                preppedCleanUp.executeUpdate();
-
-                var cleanUpStatement2 = "DELETE FROM authData WHERE username = ?";
-                var preppedCleanUp2 = conn.prepareStatement(cleanUpStatement2);
-                preppedCleanUp2.setString(1, username);
-                preppedCleanUp2.executeUpdate();
-            }
+            TestUtilities.cleanUp(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

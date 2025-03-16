@@ -19,12 +19,8 @@ class SQLUserDAOTest {
     @BeforeEach
     void setup(){
         try(Connection conn = DatabaseManager.getConnection(); ){
-            var setUpStatement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
-            var preppedStmt = conn.prepareStatement(setUpStatement);
-            preppedStmt.setString(1, "logan");
-            preppedStmt.setString(2, "password");
-            preppedStmt.setString(3, "email.com");
-            preppedStmt.executeUpdate();
+            TestUtilities.setUp(conn);
+
         } catch (SQLException e){
             throw new DataAccessException(e.getMessage());
         }
@@ -49,9 +45,9 @@ class SQLUserDAOTest {
     @Test
     @DisplayName("Create User Positive")
     void createUserTestPos(){
-        userDataAccess.createUser("logdog", "james the b3st", "email.com");
-        UserData result = userDataAccess.getUserData("logdog");
-        Assertions.assertEquals("logdog", result.username());
+        userDataAccess.createUser("rogan", "james the b3st", "email.com");
+        UserData result = userDataAccess.getUserData("rogan");
+        Assertions.assertEquals("rogan", result.username());
         Assertions.assertTrue(BCrypt.checkpw("james the b3st", result.password()));
         Assertions.assertEquals("email.com", result.email());
     }
@@ -73,19 +69,13 @@ class SQLUserDAOTest {
     @DisplayName("Get User List Positive")
     void getUserList(){
         Collection<UserData> userList = userDataAccess.getUserList();
-        Assertions.assertTrue(userList.size() == 1);
+        Assertions.assertTrue(userList.size() == 3);
     }
 
     @AfterEach
     void cleanUp(){
         try(Connection conn = DatabaseManager.getConnection()){
-            String[] usersMade = {"logan", "logdog"};
-            for (String username : usersMade) {
-                var cleanUpStatement = "DELETE FROM users WHERE username = ?";
-                var preppedCleanUp = conn.prepareStatement(cleanUpStatement);
-                preppedCleanUp.setString(1, username);
-                preppedCleanUp.executeUpdate();
-            }
+            TestUtilities.cleanUp(conn);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.List;
 
-public class SQLGameDAO implements GameDAO{
+public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
     @Override
     public GameData getGameData(int gameID) {
         try(Connection conn = DatabaseManager.getConnection()){
@@ -61,12 +61,6 @@ public class SQLGameDAO implements GameDAO{
 
     @Override
     public void clearGameData() {
-        /* try(Connection conn = DatabaseManager.getConnection()){
-            String query = "DELETE FROM games";
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
-        } catch (SQLException e){
-             throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }*/
+        super.clearTable("games");
     }
 }
