@@ -32,8 +32,8 @@ public class SQLGameDAOTest {
     @Test
     @DisplayName("Get Game Positive")
     void getGamePos(){
-        GameData retrievedGame = gameDataAccess.getGameData(1);
-        Assertions.assertEquals(1, retrievedGame.gameID());
+        GameData retrievedGame = gameDataAccess.getGameData(1000000000);
+        Assertions.assertEquals(1000000000, retrievedGame.gameID());
         Assertions.assertEquals("test Game",retrievedGame.gameName());
         Assertions.assertEquals("logan", retrievedGame.whiteUsername());
         Assertions.assertEquals("logdog", retrievedGame.blackUsername());
@@ -69,8 +69,8 @@ public class SQLGameDAOTest {
     @Test
     @DisplayName("Update Game Positive")
     void updateGamePos(){
-        gameDataAccess.updateGame(2, "BLACK", "logdog");
-        GameData updatedGame = gameDataAccess.getGameData(2);
+        gameDataAccess.updateGame(2000000000, "BLACK", "logdog");
+        GameData updatedGame = gameDataAccess.getGameData(2000000000);
         Assertions.assertEquals("logdog", updatedGame.blackUsername());
     }
 

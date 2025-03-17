@@ -36,7 +36,7 @@ public class TestUtilities {
         var setUpStatement3 = "INSERT INTO games (id, gameName, whiteUsername, blackUsername, ChessGame)" +
                 " VALUES (?,?,?,?,? )";
         var preppedStmt3 = conn.prepareStatement(setUpStatement3);
-        preppedStmt3.setInt(1, 1);
+        preppedStmt3.setInt(1, 1000000000);
         preppedStmt3.setString(2, "test Game");
         preppedStmt3.setString(3, "logan");
         preppedStmt3.setString(4, "logdog");
@@ -46,7 +46,7 @@ public class TestUtilities {
         var setUpStatement4 = "INSERT INTO games (id, gameName, whiteUsername, blackUsername, ChessGame)" +
                 " VALUES (?,?,?,?,? )";
         var preppedStmt4 = conn.prepareStatement(setUpStatement4);
-        preppedStmt4.setInt(1, 2);
+        preppedStmt4.setInt(1, 2000000000);
         preppedStmt4.setString(2, "test Game");
         preppedStmt4.setString(3, "logan");
         preppedStmt4.setString(4, null);

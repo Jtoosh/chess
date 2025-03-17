@@ -57,18 +57,20 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
 
     @Override
     public int createGame(String whiteUsername, String blackUsername, String gameName) {
+        int gameCount = getGameList().size();
          try(Connection conn = DatabaseManager.getConnection()){
-            var query = "INSERT INTO games (gameName, whiteUsername, blackUsername, ChessGame) VALUES (?, ?, ?, ?)";
+            var query = "INSERT INTO games (id, gameName, whiteUsername, blackUsername, ChessGame) VALUES (?, ?, ?, ?, ?)";
             var preppedStmt = conn.prepareStatement(query);
-            preppedStmt.setString(1, gameName);
-            preppedStmt.setString(2, whiteUsername);
-            preppedStmt.setString(3, blackUsername);
-            preppedStmt.setString(4, serializer.toJSON(new ChessGame()));
+            preppedStmt.setInt(1, gameCount + 1);
+            preppedStmt.setString(2, gameName);
+            preppedStmt.setString(3, whiteUsername);
+            preppedStmt.setString(4, blackUsername);
+            preppedStmt.setString(5, serializer.toJSON(new ChessGame()));
             preppedStmt.executeUpdate();
         } catch (SQLException e){
              throw new DataAccessException(e.getMessage());
         }
-         return getGameList().size();
+         return gameCount + 1;
     }
 
     @Override
