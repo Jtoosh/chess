@@ -50,7 +50,7 @@ public class SQLGameDAOTest {
     @DisplayName("Get GameList Positive")
     void getGameListPos(){
         Collection<GameData> retrievedGameList = gameDataAccess.getGameList();
-        Assertions.assertEquals(1, retrievedGameList.size());
+        Assertions.assertEquals(2, retrievedGameList.size());
     }
 
     @Test
@@ -64,6 +64,28 @@ public class SQLGameDAOTest {
     @DisplayName("Create Game Negative")
     void createGameNegative(){
         Assertions.assertThrows(DataAccessException.class, ()-> gameDataAccess.createGame("logan", "logdog", null));
+    }
+
+    @Test
+    @DisplayName("Update Game Positive")
+    void updateGamePos(){
+        gameDataAccess.updateGame(2, "BLACK", "logdog");
+        GameData updatedGame = gameDataAccess.getGameData(2);
+        Assertions.assertEquals("logdog", updatedGame.blackUsername());
+    }
+
+    @Test
+    @DisplayName("Update Game Negative")
+    void updateGameNegative(){
+        Assertions.assertThrows(DataAccessException.class, () -> gameDataAccess.updateGame(-144, "PURPLE", "rogdog"));
+    }
+
+
+    @Test
+    @DisplayName("Clear Games Positive")
+    void clearGamesTest(){
+        gameDataAccess.clearGameData();
+        Assertions.assertNull(gameDataAccess.getGameData(1));
     }
 
     @AfterEach

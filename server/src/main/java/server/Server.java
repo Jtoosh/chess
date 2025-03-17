@@ -10,7 +10,7 @@ import spark.*;
 public class Server {
     private final UserDAO userDataAccess = new SQLUserDAO();
     private final AuthDAO authDataAccess = new SQLAuthDAO();
-    private final GameDAO gameDataAccess = new MemoryGameDAO();
+    private final GameDAO gameDataAccess = new SQLGameDAO();
 
     private final Serializer serializer = new Serializer();
     private final ClearService clearService = new ClearService(userDataAccess, authDataAccess, gameDataAccess);

@@ -30,7 +30,7 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
             ChessGame retGame = serializer.fromJSON(result.getString(5), ChessGame.class);
             return new GameData(retGameID, retWhtUsername, retBlkUsername, retGameName, retGame);
         } catch (SQLException e){
-            throw new DataAccessException(e.getMessage()); //Something like this could work??
+            throw new DataAccessException(e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
                 gameDataList.add(new GameData(retGameID, retWhtUsername, retBlkUsername, retGameName, retGame));
             }
         } catch (SQLException e){
-             throw new DataAccessException(e.getMessage()); //Something like this could work??
+             throw new DataAccessException(e.getMessage());
         }
          return gameDataList;
     }
@@ -66,21 +66,28 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
             preppedStmt.setString(4, serializer.toJSON(new ChessGame()));
             preppedStmt.executeUpdate();
         } catch (SQLException e){
-             throw new DataAccessException(e.getMessage()); //Something like this could work??
+             throw new DataAccessException(e.getMessage());
         }
          return getGameList().size();
     }
 
     @Override
     public void updateGame(int gameID, String teamColorRequest, String username) {
-        /* try(Connection conn = DatabaseManager.getConnection()){
-        //Some code to determine the requested color and put it in the query as variable teamColorUsername
-            String query = "UPDATE games SET %s = %s WHERE gameID = %n". teamColorUsername, username, gameID
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
+        String updateTeamColor = null;
+        if (teamColorRequest.equals("WHITE")){
+            updateTeamColor = "whiteUsername";
+        } else if (teamColorRequest.equals("BLACK")) {
+            updateTeamColor = "blackUsername";
+        }
+        try(Connection conn = DatabaseManager.getConnection()){
+            var query = String.format("UPDATE games SET %s = ? WHERE id = ?", updateTeamColor);
+            var preppedStmt = conn.prepareStatement(query);
+            preppedStmt.setString(1, username);
+            preppedStmt.setInt(2, gameID);
+            preppedStmt.executeUpdate();
         } catch (SQLException e){
-             throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }*/
+             throw new DataAccessException(e.getMessage());
+        }
     }
 
     @Override

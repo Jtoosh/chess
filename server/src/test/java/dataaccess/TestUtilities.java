@@ -42,6 +42,16 @@ public class TestUtilities {
         preppedStmt3.setString(4, "logdog");
         preppedStmt3.setString(5, serializer.toJSON(new ChessGame()));
         preppedStmt3.executeUpdate();
+
+        var setUpStatement4 = "INSERT INTO games (id, gameName, whiteUsername, blackUsername, ChessGame)" +
+                " VALUES (?,?,?,?,? )";
+        var preppedStmt4 = conn.prepareStatement(setUpStatement4);
+        preppedStmt4.setInt(1, 2);
+        preppedStmt4.setString(2, "test Game");
+        preppedStmt4.setString(3, "logan");
+        preppedStmt4.setString(4, null);
+        preppedStmt4.setString(5, serializer.toJSON(new ChessGame()));
+        preppedStmt4.executeUpdate();
     }
 
     public static void cleanUp(Connection conn) throws SQLException{
