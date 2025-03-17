@@ -73,7 +73,7 @@ public class DatabaseManager {
 
     private static void createTables() throws DataAccessException{
         try {
-            var statement0 = "USE chess";
+            var statement0 = String.format("USE %s", DATABASE_NAME);
 
             var statement1 = "CREATE TABLE IF NOT EXISTS users (" +
                     "username varchar(255) NOT NULL PRIMARY KEY," +
@@ -84,15 +84,16 @@ public class DatabaseManager {
                     " username varchar(255) NOT NULL," +
                     " foreign key(username) REFERENCES users(username) on delete cascade)";
             var statement3 = "CREATE TABLE IF NOT EXISTS games (" +
-                    "id int AUTO_INCREMENT NOT NULL PRIMARY KEY," +
+                    "id int NOT NULL PRIMARY KEY," +
                     "gameName varchar(255) NOT NULL," +
                     "whiteUsername varchar(255)," +
                     "blackUsername varchar(255),"+
-                    "ChessGame varchar(255)," +
+                    "ChessGame MEDIUMTEXT," +
                     "foreign key(whiteUsername) REFERENCES users(username) on delete cascade," +
                     "foreign key(blackUsername) REFERENCES users(username) on delete cascade)";
             String[] statementArray = {statement0, statement1, statement2, statement3};
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
+
             for (String statement : statementArray){
                 try (var preparedStatement = conn.prepareStatement(statement)){
                     preparedStatement.executeUpdate();
