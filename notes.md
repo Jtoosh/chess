@@ -1022,3 +1022,5 @@ The big obstacles I found was formatting the SQL commands correctly, there were 
 I also got tripped up thinking the Result set was observing a _column_ at a time, but remembered that the cursor points to a _**row**_. The column is selected in the `.get()` methods.
 
 **Tip**: Use the keyword TRUNCATE instead of DROP for the clear methods.
+
+#### Phase 4 Retrospective
