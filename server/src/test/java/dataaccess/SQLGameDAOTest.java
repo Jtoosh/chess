@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 
 
 import server.Serializer;
@@ -43,6 +44,26 @@ public class SQLGameDAOTest {
     void getGameNegative(){
         GameData retrievedGame = gameDataAccess.getGameData(-1);
         Assertions.assertNull(retrievedGame);
+    }
+
+    @Test
+    @DisplayName("Get GameList Positive")
+    void getGameListPos(){
+        Collection<GameData> retrievedGameList = gameDataAccess.getGameList();
+        Assertions.assertEquals(1, retrievedGameList.size());
+    }
+
+    @Test
+    @DisplayName("Create Game Positive")
+    void createGamePos(){
+        int createdGameId = gameDataAccess.createGame("logan", "logdog", "Epic battle");
+        Assertions.assertEquals(gameDataAccess.getGameList().size(), createdGameId);
+    }
+
+    @Test
+    @DisplayName("Create Game Negative")
+    void createGameNegative(){
+        Assertions.assertThrows(DataAccessException.class, ()-> gameDataAccess.createGame("logan", "logdog", null));
     }
 
     @AfterEach

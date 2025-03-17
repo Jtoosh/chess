@@ -7,9 +7,8 @@ import server.Serializer;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
     Serializer serializer = new Serializer();
@@ -37,26 +36,39 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
 
     @Override
     public Collection<GameData> getGameList() {
-        /* try(Connection conn = DatabaseManager.getConnection()){
-            String query = "SELECT FROM games;
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
+        ArrayList<GameData> gameDataList = new ArrayList<>();
+         try(Connection conn = DatabaseManager.getConnection()){
+            var query = "SELECT * FROM games";
+            var preppedStmt = conn.prepareStatement(query);
+            ResultSet result = preppedStmt.executeQuery();
+            while (result.next()){
+                int retGameID = result.getInt(1);
+                String retGameName = result.getString(2);
+                String retWhtUsername = result.getString(3);
+                String retBlkUsername = result.getString(4);
+                ChessGame retGame = serializer.fromJSON(result.getString(5), ChessGame.class);
+                gameDataList.add(new GameData(retGameID, retWhtUsername, retBlkUsername, retGameName, retGame));
+            }
         } catch (SQLException e){
              throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }*/
-        return List.of();
+        }
+         return gameDataList;
     }
 
     @Override
     public int createGame(String whiteUsername, String blackUsername, String gameName) {
-        return 0;
-        /* try(Connection conn = DatabaseManager.getConnection()){
-            String query = "INSERT into games (whiteUsername, blackUsername, gameName) VALUES (%s, %s, %s)", whiteUsername, blackUsername, gameName;  //gameID will be an auto-incrementing pk
-            stmt = conn.prepareStatement(query);
-            result = stmt.executeQuery();
+         try(Connection conn = DatabaseManager.getConnection()){
+            var query = "INSERT INTO games (gameName, whiteUsername, blackUsername, ChessGame) VALUES (?, ?, ?, ?)";
+            var preppedStmt = conn.prepareStatement(query);
+            preppedStmt.setString(1, gameName);
+            preppedStmt.setString(2, whiteUsername);
+            preppedStmt.setString(3, blackUsername);
+            preppedStmt.setString(4, serializer.toJSON(new ChessGame()));
+            preppedStmt.executeUpdate();
         } catch (SQLException e){
              throw new DataAccessException(e.getMessage()); //Something like this could work??
-        }*/
+        }
+         return getGameList().size();
     }
 
     @Override
