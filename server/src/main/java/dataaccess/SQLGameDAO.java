@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
-    Serializer serializer = new Serializer();
+    private final Serializer serializer = new Serializer();
     @Override
     public GameData getGameData(int gameID) {
         try(Connection conn = DatabaseManager.getConnection()){

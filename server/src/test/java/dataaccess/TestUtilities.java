@@ -9,7 +9,7 @@ import java.util.UUID;
 import server.Serializer;
 
 public class TestUtilities {
-    private final static Serializer SERIALIZER = new Serializer();
+    private static final Serializer SERIALIZER = new Serializer();
 
     public static void setUp(Connection conn) throws SQLException {
         var setUpStatement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";

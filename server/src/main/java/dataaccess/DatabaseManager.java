@@ -73,25 +73,8 @@ public class DatabaseManager {
 
     private static void createTables() throws DataAccessException{
         try {
-            var statement0 = String.format("USE %s", DATABASE_NAME);
 
-            var statement1 = "CREATE TABLE IF NOT EXISTS users (" +
-                    "username varchar(255) NOT NULL PRIMARY KEY," +
-                    " password varchar(255) NOT NULL," +
-                    " email varchar(255) NOT NULL)";
-            var statement2 = "CREATE TABLE IF NOT EXISTS authData (" +
-                    "authToken varchar(255) NOT NULL PRIMARY KEY," +
-                    " username varchar(255) NOT NULL," +
-                    " foreign key(username) REFERENCES users(username) on delete cascade)";
-            var statement3 = "CREATE TABLE IF NOT EXISTS games (" +
-                    "id int NOT NULL PRIMARY KEY," +
-                    "gameName varchar(255) NOT NULL," +
-                    "whiteUsername varchar(255)," +
-                    "blackUsername varchar(255),"+
-                    "ChessGame MEDIUMTEXT," +
-                    "foreign key(whiteUsername) REFERENCES users(username) on delete cascade," +
-                    "foreign key(blackUsername) REFERENCES users(username) on delete cascade)";
-            String[] statementArray = {statement0, statement1, statement2, statement3};
+            String[] statementArray = getStrings();
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
 
             for (String statement : statementArray){
@@ -103,5 +86,28 @@ public class DatabaseManager {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private static String[] getStrings() {
+        var statement0 = String.format("USE %s", DATABASE_NAME);
+
+        var statement1 = "CREATE TABLE IF NOT EXISTS users (" +
+                "username varchar(255) NOT NULL PRIMARY KEY," +
+                " password varchar(255) NOT NULL," +
+                " email varchar(255) NOT NULL)";
+        var statement2 = "CREATE TABLE IF NOT EXISTS authData (" +
+                "authToken varchar(255) NOT NULL PRIMARY KEY," +
+                " username varchar(255) NOT NULL," +
+                " foreign key(username) REFERENCES users(username) on delete cascade)";
+        var statement3 = "CREATE TABLE IF NOT EXISTS games (" +
+                "id int NOT NULL PRIMARY KEY," +
+                "gameName varchar(255) NOT NULL," +
+                "whiteUsername varchar(255)," +
+                "blackUsername varchar(255),"+
+                "ChessGame MEDIUMTEXT," +
+                "foreign key(whiteUsername) REFERENCES users(username) on delete cascade," +
+                "foreign key(blackUsername) REFERENCES users(username) on delete cascade)";
+        String[] statementArray = {statement0, statement1, statement2, statement3};
+        return statementArray;
     }
 }
