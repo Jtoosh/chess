@@ -9,7 +9,7 @@ import java.util.UUID;
 import server.Serializer;
 
 public class TestUtilities {
-    private final static Serializer serializer = new Serializer();
+    private final static Serializer SERIALIZER = new Serializer();
 
     public static void setUp(Connection conn) throws SQLException {
         var setUpStatement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
@@ -40,7 +40,7 @@ public class TestUtilities {
         preppedStmt3.setString(2, "test Game");
         preppedStmt3.setString(3, "logan");
         preppedStmt3.setString(4, "logdog");
-        preppedStmt3.setString(5, serializer.toJSON(new ChessGame()));
+        preppedStmt3.setString(5, SERIALIZER.toJSON(new ChessGame()));
         preppedStmt3.executeUpdate();
 
         var setUpStatement4 = "INSERT INTO games (id, gameName, whiteUsername, blackUsername, ChessGame)" +
@@ -50,7 +50,7 @@ public class TestUtilities {
         preppedStmt4.setString(2, "test Game");
         preppedStmt4.setString(3, "logan");
         preppedStmt4.setString(4, null);
-        preppedStmt4.setString(5, serializer.toJSON(new ChessGame()));
+        preppedStmt4.setString(5, SERIALIZER.toJSON(new ChessGame()));
         preppedStmt4.executeUpdate();
     }
 
