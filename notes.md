@@ -484,7 +484,7 @@ Prof. Wilkerson decided to find these answers, using a faithful approach. He sta
 **I/O**
 There are 4 main ways to read/write files:
 
-1. Streams: read or write a file or other souce of bytes, sequentially
+1. `Stream`: read or write a file or other souce of bytes, sequentially
 2. `Scanner` class: tokenize data, read/write 1 token at a time
 3. `Files` class: read, copy, create entire files
 4. `RandomAccessFile` class: creates a file pointer to read/write to or from any point of a file.
@@ -495,7 +495,7 @@ Used to create, delete, or check existence of a file.
 
 [_Java I/O Streams_](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html)
 This is the most common way to handle I/O. Data can be _binary formatted_ or _text formatted_.
-Included the [InputStream](https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/io/InputStream.html) and [OutputStream](https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/io/OutputStream.html) interfaces, and a host of implementing classes like `FileInputStream`, `URLConnection.getInputStream()`, and others.
+Includes the [InputStream](https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/io/InputStream.html) and [OutputStream](https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/io/OutputStream.html) interfaces, and a host of implementing classes like `FileInputStream`, `URLConnection.getInputStream()`, and others.
 I'll need to fact check, but I believe `Reader` and `Writer` are other implemeting classes, but I'll need to check. In any case, `Reader`s and `Writer`s are for I/O of characters/text formatted data.
 There is a 1-1 correspondence between `InputStream` implementing classes and `OutputStream` implementing classes, having a matching type for each one.
 
@@ -913,8 +913,60 @@ An idea for order of construction:
 
 1. Draw Chess board
 2. Draw menus
-3. ServerFacade
-4. ClientCommunicator?
+3. ServerFacade - This will have the 7 methods for the corresponding endpoints
+4. ClientCommunicator - Dr. Wilkerson recommends using this class to store the code for Client GET and POST methods, to maintain SRP. Then `ServerFacade` will simply call the GET and POST methods from this class when it needs them in those 7 endpoints.
+
+### Lecture: Client HTTP and Logging
+
+#### Client HTTP
+
+The Java class we'll be taught in this course for making HTTP client requests is `HttpURLConnection`. A different class that will be taught in the fall is `HttpClient`, which can be a bit easier, if I want to learn it later. We are learning `HttpURLConnection` because, historically, it has been the standard.
+
+An `HttpURLConnection` object is instantiated by casting a `URL` object with a connection. A `URL` object is created by passing a String into the URL constructor. Then, that `URL` object has a method `openConnection()` that opens a connection to that URL. Below is an example:
+
+```java
+URL url = new URL("https://www.poptropica.com");
+
+HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+```
+
+The javadoc on `HttpURLConnection` describes all of the methods and fields, but here are a few fundamental ones:
+
+- `.setReadTimeout(int milliseconds)`: sets the timeout limit, parameter is in milliseconds
+- `.setRequestMethod(String method)`: sets the HTTP method that the request will be using
+- `connection.connect()`: Connects to the URL that the connection was constructed with.
+- `doInput` and `doOutput`: Flags that indicate is that connection intends on outputting something or receiving some input.
+
+The slides have a helpful set of "steps" to both an HTTP GET and POST interaction between client and server, consult that when needed
+
+#### Logging
+
+Rather than alternating between putting in and taking out lots of `println()` statements, logging is a better way to work with and handle errors.
+
+Logs provide needed info to devs, sys admins, and customer support reps, while not intimidating the user with that info. Programs send log messages to "loggers".
+
+`Logger` is a built in class in Java, with the methods that are needed for setting the log level, adding handlers, and others. Logging is a universal programming idea, but implementation varies in each language.
+
+Loggers have certain levels that they are set at, and only errors that are the specified level or _higher_ (i.e. more severe) are logged, and lower levels (less severe) are ignored.
+
+Each logger has 1 or more "handlers". The handler designates the destination for the log message. For example, `ConsoleHandler` will send log messages to the console, and `FileHandler` will send messages to a designated file.
+
+Further, each handler has a "formatter" which defines the format used to encode log messages. `SimpleFormatter` is the most common, which gets the job done.
+
+Configuring a logger is done 2 ways: **Programmatic Configuration** and **File Configuration**. The standard practice is file configuration, but programmatic configuration is the way to learn about configuring at first.
+
+Log config files use what is referred to as "properties notation" to define the configuration. It is essentially key value pairs. Config settings include useful settings like how much data to write before **rotating** files, how many files to have in the rotation, and the logging format.
+
+Here are variables that can be used in the logging format configuration:
+
+- %1$	The date/time the message was created
+- %2$	The method that called the log method  
+- %3$	The name of the logger
+- %4$	The level the message was logged at
+- %5$	The message
+- %6$	The throwable
+
+There are a variety of logging methods that add certain things to the log, and are extremely useful, such as logging method entry/exit, logging the throwing and catching of an exception.
 
 ## Project Notes
 
