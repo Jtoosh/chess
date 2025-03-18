@@ -968,6 +968,8 @@ Here are variables that can be used in the logging format configuration:
 
 There are a variety of logging methods that add certain things to the log, and are extremely useful, such as logging method entry/exit, logging the throwing and catching of an exception.
 
+Because Sun took a long time to build logging into Java, an external library was made called `Log4J`. It became so popular that when Sun finally added logging, they essentially copied Log4J, but people liked it so much that they didn't switch, and Log4J is still more widely used.
+
 ## Project Notes
 
 ### Phase 0 Notes
@@ -1076,6 +1078,14 @@ I also got tripped up thinking the Result set was observing a _column_ at a time
 **Tip**: Use the keyword TRUNCATE instead of DROP for the clear methods.
 
 #### Phase 4 Retrospective
+
+I think that this phase was good for me. It humbled me a bit and remineded me that these projects are not things that I can whip up in 3 or 4 days, but that need to be worked on for an hour or so each day for a week or two.
+
+I think the experience that I got with SQL was good, especially the practice of accessing the DB programmatically.
+
+**Biggest Obstacle**: Learning the details of SQL commands and their syntax. Most of the bugs that I ran into were due to small syntax errors in my SQL commands, where I got most of the syntax right, but missed a few things. Or others were due to foreign key constraints and the way I chose to construct my tables. I think that these obstacles are the type that are simply overcome by time and experience, as the details of syntax get mastered with time, and a sense of how to best design my DB schema will also come over time.
+
+**Biggest Help**: One tool that proved particularly helpful was *checking the Slack channel for others who had already asked about the same or similar problems*. This allowed me to have quick access to highly specific and relevant information about things in my exact context. *W3 schools* also helped for basic basic SQL syntax questions. Something else that helps **particularly when it appeared that all of my DB code was correct, but the program was not behaving as expected** was *to drop the tables and recreate them*. This acts as a refresh for the DB, and I learned that any changes I made to the DB being created/set up, were not immediately reflected in the program's behavior, unless I do an ALTER TABLE command. 
 
 ### Phase 5 Notes
 
