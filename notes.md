@@ -1024,3 +1024,7 @@ I also got tripped up thinking the Result set was observing a _column_ at a time
 **Tip**: Use the keyword TRUNCATE instead of DROP for the clear methods.
 
 #### Phase 4 Retrospective
+
+### Phase 5 Notes
+
+A good way to think about and understand phase 5, specifically the menus, is as 3 different REPLs that the user will move between. There is a depth to the REPLs as well, as they can only exit the program after exiting the first REPL. If they exit the third REPL, it moves them to the second, and exiting the second they move back to the first.  
