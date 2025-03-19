@@ -6,7 +6,7 @@ public class PreloginMenu {
         String[] parts = input.split(" ");
         switch (parts[0]) {
             case "help":
-                System.out.println(MenuStrings.PRELOGINMENUHELP);
+                System.out.println(EscapeSequences.SET_TEXT_COLOR_BLUE + MenuStrings.PRELOGINMENUHELP);
                 return "prelogin";
             case "login":
                 String username = parts[1];
