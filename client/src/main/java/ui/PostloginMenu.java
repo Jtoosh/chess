@@ -18,9 +18,13 @@ public class PostloginMenu {
             case "join":
                 //int id = parts[1];
                 //String teamColor = parts[2]
+                //Draw chess board
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAYMENU);
                 return "game";
             case "observe":
                 //int id = parts[1];
+                //Draw chessboard
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAYMENU);
                 return "game";
             default:
                 return "postlogin";

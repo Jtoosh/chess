@@ -19,6 +19,11 @@ public class Repl {
                 String result = scanner.nextLine();
                 currentState = PostloginMenu.eval(result);
             }
+            while (currentState.equals("game")){
+                System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW + "Game Menu>>");
+                String result = scanner.nextLine();
+                currentState = GameMenu.eval(result);
+            }
         }
 
     }

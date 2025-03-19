@@ -26,17 +26,32 @@ public class MenuStrings {
     public static final String POSTLOGINMENU = """
             Welcome <username>!
             
-            1. Type "help" to see info about available commands.
+            1. Type \u001b[38;5;12m"help"\u001b[39m to see info about available commands.
             
-            2. Type "logout" to logout of the Chess program.
+            2. Type \u001b[38;5;12m"logout"\u001b[39m to logout of the Chess program.
             
-            3. Type "create <game name>" to create a new chess game.
+            3. Type \u001b[38;5;12m"create <game name>"\u001b[39m to create a new chess game.
             
-            4. Type "list all" to list all current chess games.
+            4. Type \u001b[38;5;12m"list all"\u001b[39m to list all current chess games.
             
-            5. Type "join <id> <WHITE|BLACK>" to join a chess game as that color.
+            5. Type \u001b[38;5;12m"join <id> <WHITE|BLACK>"\u001b[39m to join a chess game as that color.
             
-            6. Type "observe <id>" to join a chess game as an observer.
+            6. Type \u001b[38;5;12m"observe <id>"\u001b[39m to join a chess game as an observer.
+            """;
+    public static final String GAMEPLAYMENU = """
+            Welcome to <gameName>!
+            
+            1. Type \u001b[38;5;12m"help"\u001b[39m to see info about available commands.
+            
+            2. Type \u001b[38;5;12m"redraw"\u001b[39m to redraw the chess board.
+            
+            3. Type \u001b[38;5;12m"leave"\u001b[39m to exit this game.
+            
+            4. Type \u001b[38;5;12m"move <start square end square>"\u001b[39m to make a move.
+            
+            5. Type \u001b[38;5;12m"resign"\u001b[39m to resign.
+            
+            6. Type \u001b[38;5;12m"highlight <square>"\u001b[39m to show legal moves for the piece on that square. 
             """;
 
 
