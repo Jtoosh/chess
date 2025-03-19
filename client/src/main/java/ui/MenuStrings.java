@@ -5,13 +5,13 @@ public class MenuStrings {
                     Welcome to Chess.
                     Choose one of the following:
                     
-                    1. Type "help" to see info about available commands.
+                    1. Type \u001b[38;5;12m"help"\u001b[39m to see info about available commands.
                     
-                    2. Type "register <Username> <Password> <Email>" to register a new user.
+                    2. Type \u001b[38;5;12m"register <Username> <Password> <Email>"\u001b[39m to register a new user.
                     
-                    3. Type "login <Username> <Password>" to log in an existing user.
+                    3. Type \u001b[38;5;12m"login <Username> <Password>"\u001b[39m to log in an existing user.
                     
-                    4. Type "quit" to exit the program.
+                    4. Type \u001b[38;5;12m"quit"\u001b[39m to exit the program.
                     """;
     public static final String PRELOGINMENUHELP = """
                     - Help: see more info about available commands. Usage: type "help" into the terminal.
