@@ -970,6 +970,40 @@ There are a variety of logging methods that add certain things to the log, and a
 
 Because Sun took a long time to build logging into Java, an external library was made called `Log4J`. It became so popular that when Sun finally added logging, they essentially copied Log4J, but people liked it so much that they didn't switch, and Log4J is still more widely used.
 
+### Lecture: Defensive Programming
+
+Defensive Programming is a style of coding that leads to more reliable code with less bugs. It hinges on 2 practices: **Making assertions** and **Parameter checking**.
+
+#### Making assertions
+
+As I code, I frequently make asssumptions about the program state. The way that I program things will often contain implicit assumptions, such as, this parameter will not be null, this data will be sorted, this string will have this many words, etc.
+
+When these assumptions are incorrect, however, that leads to bugs in the code. And when these assumptions are only implicitly contained in the program, they are extremely difficult to identify as the source of the problem. 
+
+This can be resolved by making these assumptions explicit in the code, rather than implicit. This is done using `assert` statements.
+
+> **NOTE** These `assert` statements are *not* the same as the `Assertions` in the `junit` package. These `assert` statements are built in to Java, and function slightly different. 
+
+JDK `assert` statements work pretty intuitively. You simply make an assertion about some value, and if the statement is true, the code will continue, and if false, and `AssertionException` is thrown and the program crashes.
+
+Example: `assert listToSearch != null;` or `assert isSorted(listToSearch);`
+
+Sometimes, an assertion may call a method that takes a fair bit of time and resources to compute, such as determining if passed data is sorted or not. Running these assertions constantly is inefficient, so by default, assertions are disabled when Java code is compiled and run. 
+
+Thus, assertions are mainly used for observation in development settings. To enable them in these settings, use the flag `-enableassertions` or `-ea` when compiling from the command line. When running in IntelliJ, edit the Run Configuration and edit/add "VM Options" and add one of these flags to enable assertions.
+
+When assertions fail and AssertionExceptions are thrown, do two things: **1**, examing your assumption represented in the assertion statement, and ensure that it is correct for that point of the program. **2**, look for the bug that is causing your program state to not match what you assume it should be.
+
+#### Parameter checking
+
+Parameter checking involves ensurine that parameters are in the correct state when passed into a method. This catches errors closer to their cause and leads to easier debugging.
+
+Parameter checking is one of the ways that assertions are used. It can also be done with if-else blocks and throwing exceptions.
+
+Which method of parameter checking can be determined by whether or not the programmer has control over the calling code, or the code that calls the method and provides the parameters. 
+
+If the programmer does have control of that code, assertions should be used. If not, throwing exceptions inside of if statements should be used.
+
 ## Project Notes
 
 ### Phase 0 Notes
