@@ -17,9 +17,13 @@ public class PostloginMenu {
                 return "postlogin";
             case "join":
                 //int id = parts[1];
-                //String teamColor = parts[2]
+                String teamColor = parts[2];
                 //Draw chess board
-                Chessboard.main("light");
+                if (teamColor.equals("WHITE")){
+                    Chessboard.main("light");
+                } else {
+                    Chessboard.main("dark");
+                }
                 System.out.print(EscapeSequences.RESET_BG_COLOR);
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAYMENU);
                 return "game";
