@@ -3,8 +3,8 @@ package ui;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
 
 public class Chessboard {
 
@@ -16,16 +16,37 @@ public class Chessboard {
     //Padded characters (Note: Chess piece padded characters are in EscapeSequences.java)
     private static final String EMPTY = "   ";
     private static ArrayList<String> FILE_LABELS = new ArrayList<>(List.of(EMPTY, " a ", " b "," c ", " d "," e ", " f "," g ", " h ", EMPTY));
+    private static ArrayList<String> blackRowOne = new ArrayList<>(List.of(
+                                                         EscapeSequences.BLACK_ROOK,
+                                                         EscapeSequences.BLACK_KNIGHT,
+                                                         EscapeSequences.BLACK_BISHOP,
+                                                         EscapeSequences.BLACK_KING,
+                                                         EscapeSequences.BLACK_QUEEN,
+                                                         EscapeSequences.BLACK_BISHOP,
+                                                         EscapeSequences.BLACK_KNIGHT,
+                                                         EscapeSequences.BLACK_ROOK));
+    private static ArrayList<String> whiteRowOne = new ArrayList<>(List.of(
+            EscapeSequences.WHITE_ROOK,
+            EscapeSequences.WHITE_KNIGHT,
+            EscapeSequences.WHITE_BISHOP,
+            EscapeSequences.WHITE_KING,
+            EscapeSequences.WHITE_QUEEN,
+            EscapeSequences.WHITE_BISHOP,
+            EscapeSequences.WHITE_KNIGHT,
+            EscapeSequences.WHITE_ROOK));
+
+    private static String startColor;
 
     public static void main(String startColorArg){
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+        startColor = startColorArg;
         boolean lightFlag = (startColorArg.equals("light")) ? true : false;
         if (!lightFlag){FILE_LABELS = new ArrayList<>(FILE_LABELS.reversed()) ;}
         int rankNumber = 0;
         drawHeaderRow(out);
 
         for (int i = 0; i < BOARD_ROWS; i++){
-            rankNumber = (startColorArg.equals("light")) ? 8-i : i + 1;
+            rankNumber = (startColor.equals("light")) ? 8-i : i + 1;
             if (lightFlag){
                 drawBoardRow(out, "light", String.format(" %s ", rankNumber));
             } else {
@@ -35,19 +56,6 @@ public class Chessboard {
         }
 
         drawHeaderRow(out);
-
-        /* pseudocode:
-        drawHeaderRow(){
-            drawBorderSquare * 10
-         }
-        8 times -> drawBodyRow(){
-            drawBorderSquare()
-            drawBoardSquare(starting color) * 8
-            drawBorderSquare()
-         }
-        drawHeaderRow()
-        *
-        * */
     }
 
     private static void drawHeaderRow(PrintStream out){
@@ -59,8 +67,8 @@ public class Chessboard {
         out.print("\n");
     }
 
-    private static void drawBoardRow(PrintStream out, String startColor, String rank){
-        boolean lightFlag = (startColor.equals("light")) ? true : false;
+    private static void drawBoardRow(PrintStream out, String rowStartColor, String rank){
+        boolean lightFlag = (rowStartColor.equals("light")) ? true : false;
         headerFormat(out);
         out.print(rank);
 
@@ -71,15 +79,8 @@ public class Chessboard {
             } else{
                 out.print(EscapeSequences.SET_BG_COLOR_DARK_BROWN);
             }
-            if (rank.equals(" 1 ")){
-                String Pawn = (startColor.equals("light")) ? EscapeSequences.WHITE_PAWN : EscapeSequences.BLACK_PAWN;
-                out.print(Pawn);
-            } else if (rank.equals(" 8 ")){
-                String Pawn = (startColor.equals("black")) ? EscapeSequences.BLACK_PAWN : EscapeSequences.WHITE_PAWN;
-                out.print(Pawn);
-            }else{
-                out.print(EMPTY);
-            }
+            handlePawnRow(out, rank);
+
 
             lightFlag = !lightFlag;
         }
@@ -90,6 +91,26 @@ public class Chessboard {
         out.print("\n");
 
     }
+
+    private static void handlePawnRow(PrintStream out, String rank){
+        if (rank.equals(" 2 ")){
+            String pawn = EscapeSequences.SET_TEXT_COLOR_WHITE + EscapeSequences.WHITE_PAWN;
+            out.print(pawn);
+        } else if (rank.equals(" 7 ")){
+            String pawn = EscapeSequences.SET_TEXT_COLOR_BLACK + EscapeSequences.BLACK_PAWN;
+            out.print(pawn);
+        }else{
+            out.print(EMPTY);
+        }
+    }
+
+    private static void handleFirstRows(PrintStream out, String rowStartColor, String rank, int index){
+        if(rank.equals("1")){
+
+        }
+    }
+
+    private static void organizeFirstRows
 
     private static void headerFormat(PrintStream out){
         out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY);
