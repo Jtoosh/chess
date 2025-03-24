@@ -935,7 +935,7 @@ The javadoc on `HttpURLConnection` describes all of the methods and fields, but 
 - `.setReadTimeout(int milliseconds)`: sets the timeout limit, parameter is in milliseconds
 - `.setRequestMethod(String method)`: sets the HTTP method that the request will be using
 - `connection.connect()`: Connects to the URL that the connection was constructed with.
-- `doInput` and `doOutput`: Flags that indicate is that connection intends on outputting something or receiving some input.
+- `doInput` and `doOutput`: Flags that indicate is that connection intends on receiving some input or outputting something.
 
 The slides have a helpful set of "steps" to both an HTTP GET and POST interaction between client and server, consult that when needed
 
