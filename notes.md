@@ -1124,3 +1124,5 @@ I think the experience that I got with SQL was good, especially the practice of 
 ### Phase 5 Notes
 
 A good way to think about and understand phase 5, specifically the menus, is as 3 different REPLs that the user will move between. There is a depth to the REPLs as well, as they can only exit the program after exiting the first REPL. If they exit the third REPL, it moves them to the second, and exiting the second they move back to the first.  
+
+In the Client communicator, make the arguments for the 2 methods correspond to the endpoints that will use them, and pass unused params as null.

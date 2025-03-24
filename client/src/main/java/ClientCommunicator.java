@@ -1,50 +1,54 @@
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.google.gson.Gson;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ClientCommunicator {
-
-    public void httpGET(String urlArg) throws IOException {
+    Gson serializer = new Gson();
+    
+    public <T> T httpRequest(Record request, String urlArg, String method, Class<T> responseClass) throws IOException{
         URL connectionURL = new URL(urlArg);
 
         HttpURLConnection connection = (HttpURLConnection) connectionURL.openConnection();
 
         connection.setReadTimeout(5000);
-        connection.setRequestMethod("GET");
+        connection.setRequestMethod(method);
+        connection.setDoOutput(true);
+        writeBody(request,connection);
 
         connection.connect();
 
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
-            InputStream responseBody = connection.getInputStream();
-            BufferedInputStream responseBodyOptimized = new BufferedInputStream(responseBody);
-        } else{
-            InputStream errorStream = connection.getErrorStream();
+        return readBody(responseClass, connection);
+    }
+
+    private void writeBody(Object request, HttpURLConnection httpConn) throws IOException {
+        if (request != null){
+            httpConn.addRequestProperty("Content-Type", "application/json");
+            String requestData = serializer.toJson(request);
+            try(OutputStream requestBody = httpConn.getOutputStream();) {
+                // Write request body to OutputStream ...
+                requestBody.write(requestData.getBytes());
+            }
         }
     }
 
-    public void httpPOST(String urlArg) throws IOException{
-        URL connectionURL = new URL(urlArg);
-
-        HttpURLConnection connection = (HttpURLConnection) connectionURL.openConnection();
-
-        connection.setReadTimeout(5000);
-        connection.setRequestMethod("POST");
-        connection.setDoOutput(true);
-
-        connection.connect();
-
-        try(OutputStream requestBody = connection.getOutputStream();) {
-            // Write request body to OutputStream ...
+    private <T> T readBody(Class<T> responseClass, HttpURLConnection httpConn) throws IOException {
+        T response = null;
+        if (httpConn.getResponseCode() != HttpURLConnection.HTTP_OK){
+            try(InputStream errorStream = httpConn.getErrorStream()){
+                BufferedInputStream errorStreamOptimized = new BufferedInputStream(errorStream);
+                InputStreamReader errorStreamReader = new InputStreamReader(errorStreamOptimized);
+                throw new IOException(serializer.fromJson(errorStreamReader, String.class));
+            }
         }
-
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_SEE_OTHER){
-            InputStream responseBody = connection.getInputStream();
+        try (InputStream responseBody = httpConn.getInputStream();){
             BufferedInputStream responseBodyOptimized = new BufferedInputStream(responseBody);
-        } else{
-            InputStream errorStream = connection.getErrorStream();
+            InputStreamReader responseBodyReader = new InputStreamReader(responseBodyOptimized);
+            if (responseClass != null){
+                response = serializer.fromJson(responseBodyReader, responseClass);
+            }
         }
+        return response;
     }
 }
