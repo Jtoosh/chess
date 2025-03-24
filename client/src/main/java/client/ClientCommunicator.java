@@ -41,7 +41,7 @@ public class ClientCommunicator {
             try(InputStream errorStream = httpConn.getErrorStream()){
                 BufferedInputStream errorStreamOptimized = new BufferedInputStream(errorStream);
                 InputStreamReader errorStreamReader = new InputStreamReader(errorStreamOptimized);
-                handleHTTPStatus(httpConn.getResponseCode(), errorStreamReader);
+                handleHTTPStatus(httpConn.getResponseCode());
             }
         }
         try (InputStream responseBody = httpConn.getInputStream();){
@@ -54,16 +54,16 @@ public class ClientCommunicator {
         return response;
     }
 
-    private void handleHTTPStatus(int responseCode, InputStreamReader errorStreamReader) throws IOException {
+    private void handleHTTPStatus(int responseCode) throws IOException {
         switch (responseCode){
             case 400:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Error: bad request");
             case 401:
-                throw new AuthorizationException(serializer.fromJson(errorStreamReader, String.class));
+                throw new AuthorizationException("Error: unauthorized");
             case 403:
-                throw new AlreadyInUseException(serializer.fromJson(errorStreamReader, String.class));
+                throw new AlreadyInUseException("Error: already in use");
             default:
-                throw new IOException(serializer.fromJson(errorStreamReader, String.class));
+                throw new IOException("Error: IOException");
         }
     }
 }
