@@ -10,17 +10,17 @@ public class Repl {
         String currentState = startState;
         while (true){
             while (currentState.equals("prelogin")){
-                System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW + "Login Menu\n>> ");
+                System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW + "<< Login Menu >> ");
                 String result = scanner.nextLine();
                 currentState = PreloginMenu.eval(result);
             }
             while (currentState.equals("postlogin")){
-                System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW + "Chess Menu\n>>");
+                System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW + "<< Chess Menu >>");
                 String result = scanner.nextLine();
                 currentState = PostloginMenu.eval(result);
             }
             while (currentState.equals("game")){
-                System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW + "Game Menu\n>>");
+                System.out.println(EscapeSequences.SET_TEXT_COLOR_YELLOW + "<< Game Menu >>");
                 String result = scanner.nextLine();
                 currentState = GameMenu.eval(result);
             }

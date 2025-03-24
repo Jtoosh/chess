@@ -1,3 +1,5 @@
+package client;
+
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -6,7 +8,7 @@ import java.net.URL;
 
 public class ClientCommunicator {
     Gson serializer = new Gson();
-    
+
     public <T> T httpRequest(Record request, String urlArg, String method, Class<T> responseClass) throws IOException{
         URL connectionURL = new URL(urlArg);
 

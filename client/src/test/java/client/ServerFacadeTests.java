@@ -1,17 +1,22 @@
 package client;
 
+import dataaccess.AlreadyInUseException;
+import model.AuthData;
 import org.junit.jupiter.api.*;
 import server.Server;
+
+import java.io.IOException;
 
 
 public class ServerFacadeTests {
 
     private static Server server;
-
+    private static ServerFacade serverFacade;
     @BeforeAll
     public static void init() {
         server = new Server();
         var port = server.run(0);
+        serverFacade = new ServerFacade(port);
         System.out.println("Started test HTTP server on " + port);
     }
 
@@ -22,8 +27,23 @@ public class ServerFacadeTests {
 
 
     @Test
-    public void sampleTest() {
-        Assertions.assertTrue(true);
+    @DisplayName("Register Positive")
+    void registerPos() throws IOException {
+        AuthData registerResponse = serverFacade.register("rayquon", "rayqwan rocks", "rayquon.com");
+        Assertions.assertEquals("rayquon", registerResponse.username());
+        Assertions.assertNotNull(registerResponse.authToken());
     }
+
+    @Test
+    @DisplayName("Register Negative")
+    void registerNegative() throws IOException{
+        Assertions.assertThrows(IllegalArgumentException.class, ()-> serverFacade.register("rayquon", null, null));
+    }
+
+//    @Test
+//    @DisplayName("Login Positive")
+//    void loginPos() throws IOException{
+//        AuthData loginResponse = serverFacade.login()
+//    }
 
 }
