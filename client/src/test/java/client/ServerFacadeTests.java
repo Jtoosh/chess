@@ -1,6 +1,5 @@
 package client;
 
-import dataaccess.AlreadyInUseException;
 import model.AuthData;
 import org.junit.jupiter.api.*;
 import server.Server;
@@ -37,7 +36,7 @@ public class ServerFacadeTests {
     @Test
     @DisplayName("Register Negative")
     void registerNegative() throws IOException{
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> serverFacade.register("rayquon", null, null));
+        Assertions.assertThrows(AlreadyInUseException.class, ()-> serverFacade.register("rayquon", "", ""));
     }
 
 //    @Test
