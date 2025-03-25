@@ -45,7 +45,7 @@ public class ServerFacadeTests {
     @Test
     @DisplayName("Register Negative")
     void registerNegative() throws IOException{
-        Assertions.assertThrows(AlreadyInUseException.class, ()-> serverFacade.register("rayquon", "", ""));
+        Assertions.assertThrows(AlreadyInUseException.class, ()-> serverFacade.register("testUser", "", ""));
     }
 
     @Test
