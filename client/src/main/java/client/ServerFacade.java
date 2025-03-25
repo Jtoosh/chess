@@ -23,4 +23,8 @@ public class ServerFacade {
         UserData loginData = new UserData(username, password, null);
         return clientCommunicator.httpRequest(loginData, this.endpointURL + "/session", "POST", AuthData.class);
     }
+
+    public void clear() throws IOException{
+        clientCommunicator.httpRequest(null, endpointURL + "/db", "DELETE", null);
+    }
 }

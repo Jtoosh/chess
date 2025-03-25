@@ -1,8 +1,13 @@
 package ui;
 
+import client.ServerFacade;
+import model.AuthData;
+
+import java.io.IOException;
+
 public class PreloginMenu {
 
-    public static String eval(String input) {
+    public static String eval(String input, ServerFacade serverFacade) {
         String parsedInput = input.strip();
         String[] parts = parsedInput.split(" ");
         switch (parts[0]) {
@@ -19,7 +24,14 @@ public class PreloginMenu {
                 String desiredUsername = parts[1];
                 String desiredPassword = parts[2];
                 String email = parts[3];
-
+                try {
+                    AuthData registerResult = serverFacade.register(desiredUsername, desiredPassword, email);
+                    System.out.println("Successfully registered user: " + registerResult.username() +". Authtoken: " + registerResult.authToken());
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    System.out.println(EscapeSequences.SET_TEXT_COLOR_RED + "Sorry, we experienced an error connecting to the server.");
+                    return "prelogin";
+                }
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.POSTLOGIN_MENU);
                 return "postlogin";
             case "quit":

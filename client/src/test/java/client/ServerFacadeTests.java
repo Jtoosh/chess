@@ -24,6 +24,15 @@ public class ServerFacadeTests {
         server.stop();
     }
 
+    @BeforeEach
+    void setUp() throws IOException {
+        serverFacade.register("testUser", "testPassword", "testEmail.com");
+    }
+
+    @AfterEach
+    void cleanUp() throws IOException{
+        serverFacade.clear();
+    }
 
     @Test
     @DisplayName("Register Positive")
@@ -39,10 +48,12 @@ public class ServerFacadeTests {
         Assertions.assertThrows(AlreadyInUseException.class, ()-> serverFacade.register("rayquon", "", ""));
     }
 
-//    @Test
-//    @DisplayName("Login Positive")
-//    void loginPos() throws IOException{
-//        AuthData loginResponse = serverFacade.login()
-//    }
+    @Test
+    @DisplayName("Login Positive")
+    void loginPos() throws IOException {
+        AuthData loginResponse = serverFacade.login("testUser", "testPassword");
+        Assertions.assertEquals("testUser", loginResponse.username());
+        Assertions.assertNotNull(loginResponse.authToken());
+    }
 
 }

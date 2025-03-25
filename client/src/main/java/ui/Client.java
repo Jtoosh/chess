@@ -3,8 +3,8 @@ package ui;
 import client.ServerFacade;
 
 public class Client {
-    private final Repl menuDrawer = new Repl();
     private final ServerFacade serverFacade = new ServerFacade(8080);
+    private final Repl menuDrawer = new Repl(serverFacade);
     public void run(){
         String STATE;
         STATE = "prelogin";

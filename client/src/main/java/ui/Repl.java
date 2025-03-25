@@ -5,7 +5,12 @@ import client.ServerFacade;
 import java.util.Scanner;
 
 public class Repl {
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
+    private final ServerFacade serverFacade;
+
+    public Repl (ServerFacade serverFacadeArg){
+        this.serverFacade = serverFacadeArg;
+    }
 
     public void repl(String startState){
         String currentState = startState;
@@ -13,7 +18,7 @@ public class Repl {
             while (currentState.equals("prelogin")){
                 System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "<< Login Menu >> ");
                 String result = scanner.nextLine();
-                currentState = PreloginMenu.eval(result);
+                currentState = PreloginMenu.eval(result, this.serverFacade);
             }
             while (currentState.equals("postlogin")){
                 System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "<< Chess Menu >>");
