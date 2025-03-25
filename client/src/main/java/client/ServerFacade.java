@@ -8,6 +8,7 @@ import java.io.IOException;
 public class ServerFacade {
     private String endpointURL = "http://localhost:";
     private final ClientCommunicator clientCommunicator = new ClientCommunicator();
+    private String clientAuthToken;
 
     public ServerFacade (int port){
         this.endpointURL = this.endpointURL + port;
@@ -15,15 +16,21 @@ public class ServerFacade {
 
     public AuthData register(String username, String password, String email) throws IOException {
         UserData registerData = new UserData(username, password, email);
-//        System.out.println(this.endpointURL + "/user");
+
         HttpHandler registerHandler = () -> clientCommunicator.httpRequest(registerData, this.endpointURL + "/user", "POST", AuthData.class);
         return (AuthData) handleResponse(registerHandler);
     }
 
     public AuthData login(String username, String password) throws IOException{
         UserData loginData = new UserData(username, password, null);
+        HttpHandler loginHandler = ()-> clientCommunicator.httpRequest(loginData, this.endpointURL + "/session", "POST", AuthData.class);
+        AuthData result = (AuthData) handleResponse(loginHandler);
+        this.clientAuthToken = result.authToken();
+        return result;
+    }
 
-        return clientCommunicator.httpRequest(loginData, this.endpointURL + "/session", "POST", AuthData.class);
+    public void logout(){
+        HttpHandler logoutHandler = ()-> clientCommunicator.httpRequest(null, endpointURL + "/session", "DELETE", null);
     }
 
     public void clear() throws IOException{
@@ -32,8 +39,7 @@ public class ServerFacade {
 
     private Record handleResponse(HttpHandler commHandler) throws IOException {
         try{
-            Record result = commHandler.makeRequest();
-            return result;
+            return commHandler.makeRequest();
         } catch (IllegalArgumentException e){
             throw new IllegalArgumentException(e);
         } catch (AuthorizationException e){

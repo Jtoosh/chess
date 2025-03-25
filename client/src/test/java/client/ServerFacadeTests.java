@@ -45,7 +45,10 @@ public class ServerFacadeTests {
     @Test
     @DisplayName("Register Negative")
     void registerNegative() throws IOException{
-        Assertions.assertThrows(AlreadyInUseException.class, ()-> serverFacade.register("testUser", "", ""));
+        Assertions.assertThrows(AlreadyInUseException.class,
+                ()-> serverFacade.register("testUser", "", ""));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()-> serverFacade.register("testUser4", null, "email"));
     }
 
     @Test
@@ -54,6 +57,21 @@ public class ServerFacadeTests {
         AuthData loginResponse = serverFacade.login("testUser", "testPassword");
         Assertions.assertEquals("testUser", loginResponse.username());
         Assertions.assertNotNull(loginResponse.authToken());
+    }
+
+    @Test
+    @DisplayName("Login Negative")
+    void LoginNegative(){
+        Assertions.assertThrows(AuthorizationException.class,
+                ()-> serverFacade.login("testUserNotFound", "testPass"));
+        Assertions.assertThrows(AuthorizationException.class,
+                ()-> serverFacade.login("testUser", "wrongTestPassword"));
+    }
+
+    @Test
+    @DisplayName("Logout Positive")
+    void LogoutPos(){
+
     }
 
 }

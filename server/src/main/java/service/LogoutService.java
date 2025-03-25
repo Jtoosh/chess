@@ -7,9 +7,11 @@ import request.LogoutRequest;
 import response.LogoutResponse;
 
 public class LogoutService extends ParentService{
+
   public LogoutService(AuthDAO authDAO){
     super(null, authDAO, null);
   }
+
   public LogoutResponse logout (LogoutRequest request){
     AuthData userAuth = getAuthData(request.authToken());
     if (userAuth == null){
