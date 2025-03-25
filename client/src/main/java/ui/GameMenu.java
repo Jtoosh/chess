@@ -14,7 +14,7 @@ public class GameMenu {
                 //redraw chess board;
                     "game";
             case "leave" -> {
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.POSTLOGINMENU);
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.POSTLOGIN_MENU);
                 yield "postlogin";
             }
             case "move" ->

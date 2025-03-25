@@ -793,7 +793,6 @@ WHERE username = "jtoosh"
 DELETE will remove a row when used with a correct WHERE clause. Without a WHERE clause, it will delete all rows.
 
 **querying**
-
 Syntax is `SELECT column1, column2... FROM table WHERE column = "value"`
 SELECT specifies the columns, FROM specifies the table, WHERE specifies the row
 Be cautious of creating Cartesian products when querying from multiple tables.
@@ -959,12 +958,12 @@ Log config files use what is referred to as "properties notation" to define the 
 
 Here are variables that can be used in the logging format configuration:
 
-- %1$	The date/time the message was created
-- %2$	The method that called the log method  
-- %3$	The name of the logger
-- %4$	The level the message was logged at
-- %5$	The message
-- %6$	The throwable
+- %1$ The date/time the message was created
+- %2$ The method that called the log method  
+- %3$ The name of the logger
+- %4$ The level the message was logged at
+- %5$ The message
+- %6$ The throwable
 
 There are a variety of logging methods that add certain things to the log, and are extremely useful, such as logging method entry/exit, logging the throwing and catching of an exception.
 
@@ -978,17 +977,17 @@ Defensive Programming is a style of coding that leads to more reliable code with
 
 As I code, I frequently make asssumptions about the program state. The way that I program things will often contain implicit assumptions, such as, this parameter will not be null, this data will be sorted, this string will have this many words, etc.
 
-When these assumptions are incorrect, however, that leads to bugs in the code. And when these assumptions are only implicitly contained in the program, they are extremely difficult to identify as the source of the problem. 
+When these assumptions are incorrect, however, that leads to bugs in the code. And when these assumptions are only implicitly contained in the program, they are extremely difficult to identify as the source of the problem.
 
 This can be resolved by making these assumptions explicit in the code, rather than implicit. This is done using `assert` statements.
 
-> **NOTE** These `assert` statements are *not* the same as the `Assertions` in the `junit` package. These `assert` statements are built in to Java, and function slightly different. 
+> **NOTE** These `assert` statements are _not_ the same as the `Assertions` in the `junit` package. These `assert` statements are built in to Java, and function slightly different.
 
 JDK `assert` statements work pretty intuitively. You simply make an assertion about some value, and if the statement is true, the code will continue, and if false, and `AssertionException` is thrown and the program crashes.
 
 Example: `assert listToSearch != null;` or `assert isSorted(listToSearch);`
 
-Sometimes, an assertion may call a method that takes a fair bit of time and resources to compute, such as determining if passed data is sorted or not. Running these assertions constantly is inefficient, so by default, assertions are disabled when Java code is compiled and run. 
+Sometimes, an assertion may call a method that takes a fair bit of time and resources to compute, such as determining if passed data is sorted or not. Running these assertions constantly is inefficient, so by default, assertions are disabled when Java code is compiled and run.
 
 Thus, assertions are mainly used for observation in development settings. To enable them in these settings, use the flag `-enableassertions` or `-ea` when compiling from the command line. When running in IntelliJ, edit the Run Configuration and edit/add "VM Options" and add one of these flags to enable assertions.
 
@@ -1000,9 +999,48 @@ Parameter checking involves ensurine that parameters are in the correct state wh
 
 Parameter checking is one of the ways that assertions are used. It can also be done with if-else blocks and throwing exceptions.
 
-Which method of parameter checking can be determined by whether or not the programmer has control over the calling code, or the code that calls the method and provides the parameters. 
+Which method of parameter checking can be determined by whether or not the programmer has control over the calling code, or the code that calls the method and provides the parameters.
 
 If the programmer does have control of that code, assertions should be used. If not, throwing exceptions inside of if statements should be used.
+
+### Lecture: Websocket and Phase 6
+
+**Comparing HTTP and WS**
+HTTP:
+
+- Client always initiates, server only responsds
+- Methods, paths, headers
+- Extensive caching
+- Great for getting resources, not for peer to peer communication.
+- HTTP does have some workarounds for p2p, like _short polling_ (pinging the server repeatedly over and over), and _long polling_ (pinging the server less often over longer intervals of time). However, these workarounds are pretty inefficient, and have lots of HTTP overhead, among other shortcomings.
+
+WS:
+
+- Allows full duplex (bidirectional) communication. Once ws is established, the client _or_ server can initiate communications.
+- More efficient p2p communications.
+- No headers, methods, paths for p2p comms.
+- Is an upgrade of HTTP (its built on top of it)
+- Ping/Pong for detecting dropped conns.
+
+Methods with the `@OnWebSocketMessage` annotation _must_ be inside of a class with the `@Websocket` annotation.
+
+To keep track of who to notify on a Websocket message, make a map of clients, keyed by GameIDs.
+
+The library that we're using for WS Client side will make the initial HTTP request to upgrade for us. All I need to to is use a URI with the `ws` protocol specified.
+
+Before connecting and getting a Session, I must get a WebSocketContainer, and use the container's `.connectToServer()` method.
+
+Always use `MessageHandler.Whole<String>`. Using `.Part` will break the String into arbitrary chunks, rather than keeping it as one string.
+
+What Dr. Wilkerson did for Phase 6 was rename his `ClientCommunicator` class to `HttpCommunicator` and then created a `WebsocketCommunicator` class.
+
+A main question of this phase is: how to get the WS message with the updated board from `WebsocketCommunicator` to the `ChessClient` class? In Dr. Wilkerson's method, he uses an interface called `ServerMessageObserver`. Then, the `WebsocketCommunicator` takes in a `ServerMessageObserver` parameter in the constructor, and then will only have access to the `notify()` method. The `ChessClient` will still be passed to the `WebsocketCommunicator`, but as an interface, avoiding a _bad dependency._ **Keep this technique in mind, it can be handy for avoiding bad dependencies. I'll call it the interface masking technique.**
+
+With ServerMessages and UserGameCommands, there is a similar serialization issue as with the ChessPieces, if a class hierarchy is used. One method to handle this is to deserialize twice. First, deserialize to a parent Message type that has "type" attribute, which will then allow you to determine the corresponding sub type. Then deserialize the origianl to that sub type.
+
+However, this method can be computationally expensive in larger systems. A better way to handler this for all system sizes is to **use a Gson type adapter**. This will essentially signifiy to Gson that when it encounters a certain type, it should use a certain adapter to deserialize it.
+
+Among the 3 types of type adapters that Dr. Wilkerson mentiones, the one he recommends for this use case is the Deserializer type adapter. It is the most simple. RuntimeTypeAdapter and StandartTypeAdapter are faster, but more complex.
 
 ## Project Notes
 
@@ -1119,7 +1157,7 @@ I think the experience that I got with SQL was good, especially the practice of 
 
 **Biggest Obstacle**: Learning the details of SQL commands and their syntax. Most of the bugs that I ran into were due to small syntax errors in my SQL commands, where I got most of the syntax right, but missed a few things. Or others were due to foreign key constraints and the way I chose to construct my tables. I think that these obstacles are the type that are simply overcome by time and experience, as the details of syntax get mastered with time, and a sense of how to best design my DB schema will also come over time.
 
-**Biggest Help**: One tool that proved particularly helpful was *checking the Slack channel for others who had already asked about the same or similar problems*. This allowed me to have quick access to highly specific and relevant information about things in my exact context. *W3 schools* also helped for basic basic SQL syntax questions. Something else that helps **particularly when it appeared that all of my DB code was correct, but the program was not behaving as expected** was *to drop the tables and recreate them*. This acts as a refresh for the DB, and I learned that any changes I made to the DB being created/set up, were not immediately reflected in the program's behavior, unless I do an ALTER TABLE command. 
+**Biggest Help**: One tool that proved particularly helpful was _checking the Slack channel for others who had already asked about the same or similar problems_. This allowed me to have quick access to highly specific and relevant information about things in my exact context. _W3 schools_ also helped for basic basic SQL syntax questions. Something else that helps **particularly when it appeared that all of my DB code was correct, but the program was not behaving as expected** was _to drop the tables and recreate them_. This acts as a refresh for the DB, and I learned that any changes I made to the DB being created/set up, were not immediately reflected in the program's behavior, unless I do an ALTER TABLE command.
 
 ### Phase 5 Notes
 

@@ -7,7 +7,7 @@ public class PostloginMenu {
         switch(parts[0]){
             case "logout":
                 //call logout endpoint
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.PRELOGINMENU);
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.PRELOGIN_MENU);
                 return "prelogin";
             case "create":
                 String gameName = parts[1];
@@ -25,14 +25,14 @@ public class PostloginMenu {
                     Chessboard.main("dark");
                 }
                 System.out.print(EscapeSequences.RESET_BG_COLOR);
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAYMENU);
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_MENU);
                 return "game";
             case "observe":
                 //int id = parts[1];
                 //Draw chessboard
                 Chessboard.main("light");
                 System.out.print(EscapeSequences.RESET_BG_COLOR);
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAYMENU);
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_MENU);
                 return "game";
             default:
                 return "postlogin";
