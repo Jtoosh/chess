@@ -8,7 +8,12 @@ import java.io.IOException;
 public class ServerFacade {
     private String endpointURL = "http://localhost:";
     private final ClientCommunicator clientCommunicator = new ClientCommunicator();
-    private String clientAuthToken;
+    private AuthData clientAuthData;
+
+
+    public AuthData getClientAuthData() {
+        return clientAuthData;
+    }
 
     public ServerFacade (int port){
         this.endpointURL = this.endpointURL + port;
@@ -25,12 +30,15 @@ public class ServerFacade {
         UserData loginData = new UserData(username, password, null);
         HttpHandler loginHandler = ()-> clientCommunicator.httpRequest(loginData, this.endpointURL + "/session", "POST", AuthData.class);
         AuthData result = (AuthData) handleResponse(loginHandler);
-        this.clientAuthToken = result.authToken();
+        this.clientAuthData = result;
         return result;
     }
 
-    public void logout(){
-        HttpHandler logoutHandler = ()-> clientCommunicator.httpRequest(null, endpointURL + "/session", "DELETE", null);
+    public void logout() throws IOException {
+        HttpHandler logoutHandler = ()-> clientCommunicator.httpRequest(this.clientAuthData, endpointURL + "/session", "DELETE", null);
+        handleResponse(logoutHandler);
+        this.clientAuthData = null;
+
     }
 
     public void clear() throws IOException{

@@ -1,6 +1,7 @@
 package client;
 
 import com.google.gson.Gson;
+import model.AuthData;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -13,6 +14,10 @@ public class ClientCommunicator {
         URL connectionURL = new URL(urlArg);
 
         HttpURLConnection connection = (HttpURLConnection) connectionURL.openConnection();
+
+        if (request != null && request.getClass() == AuthData.class){
+            connection.addRequestProperty("Authorization", ((AuthData) request).authToken());
+        }
 
         connection.setReadTimeout(5000);
         connection.setRequestMethod(method);

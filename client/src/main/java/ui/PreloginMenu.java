@@ -28,7 +28,6 @@ public class PreloginMenu {
                     AuthData registerResult = serverFacade.register(desiredUsername, desiredPassword, email);
                     System.out.println("Successfully registered user: " + registerResult.username() +". Authtoken: " + registerResult.authToken());
                 } catch (IOException e) {
-                    System.out.println(e.getMessage());
                     System.out.println(EscapeSequences.SET_TEXT_COLOR_RED + "Sorry, we experienced an error connecting to the server.");
                     return "prelogin";
                 }

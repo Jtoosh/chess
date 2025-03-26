@@ -70,8 +70,19 @@ public class ServerFacadeTests {
 
     @Test
     @DisplayName("Logout Positive")
-    void LogoutPos(){
-
+    void LogoutPos() throws IOException {
+        serverFacade.login("testUser", "testPassword");
+        serverFacade.logout();
+        Assertions.assertNull(serverFacade.getClientAuthData());
     }
+
+    @Test
+    @DisplayName("Logout Negative")
+    void LogoutNegative(){
+        Assertions.assertThrows(
+                AuthorizationException.class, ()-> serverFacade.logout());
+    }
+
+
 
 }
