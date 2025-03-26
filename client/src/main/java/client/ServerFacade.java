@@ -2,6 +2,8 @@ package client;
 
 import model.AuthData;
 import model.UserData;
+import request.CreateRequest;
+import response.CreateResponse;
 
 import java.io.IOException;
 
@@ -22,27 +24,39 @@ public class ServerFacade {
     public AuthData register(String username, String password, String email) throws IOException {
         UserData registerData = new UserData(username, password, email);
 
-        HttpHandler registerHandler = () -> clientCommunicator.httpRequest(registerData, this.endpointURL + "/user", "POST", AuthData.class);
+        HttpHandler registerHandler = () -> clientCommunicator.httpRequest(
+                registerData, null, this.endpointURL + "/user", "POST", AuthData.class);
         return (AuthData) handleResponse(registerHandler);
     }
 
     public AuthData login(String username, String password) throws IOException{
         UserData loginData = new UserData(username, password, null);
-        HttpHandler loginHandler = ()-> clientCommunicator.httpRequest(loginData, this.endpointURL + "/session", "POST", AuthData.class);
+        HttpHandler loginHandler = ()-> clientCommunicator.httpRequest(
+                loginData, null, this.endpointURL + "/session", "POST", AuthData.class);
         AuthData result = (AuthData) handleResponse(loginHandler);
         this.clientAuthData = result;
         return result;
     }
 
     public void logout() throws IOException {
-        HttpHandler logoutHandler = ()-> clientCommunicator.httpRequest(this.clientAuthData, endpointURL + "/session", "DELETE", null);
+        HttpHandler logoutHandler = ()-> clientCommunicator.httpRequest(
+                this.clientAuthData, this.clientAuthData.authToken(), endpointURL + "/session", "DELETE", null);
         handleResponse(logoutHandler);
         this.clientAuthData = null;
 
     }
 
+    public int createGame(String gameName) throws IOException {
+        CreateRequest clientRequest = new CreateRequest(this.clientAuthData.authToken(), gameName);
+        HttpHandler createGameHandler = ()-> clientCommunicator.httpRequest(
+                clientRequest,this.clientAuthData.authToken(), endpointURL + "/game", "POST", CreateResponse.class);
+        CreateResponse result = (CreateResponse) handleResponse(createGameHandler);
+        return result.gameID();
+    }
+
     public void clear() throws IOException{
-        clientCommunicator.httpRequest(null, endpointURL + "/db", "DELETE", null);
+        clientCommunicator.httpRequest(
+                null, null, endpointURL + "/db", "DELETE", null);
     }
 
     private Record handleResponse(HttpHandler commHandler) throws IOException {

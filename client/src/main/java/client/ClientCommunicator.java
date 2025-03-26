@@ -10,13 +10,13 @@ import java.net.URL;
 public class ClientCommunicator {
     Gson serializer = new Gson();
 
-    public <T> T httpRequest(Record request, String urlArg, String method, Class<T> responseClass) throws IOException{
+    public <T> T httpRequest(Record request,String authToken, String urlArg, String method, Class<T> responseClass) throws IOException{
         URL connectionURL = new URL(urlArg);
 
         HttpURLConnection connection = (HttpURLConnection) connectionURL.openConnection();
 
-        if (request != null && request.getClass() == AuthData.class){
-            connection.addRequestProperty("Authorization", ((AuthData) request).authToken());
+        if (authToken != null){
+            connection.addRequestProperty("Authorization", authToken);
         }
 
         connection.setReadTimeout(5000);

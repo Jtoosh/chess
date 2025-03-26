@@ -2,6 +2,7 @@ package client;
 
 import model.AuthData;
 import org.junit.jupiter.api.*;
+import response.CreateResponse;
 import server.Server;
 
 import java.io.IOException;
@@ -83,6 +84,12 @@ public class ServerFacadeTests {
                 AuthorizationException.class, ()-> serverFacade.logout());
     }
 
-
+    @Test
+    @DisplayName("Create Game Positive")
+    void createGamePos() throws IOException {
+        serverFacade.login("testUser", "testPassword");
+        int gameID = serverFacade.createGame("My game");
+        Assertions.assertEquals(1, gameID);
+    }
 
 }
