@@ -6,7 +6,7 @@ import java.util.Collection;
 public class MoveCalcBishop implements MoveCalcPiece{
     private final ChessPiece[][] board;
     private final ChessPosition bishopPosition;
-    private final ArrayList validMovesCollection;
+    private final ArrayList<ChessMove> validMovesCollection;
     private final int bishopRowIndex;
     private final int bishopColIndex;
 

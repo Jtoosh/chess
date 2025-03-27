@@ -6,7 +6,7 @@ import java.util.Collection;
 public class MoveCalcRook implements MoveCalcPiece{
     private final ChessPiece[][] board;
     private final ChessPosition rookPosition;
-    private final ArrayList validMovesCollection;
+    private final ArrayList<ChessMove> validMovesCollection;
     private final int rookRowIndex;
     private final int rookColIndex;
 

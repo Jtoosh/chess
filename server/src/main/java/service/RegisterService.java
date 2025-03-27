@@ -2,7 +2,6 @@ package service;
 
 import dataaccess.AlreadyInUseException;
 import dataaccess.AuthDAO;
-import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import request.RegisterRequest;
 import response.RegisterResponse;

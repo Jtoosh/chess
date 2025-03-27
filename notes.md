@@ -1024,7 +1024,7 @@ WS:
 
 Methods with the `@OnWebSocketMessage` annotation _must_ be inside of a class with the `@Websocket` annotation.
 
-To keep track of who to notify on a Websocket message, make a map of clients, keyed by GameIDs.
+**Important**: To keep track of who to notify on a Websocket message, make a map of clients, keyed by GameIDs.
 
 The library that we're using for WS Client side will make the initial HTTP request to upgrade for us. All I need to to is use a URI with the `ws` protocol specified.
 
@@ -1041,6 +1041,80 @@ With ServerMessages and UserGameCommands, there is a similar serialization issue
 However, this method can be computationally expensive in larger systems. A better way to handler this for all system sizes is to **use a Gson type adapter**. This will essentially signifiy to Gson that when it encounters a certain type, it should use a certain adapter to deserialize it.
 
 Among the 3 types of type adapters that Dr. Wilkerson mentiones, the one he recommends for this use case is the Deserializer type adapter. It is the most simple. RuntimeTypeAdapter and StandartTypeAdapter are faster, but more complex.
+
+### Lecture: Computer Security
+
+Bad actors try to compromise systems in many ways, such as gaining unauthorized access to data (in rest or in motion), gaining unauthorized access to computers, or disable a system so it can't be used (DDoS).
+
+Security is an entire discipline, so this lecture will only focus on some essential topics.
+
+**Important Security Goals:**
+
+- Data confidentiality (only the right people can access the data)
+- Authentication (verifying the identity of a user)
+- Data integrity (ensuring that data is not modified in transit)
+- Non-repudiation (ensuring that a user cannot deny having performed an action. Verifying actions)
+
+**Foundational Concepts:**
+
+- Secure communication with HTTPS
+- Secure storage of passwords (hashing)
+- Secure data storage
+
+#### Cryptographic Hash Functions
+
+These have a few essential characteristics:
+
+- **One-way**: The input cannot be derived from the digest.
+- **Deterministic**: The same input will always produce the same digest.
+- **Fixed-size**: The digest will always be the same size, regardless of the input size. This is for storage efficiency.
+- **Pseudo-random**: Digest should appear statistically random, even though it is not. A small change in input should produce a large change in the output.
+
+**Cryptographic Hash Algorithms:**
+Historically, MD-5 and SHA-1 were the most common. However, they have both been cracked and should not be used.
+Git uses SHA-1 for generating commit IDs, but it is not a security risk because the commit IDs are not used for authentication or integrity checking.
+
+Modernly, SHA-2 superseeds MD-5 and SHA-1. It is a family of algorithms designed by the NSA. The most common is SHA-256, which gives a 256 bit digest. Other algorithms include SHA-512, SHA-224, and SHA-384.
+SHA-3 is a newer family of algorithms that is not as widely used yet.
+
+java has a `java.security` library.
+
+#### Secure User Passwords and Verification
+
+Plaintext passwords should never be stored. That is the kind of mistake that can and should get you fired.
+
+Some problems with storing password hashes:
+
+- If two users have the same password, they will have the same hash. This is a problem because if one of those hashes is compromised, the other user is also compromised.
+- Common passwords can be determined using a rainbow table attack. This is where a bad actor hashes some of the most common passwords, puts them in a table, and then compares the hashes of the passwords in the table to the hashes of the passwords in the database. If they match, they know that the password is one of those common passwords.
+- Rainbow tables can be avoided by "salting" the password. "Salt" is a random string that is added to the password _before_ hashing. Then that concatenated string is hashed. This means that even if two users have the same password, they will have different hashes because the salt is different. This also means that rainbow tables are not effective, because the salt is random and not known to the attacker.
+
+Password hashing algorithms are designed to be slow and computationally expensive. This is to make brute-force attacks more difficult. The longer it takes to hash a password, the longer it will take to brute-force it. This is also why many authentication platforms will "throttle" the number of login attempts. This means that if a user tries to log in too many times in a short period of time, the system will lock them out for a certain amount of time. This is also to prevent brute-force attacks.
+
+Current recommended password hashing algorithms include: _Argon2_, _bcrypt_, and _scrypt_.
+
+Because of salting, hackers have moved from determining the password from the hash to trying to get the plaintext password from the user. This is done through **1** phishing and other deceptive methods, and **2** keystroke loggers, which are programs that run in the background and record the keystrokes of the user. This is a problem because it is very difficult to detect, and can be used to steal passwords, credit card numbers, and other sensitive information.
+
+#### Encryption and Decryption
+
+This is similar to hashing, but differs in some important ways. **1** Encryption is reversible, while hashing is not. Encrypted data is eventually meant to be read and used, so it needs to be decryptable. **2** Encryption is used to protect all types of data, while hashing is used specifically for passwords and other authentication data.
+
+Modern encryption algorithms are divided into two main categories:
+**symmetric key** ("secret key") algorithms and **asymmetric key** ("public key") algorithms.
+
+Symmetric key algorithms use the same key for both encryption and decryption. This means that the sender and receiver must both have the same key, and it must be kept secret. Examples include AES (Advanced Encryption Standard) and, historically, DES (Data Encryption Standard).
+
+Asymmetric key algorithms use two different keys: a public key and a private key, that have a special mathematical relationship. One key is used for encryption, and other key must be used for decryption. This means that the sender can encrypt the data with their private key, and only the receiver can decrypt it with the sender's public key. Examples include RSA (Rivest-Shamir-Adleman) and ECC (Elliptic Curve Cryptography).
+
+The slides have a good list of typical usage.
+
+Public key encryption does have some drawbacks. It is much slower than symmetric key encryption, and can only encrypt data less than the key size.
+
+One of the most common uses of public key encryption is to encrypt and a symmetric key, which is then used to encrypt more data in a faster way. This has made public key encryption **one of the most important inventions in the history of computing.**
+
+This is the main idea and basis of SSL, which allows for HTTPS communication.
+
+A TLS handshake, the process of establishing a secure connection, involves a client and server exchanging random numbers and public keys, and ensuring they can decrypt each other's messages. Along with the public key, clients and servers send "certificates", to verify their identity.
 
 ## Project Notes
 
@@ -1166,3 +1240,5 @@ A good way to think about and understand phase 5, specifically the menus, is as 
 In the Client communicator, make the arguments for the 2 methods correspond to the endpoints that will use them, and pass unused params as null.
 
 I ran into a decent snag on the negative tests for ServerFacade. The errorStream for most of the error HTTP requests is going to be null, so just input something else as the error message.
+
+#### Phase 5 Retrospective

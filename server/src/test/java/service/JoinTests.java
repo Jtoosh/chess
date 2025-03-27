@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import request.JoinRequest;
-import response.JoinResponse;
 
 
 public class JoinTests {
@@ -29,7 +28,7 @@ public class JoinTests {
   @DisplayName("Positive")
   void joinGameTest(){
     JoinRequest testRequest = new JoinRequest(authDataForReq.authToken(), "WHITE", 1);
-    JoinResponse testResponse = testJoinService.joinGame(testRequest);
+    testJoinService.joinGame(testRequest);
     GameData actualGameData = gameDAO.getGameData(1);
 
     Assertions.assertEquals(1, actualGameData.gameID());

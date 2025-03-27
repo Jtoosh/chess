@@ -1,14 +1,13 @@
 package client;
 
 import com.google.gson.Gson;
-import model.AuthData;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ClientCommunicator {
-    Gson serializer = new Gson();
+public class HttpCommunicator {
+    Gson serializer = new Gson(); //TODO: Write separate serializer class with type adapters
 
     public <T> T httpRequest(Record request,String authToken, String urlArg, String method, Class<T> responseClass) throws IOException{
         URL connectionURL = new URL(urlArg);
@@ -45,8 +44,6 @@ public class ClientCommunicator {
         T response = null;
         if (httpConn.getResponseCode() != HttpURLConnection.HTTP_OK){
             try(InputStream errorStream = httpConn.getErrorStream()){
-                BufferedInputStream errorStreamOptimized = new BufferedInputStream(errorStream);
-                InputStreamReader errorStreamReader = new InputStreamReader(errorStreamOptimized);
                 handleHTTPStatus(httpConn.getResponseCode());
             }
         }

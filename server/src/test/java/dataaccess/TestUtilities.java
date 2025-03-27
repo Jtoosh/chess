@@ -21,10 +21,10 @@ public class TestUtilities {
 
         var setUpStatement1 = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         var preppedStmt1 = conn.prepareStatement(setUpStatement1);
-        preppedStmt.setString(1, "logdog");
-        preppedStmt.setString(2, "better password");
-        preppedStmt.setString(3, "newEmail.com");
-        preppedStmt.executeUpdate();
+        preppedStmt1.setString(1, "logdog");
+        preppedStmt1.setString(2, "better password");
+        preppedStmt1.setString(3, "newEmail.com");
+        preppedStmt1.executeUpdate();
 
 
         var setUpStatement2 = "INSERT INTO authData (username, authToken) VALUES (?, ?)";

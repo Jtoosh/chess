@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public class ServerFacade {
     private String endpointURL = "http://localhost:";
-    private final ClientCommunicator clientCommunicator = new ClientCommunicator();
+    private final HttpCommunicator clientCommunicator = new HttpCommunicator();
     private AuthData clientAuthData = new AuthData(null, null);
 
 

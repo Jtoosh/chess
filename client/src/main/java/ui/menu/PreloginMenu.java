@@ -26,7 +26,7 @@ public class PreloginMenu extends ParentMenu{
                 String username = parts[1];
                 String password = parts[2];
                 try {
-                    AuthData loginResult = serverFacade.login(username, password);
+                    serverFacade.login(username, password);
                 }catch (IllegalArgumentException e){
                     System.out.println(ErrorStrings.BAD_LOGIN_REQUEST);
                     return "prelogin";

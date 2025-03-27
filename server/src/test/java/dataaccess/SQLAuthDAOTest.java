@@ -6,7 +6,6 @@ import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.UUID;
 
 public class SQLAuthDAOTest {
     private final AuthDAO authDataAccess = new SQLAuthDAO();
