@@ -43,7 +43,7 @@ public class Chessboard {
 
         boolean lightFlag = (startColorArg.equals("light")) ? true : false;
         if (!lightFlag){
-            file = new ArrayList<>(file.reversed()) ;}
+            fileLables = new ArrayList<>(fileLables.reversed()) ;}
         int rankNumber = 0;
 
         organizeFirstRows(whiteRowOne, startColor);
@@ -65,7 +65,7 @@ public class Chessboard {
 
     private static void drawHeaderRow(PrintStream out){
         headerFormat(out);
-        for (String label : file){
+        for (String label : fileLables){
             out.print(label);
         }
         reset(out);
