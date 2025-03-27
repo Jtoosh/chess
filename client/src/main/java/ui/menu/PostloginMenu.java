@@ -6,6 +6,7 @@ import client.ServerFacade;
 import model.GameData;
 import ui.Chessboard;
 import ui.EscapeSequences;
+import ui.menu.handlers.JoinHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,10 @@ public class PostloginMenu extends ParentMenu{
         String[] parts = input.split(" ");
         switch(parts[0]){
 
+           //HELP CASE
+          case "help":
+            System.out.println(MenuStrings.POSTLOGIN_MENU);
+            return "postlogin";
             //LOGOUT CASE
             case "logout":
               try {
@@ -57,40 +62,31 @@ public class PostloginMenu extends ParentMenu{
 
             //JOIN CASE
             case "join":
-                if (!validateInput(parts, 3)){
-                    return "postlogin";
-                }
-              int id = Integer.parseInt(parts[1]);
-                String teamColor = parts[2];
-              try {
-                serverFacade.joinGame(id, teamColor);
-              } catch (AuthorizationException e){
-                  System.out.println(ErrorStrings.LOGOUT_UNAUTH);
-                  return "postlogin";
-              } catch (IllegalArgumentException e){
-                  System.out.println(ErrorStrings.JOIN_BAD_REQUEST);
-                  return "postlogin";
-              } catch (AlreadyInUseException e){
-                  System.out.println(ErrorStrings.JOIN_TEAM_COLOR_TAKEN);
-                  return "postlogin";
-              } catch (IOException e) {
-                  System.out.println(ErrorStrings.IO_EXCEPTION);
-                  return "postlogin";
-              }
-              //Draw chess board
-                if (teamColor.equals("WHITE")){
-                    Chessboard.main("light");
-                } else {
-                    Chessboard.main("dark");
-                }
-                System.out.print(EscapeSequences.RESET_BG_COLOR);
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_MENU);
-                return "game";
+              return JoinHandler.joinHandle(parts, serverFacade);
+
 
             //OBSERVE CASE
             case "observe":
-                //int id = parts[1];
-                //Draw chessboard
+              if (!validateInput(parts, 2)){
+                return "postlogin";
+              }
+              int observeId = Integer.parseInt(parts[1]);
+              try {
+                ArrayList<GameData> gamesList = (ArrayList<GameData>) serverFacade.listGames();
+                findGame(gamesList, observeId);
+                //Print Chessboard using returned list
+              } catch (AuthorizationException e){
+                System.out.println(ErrorStrings.LOGOUT_UNAUTH);
+                return "postlogin";
+              } catch (IllegalArgumentException e){
+                System.out.println(ErrorStrings.JOIN_BAD_REQUEST);
+                return "postlogin";
+              }catch (IOException e) {
+                System.out.println(ErrorStrings.IO_EXCEPTION);
+                return "postlogin";
+              }
+              //Draw chessboard
+
                 Chessboard.main("light");
                 System.out.print(EscapeSequences.RESET_BG_COLOR);
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_MENU);
@@ -109,4 +105,14 @@ public class PostloginMenu extends ParentMenu{
                     " BLACK: " + game.blackUsername());
         }
     }
+
+    private static GameData findGame(ArrayList<GameData> gamesListArg, int gameIDArg){
+      for (GameData game : gamesListArg){
+        if (game.gameID() == gameIDArg){
+          return game;
+        }
+      }
+      return null;
+    }
+
 }

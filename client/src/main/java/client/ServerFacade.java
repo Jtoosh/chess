@@ -27,7 +27,9 @@ public class ServerFacade {
 
         HttpHandler registerHandler = () -> clientCommunicator.httpRequest(
                 registerData, null, this.endpointURL + "/user", "POST", AuthData.class);
-        return (AuthData) handleResponse(registerHandler);
+        AuthData result = (AuthData) handleResponse(registerHandler);
+        this.clientAuthData = result;
+        return result;
     }
 
     public AuthData login(String username, String password) throws IOException{

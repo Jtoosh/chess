@@ -44,6 +44,14 @@ public class MenuStrings {
             
             6. Type \u001b[38;5;12m"observe <id>"\u001b[39m to join a chess game as an observer.
             """;
+    public static final String POSTLOGIN_HELP ="""
+            - Type \u001b[38;5;12m"help"\u001b[39m to see info about available commands.
+            - Type \u001b[38;5;12m"logout"\u001b[39m to logout of the Chess program.
+            - Type \u001b[38;5;12m"create <game name>"\u001b[39m to create a new chess game.
+            - Type \u001b[38;5;12m"list all"\u001b[39m to list all current chess games.
+            - Type \u001b[38;5;12m"join <id> <WHITE|BLACK>"\u001b[39m to join a chess game as that color.
+            - Type \u001b[38;5;12m"observe <id>"\u001b[39m to join a chess game as an observer.
+            """;
     public static final String GAMEPLAY_MENU = """
             Welcome to <gameName>!
             

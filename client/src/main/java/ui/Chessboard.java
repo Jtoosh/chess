@@ -17,20 +17,20 @@ public class Chessboard {
     private static final String EMPTY = "   ";
     private static ArrayList<String> fileLables = new ArrayList<>(List.of(EMPTY, " a ", " b "," c ", " d "," e ", " f "," g ", " h ", EMPTY));
     private static ArrayList<String> blackRowOne = new ArrayList<>(List.of(
-                                                         EscapeSequences.BLACK_ROOK,
-                                                         EscapeSequences.BLACK_KNIGHT,
-                                                         EscapeSequences.BLACK_BISHOP,
-                                                         EscapeSequences.BLACK_KING,
-                                                         EscapeSequences.BLACK_QUEEN,
-                                                         EscapeSequences.BLACK_BISHOP,
-                                                         EscapeSequences.BLACK_KNIGHT,
-                                                         EscapeSequences.BLACK_ROOK));
+            EscapeSequences.BLACK_ROOK,
+            EscapeSequences.BLACK_KNIGHT,
+            EscapeSequences.BLACK_BISHOP,
+            EscapeSequences.BLACK_QUEEN,
+            EscapeSequences.BLACK_KING,
+            EscapeSequences.BLACK_BISHOP,
+            EscapeSequences.BLACK_KNIGHT,
+            EscapeSequences.BLACK_ROOK));
     private static ArrayList<String> whiteRowOne = new ArrayList<>(List.of(
             EscapeSequences.WHITE_ROOK,
             EscapeSequences.WHITE_KNIGHT,
             EscapeSequences.WHITE_BISHOP,
-            EscapeSequences.WHITE_KING,
             EscapeSequences.WHITE_QUEEN,
+            EscapeSequences.WHITE_KING,
             EscapeSequences.WHITE_BISHOP,
             EscapeSequences.WHITE_KNIGHT,
             EscapeSequences.WHITE_ROOK));

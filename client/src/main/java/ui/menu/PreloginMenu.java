@@ -50,7 +50,7 @@ public class PreloginMenu extends ParentMenu{
                 String email = parts[3];
                 try {
                     AuthData registerResult = serverFacade.register(desiredUsername, desiredPassword, email);
-                    System.out.println("Successfully registered user: " + registerResult.username() +". Authtoken: " + registerResult.authToken());
+                    System.out.println("Successfully registered user: " + registerResult.username());
                 } catch (IllegalArgumentException e){
                     System.out.println(ErrorStrings.BAD_REGISTER_REQUEST);
                     return "prelogin";
