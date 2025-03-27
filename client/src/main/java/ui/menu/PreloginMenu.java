@@ -9,7 +9,7 @@ import ui.EscapeSequences;
 import java.io.IOException;
 
 public class PreloginMenu extends ParentMenu{
-    
+
     public static String eval(String input, ServerFacade serverFacade) {
         String parsedInput = input.strip();
         String[] parts = parsedInput.split(" ");
