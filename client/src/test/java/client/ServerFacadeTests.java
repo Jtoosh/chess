@@ -64,7 +64,7 @@ public class ServerFacadeTests {
 
     @Test
     @DisplayName("Login Negative")
-    void LoginNegative(){
+    void loginNegative(){
         Assertions.assertThrows(AuthorizationException.class,
                 ()-> serverFacade.login("testUserNotFound", "testPass"));
         Assertions.assertThrows(AuthorizationException.class,
@@ -73,7 +73,7 @@ public class ServerFacadeTests {
 
     @Test
     @DisplayName("Logout Positive")
-    void LogoutPos() throws IOException {
+    void logoutPos() throws IOException {
         serverFacade.login("testUser", "testPassword");
         serverFacade.logout();
         Assertions.assertNull(serverFacade.getClientAuthData().authToken());
@@ -81,7 +81,7 @@ public class ServerFacadeTests {
 
     @Test
     @DisplayName("Logout Negative")
-    void LogoutNegative(){
+    void logoutNegative(){
         Assertions.assertThrows(
                 AuthorizationException.class, ()-> serverFacade.logout());
     }

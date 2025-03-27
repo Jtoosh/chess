@@ -15,7 +15,7 @@ public class Chessboard {
 
     //Padded characters (Note: Chess piece padded characters are in EscapeSequences.java)
     private static final String EMPTY = "   ";
-    private static ArrayList<String> FILE_LABELS = new ArrayList<>(List.of(EMPTY, " a ", " b "," c ", " d "," e ", " f "," g ", " h ", EMPTY));
+    private static ArrayList<String> fileLables = new ArrayList<>(List.of(EMPTY, " a ", " b "," c ", " d "," e ", " f "," g ", " h ", EMPTY));
     private static ArrayList<String> blackRowOne = new ArrayList<>(List.of(
                                                          EscapeSequences.BLACK_ROOK,
                                                          EscapeSequences.BLACK_KNIGHT,
@@ -42,7 +42,8 @@ public class Chessboard {
         startColor = startColorArg;
 
         boolean lightFlag = (startColorArg.equals("light")) ? true : false;
-        if (!lightFlag){FILE_LABELS = new ArrayList<>(FILE_LABELS.reversed()) ;}
+        if (!lightFlag){
+            file = new ArrayList<>(file.reversed()) ;}
         int rankNumber = 0;
 
         organizeFirstRows(whiteRowOne, startColor);
@@ -64,7 +65,7 @@ public class Chessboard {
 
     private static void drawHeaderRow(PrintStream out){
         headerFormat(out);
-        for (String label : FILE_LABELS){
+        for (String label : file){
             out.print(label);
         }
         reset(out);
