@@ -1,4 +1,4 @@
-package ui;
+package ui.menu;
 
 public class MenuStrings {
     public static final String PRELOGIN_MENU = """

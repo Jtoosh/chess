@@ -1,4 +1,6 @@
-package ui;
+package ui.menu;
+
+import ui.EscapeSequences;
 
 public class GameMenu {
 

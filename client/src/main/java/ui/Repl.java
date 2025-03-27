@@ -1,6 +1,9 @@
 package ui;
 
 import client.ServerFacade;
+import ui.menu.GameMenu;
+import ui.menu.PostloginMenu;
+import ui.menu.PreloginMenu;
 
 import java.util.Scanner;
 
@@ -23,7 +26,7 @@ public class Repl {
             while (currentState.equals("postlogin")){
                 System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "<< Chess Menu >>");
                 String result = scanner.nextLine();
-                currentState = PostloginMenu.eval(result);
+                currentState = PostloginMenu.eval(result, this.serverFacade);
             }
             while (currentState.equals("game")){
                 System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "<< Game Menu >>");

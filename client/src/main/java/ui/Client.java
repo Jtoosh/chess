@@ -1,6 +1,7 @@
 package ui;
 
 import client.ServerFacade;
+import ui.menu.MenuStrings;
 
 public class Client {
     private final ServerFacade serverFacade = new ServerFacade(8080);

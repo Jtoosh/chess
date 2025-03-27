@@ -1,8 +1,12 @@
-package ui;
+package ui.menu;
+
+import client.ServerFacade;
+import ui.Chessboard;
+import ui.EscapeSequences;
 
 public class PostloginMenu {
 
-    public static String eval(String input){
+    public static String eval(String input, ServerFacade serverFacade){
         String[] parts = input.split(" ");
         switch(parts[0]){
             case "logout":

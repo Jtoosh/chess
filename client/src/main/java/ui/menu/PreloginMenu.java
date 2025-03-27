@@ -1,23 +1,15 @@
-package ui;
+package ui.menu;
 
 import client.AlreadyInUseException;
 import client.AuthorizationException;
 import client.ServerFacade;
 import model.AuthData;
-import client.HttpHandler;
+import ui.EscapeSequences;
 
 import java.io.IOException;
 
-public class PreloginMenu {
-
-    private static boolean validateInput(String[] input, int intendedLen){
-        if (input.length != intendedLen){
-            System.out.println(ErrorStrings.INVALID_ARG_NUMBER);
-            return false;
-        } else { return true;}
-    }
-
-
+public class PreloginMenu extends ParentMenu{
+    
     public static String eval(String input, ServerFacade serverFacade) {
         String parsedInput = input.strip();
         String[] parts = parsedInput.split(" ");
