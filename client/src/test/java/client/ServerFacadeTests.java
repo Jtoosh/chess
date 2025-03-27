@@ -1,11 +1,13 @@
 package client;
 
 import model.AuthData;
+import model.GameData;
 import org.junit.jupiter.api.*;
 import response.CreateResponse;
 import server.Server;
 
 import java.io.IOException;
+import java.util.Collection;
 
 
 public class ServerFacadeTests {
@@ -74,7 +76,7 @@ public class ServerFacadeTests {
     void LogoutPos() throws IOException {
         serverFacade.login("testUser", "testPassword");
         serverFacade.logout();
-        Assertions.assertNull(serverFacade.getClientAuthData());
+        Assertions.assertNull(serverFacade.getClientAuthData().authToken());
     }
 
     @Test
@@ -90,6 +92,28 @@ public class ServerFacadeTests {
         serverFacade.login("testUser", "testPassword");
         int gameID = serverFacade.createGame("My game");
         Assertions.assertEquals(1, gameID);
+    }
+
+    @Test
+    @DisplayName("Create Game Negative")
+    void createGameNegative() {
+        Assertions.assertThrows(AuthorizationException.class,
+                ()-> serverFacade.createGame("My game"));
+    }
+
+    @Test
+    @DisplayName("List Game Positive")
+    void listGamePos() throws IOException {
+        serverFacade.login("testUser", "testPassword");
+        Collection<GameData> gamesList = serverFacade.listGames();
+        Assertions.assertEquals(0, gamesList.size());
+    }
+
+    @Test
+    @DisplayName("List Games Negative")
+    void listGamesNegative() {
+        Assertions.assertThrows(AuthorizationException.class,
+                ()-> serverFacade.listGames());
     }
 
 }

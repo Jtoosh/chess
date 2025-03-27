@@ -1,16 +1,19 @@
 package client;
 
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 import request.CreateRequest;
 import response.CreateResponse;
+import response.ListResponse;
 
 import java.io.IOException;
+import java.util.Collection;
 
 public class ServerFacade {
     private String endpointURL = "http://localhost:";
     private final ClientCommunicator clientCommunicator = new ClientCommunicator();
-    private AuthData clientAuthData;
+    private AuthData clientAuthData = new AuthData(null, null);
 
 
     public AuthData getClientAuthData() {
@@ -42,7 +45,7 @@ public class ServerFacade {
         HttpHandler logoutHandler = ()-> clientCommunicator.httpRequest(
                 this.clientAuthData, this.clientAuthData.authToken(), endpointURL + "/session", "DELETE", null);
         handleResponse(logoutHandler);
-        this.clientAuthData = null;
+        this.clientAuthData = new AuthData(null,null);
 
     }
 
@@ -52,6 +55,13 @@ public class ServerFacade {
                 clientRequest,this.clientAuthData.authToken(), endpointURL + "/game", "POST", CreateResponse.class);
         CreateResponse result = (CreateResponse) handleResponse(createGameHandler);
         return result.gameID();
+    }
+
+    public Collection<GameData> listGames() throws IOException {
+        HttpHandler listGamesHandler = ()-> clientCommunicator.httpRequest(
+                null, this.clientAuthData.authToken(), endpointURL + "/game", "GET", ListResponse.class);
+        ListResponse result = (ListResponse) handleResponse(listGamesHandler);
+        return result.games();
     }
 
     public void clear() throws IOException{

@@ -21,6 +21,7 @@ public class ClientCommunicator {
 
         connection.setReadTimeout(5000);
         connection.setRequestMethod(method);
+//        connection.setDoInput(true);
         connection.setDoOutput(true);
         writeBody(request,connection);
 
@@ -68,7 +69,7 @@ public class ClientCommunicator {
             case 403:
                 throw new AlreadyInUseException("Error: already in use");
             default:
-                throw new IOException("Error: IOException");
+                throw new IOException("Error: IOException " + responseCode);
         }
     }
 }
