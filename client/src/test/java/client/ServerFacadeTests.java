@@ -116,4 +116,29 @@ public class ServerFacadeTests {
                 ()-> serverFacade.listGames());
     }
 
+    @Test
+    @DisplayName("Join Game Positive")
+    void joinGamePos() throws IOException {
+        serverFacade.login("testUser", "testPassword");
+        serverFacade.createGame("My game");
+        serverFacade.joinGame(1, "WHITE");
+        Collection<GameData> gamesList = serverFacade.listGames();
+        GameData joinedGame = TestUtilities.findByID(gamesList, 1);
+        Assertions.assertEquals("testUser", joinedGame.whiteUsername());
+    }
+
+    @Test
+    @DisplayName("List Games Negative")
+    void joinGameNegative() throws IOException {
+        Assertions.assertThrows(AuthorizationException.class,
+                ()-> serverFacade.joinGame(1, "BLACK"));
+        serverFacade.login("testUser", "testPassword");
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()-> serverFacade.joinGame(1, "GREEN"));
+        serverFacade.createGame("My game");
+        serverFacade.joinGame(1, "WHITE");
+        Assertions.assertThrows(AlreadyInUseException.class,
+                ()-> serverFacade.joinGame(1, "WHITE"));
+    }
+
 }

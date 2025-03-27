@@ -1,11 +1,9 @@
 package client;
 
-import model.AuthData;
-import model.GameData;
-import model.UserData;
-import request.CreateRequest;
-import response.CreateResponse;
-import response.ListResponse;
+
+import model.*;
+import request.*;
+import response.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -62,6 +60,13 @@ public class ServerFacade {
                 null, this.clientAuthData.authToken(), endpointURL + "/game", "GET", ListResponse.class);
         ListResponse result = (ListResponse) handleResponse(listGamesHandler);
         return result.games();
+    }
+
+    public void joinGame(int gameID, String requestedColor) throws IOException {
+        JoinRequest clientRequest = new JoinRequest(this.clientAuthData.authToken(),requestedColor, gameID );
+        HttpHandler joinGameHandler = ()-> clientCommunicator.httpRequest(
+                clientRequest, this.clientAuthData.authToken(), endpointURL + "/game", "PUT", null);
+        handleResponse(joinGameHandler);
     }
 
     public void clear() throws IOException{
