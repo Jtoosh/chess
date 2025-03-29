@@ -138,7 +138,7 @@ public class Chessboard {
     }
 
     private static void headerFormat(PrintStream out){
-        out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY);
+        out.print(EscapeSequences.SET_BG_COLOR_DARK_GREEN);
         out.print(EscapeSequences.SET_TEXT_COLOR_BLACK);
     }
 
