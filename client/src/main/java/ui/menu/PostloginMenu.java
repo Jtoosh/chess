@@ -20,7 +20,7 @@ public class PostloginMenu extends ParentMenu{
 
            //HELP CASE
           case "help":
-            System.out.println(MenuStrings.POSTLOGIN_MENU);
+            System.out.println(MenuStrings.POSTLOGIN_HELP);
             return "postlogin";
             //LOGOUT CASE
             case "logout":
@@ -68,7 +68,7 @@ public class PostloginMenu extends ParentMenu{
 
             //OBSERVE CASE
             case "observe":
-              ObserveHandler.observeHandle(parts, serverFacade);
+              return ObserveHandler.observeHandle(parts, serverFacade);
             default:
               System.out.println("Sorry, we don't recognize that command. Make sure your command looks like this:\n " +
                       MenuStrings.POSTLOGIN_HELP);

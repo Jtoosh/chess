@@ -16,13 +16,16 @@ import static ui.menu.PostloginMenu.findGame;
 public class ObserveHandler {
 
   public static String observeHandle (String[] parts, ServerFacade serverFacade){
+    String gameName = "";
+
     if (!validateInput(parts, 2)){
       return "postlogin";
     }
     int observeId = Integer.parseInt(parts[1]);
     try {
       ArrayList<GameData> gamesList = (ArrayList<GameData>) serverFacade.listGames();
-      findGame(gamesList, observeId);
+      GameData game = findGame(gamesList, observeId);
+      gameName = game.gameName();
       //Print Chessboard using returned list
     } catch (AuthorizationException e){
       System.out.println(ErrorStrings.LOGOUT_UNAUTH);
@@ -38,7 +41,7 @@ public class ObserveHandler {
 
     Chessboard.main("light");
     System.out.print(EscapeSequences.RESET_BG_COLOR);
-    System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_MENU);
+    System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, gameName));
     return "game";
   }
 }

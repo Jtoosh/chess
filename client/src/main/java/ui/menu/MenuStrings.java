@@ -30,7 +30,7 @@ public class MenuStrings {
             \u001b[38;5;12m"quit"\u001b[39m to exit the program.
             """;
     public static final String POSTLOGIN_MENU = """
-            Welcome <username>!
+            Welcome %s!
             
             1. Type \u001b[38;5;12m"help"\u001b[39m to see info about available commands.
             
@@ -53,7 +53,7 @@ public class MenuStrings {
             - Type \u001b[38;5;12m"observe <id>"\u001b[39m to join a chess game as an observer.
             """;
     public static final String GAMEPLAY_MENU = """
-            Welcome to <gameName>!
+            Welcome to %s!
             
             1. Type \u001b[38;5;12m"help"\u001b[39m to see info about available commands.
             

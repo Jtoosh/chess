@@ -1,13 +1,15 @@
 package ui.menu.handlers;
 
 import client.*;
+import model.GameData;
 import ui.Chessboard;
 import ui.EscapeSequences;
 import ui.menu.*;
 
-import static ui.menu.ParentMenu.validateInput;
+import static ui.menu.ParentMenu.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class JoinHandler {
 
@@ -17,7 +19,11 @@ public class JoinHandler {
     }
     int id = Integer.parseInt(parts[1]);
     String teamColor = parts[2];
+    String gameName = "";
     try {
+      ArrayList<GameData> gamesList = (ArrayList<GameData>) serverFacade.listGames();
+      GameData game = findGame(gamesList, id);
+      gameName = game.gameName();
       serverFacade.joinGame(id, teamColor);
     } catch (AuthorizationException e){
       System.out.println(ErrorStrings.LOGOUT_UNAUTH);
@@ -38,8 +44,9 @@ public class JoinHandler {
     } else {
       Chessboard.main("dark");
     }
+
     System.out.print(EscapeSequences.RESET_BG_COLOR);
-    System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_MENU);
+    System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, gameName));
     return "game";
   }
 }

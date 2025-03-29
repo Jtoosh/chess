@@ -42,7 +42,7 @@ public class PreloginMenu extends ParentMenu{
                     return "prelogin";
                 }
                 System.out.println("Logged in " + username + ".");
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.POSTLOGIN_MENU);
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, username));
                 return "postlogin";
             //REGISTER CASE
             case "register":
@@ -66,7 +66,7 @@ public class PreloginMenu extends ParentMenu{
                     System.out.println(ErrorStrings.IO_EXCEPTION);
                     return "prelogin";
                 }
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.POSTLOGIN_MENU);
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, desiredUsername));
                 return "postlogin";
             //QUIT CASE
             case "quit":

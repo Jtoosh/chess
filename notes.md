@@ -1242,3 +1242,8 @@ In the Client communicator, make the arguments for the 2 methods correspond to t
 I ran into a decent snag on the negative tests for ServerFacade. The errorStream for most of the error HTTP requests is going to be null, so just input something else as the error message.
 
 #### Phase 5 Retrospective
+
+
+### Phase 6 Notes
+
+Right now, I am trying to figure out my starting point after copying the starter code. I am going to review the spec to see what to do with the User game commands and server messages.
