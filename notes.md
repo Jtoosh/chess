@@ -1247,3 +1247,5 @@ I ran into a decent snag on the negative tests for ServerFacade. The errorStream
 ### Phase 6 Notes
 
 Right now, I am trying to figure out my starting point after copying the starter code. I am going to review the spec to see what to do with the User game commands and server messages.
+
+**GOAL**: This phase I want to work on defensive programming by using assert statements at the start of each new code block (method declaration, if/else block, or case of a switch statement).
