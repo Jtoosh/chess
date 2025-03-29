@@ -65,6 +65,8 @@ public class HttpCommunicator {
                 throw new AuthorizationException("Error: unauthorized");
             case 403:
                 throw new AlreadyInUseException("Error: already in use");
+            case 404:
+                throw new AuthorizationException("Error: not found");
             default:
                 throw new IOException("Error: IOException " + responseCode);
         }

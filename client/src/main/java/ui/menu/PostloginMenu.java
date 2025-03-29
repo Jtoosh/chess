@@ -7,6 +7,7 @@ import model.GameData;
 import ui.Chessboard;
 import ui.EscapeSequences;
 import ui.menu.handlers.JoinHandler;
+import ui.menu.handlers.ObserveHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,52 +68,14 @@ public class PostloginMenu extends ParentMenu{
 
             //OBSERVE CASE
             case "observe":
-              if (!validateInput(parts, 2)){
-                return "postlogin";
-              }
-              int observeId = Integer.parseInt(parts[1]);
-              try {
-                ArrayList<GameData> gamesList = (ArrayList<GameData>) serverFacade.listGames();
-                findGame(gamesList, observeId);
-                //Print Chessboard using returned list
-              } catch (AuthorizationException e){
-                System.out.println(ErrorStrings.LOGOUT_UNAUTH);
-                return "postlogin";
-              } catch (IllegalArgumentException e){
-                System.out.println(ErrorStrings.JOIN_BAD_REQUEST);
-                return "postlogin";
-              }catch (IOException e) {
-                System.out.println(ErrorStrings.IO_EXCEPTION);
-                return "postlogin";
-              }
-              //Draw chessboard
-
-                Chessboard.main("light");
-                System.out.print(EscapeSequences.RESET_BG_COLOR);
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_MENU);
-                return "game";
+              ObserveHandler.observeHandle(parts, serverFacade);
             default:
+              System.out.println("Sorry, we don't recognize that command. Make sure your command looks like this:\n " +
+                      MenuStrings.POSTLOGIN_HELP);
                 return "postlogin";
         }
     }
 
-    private static void printGames (ArrayList<GameData> gamesListArg){
-        for (int i = 0; i < gamesListArg.size(); i++){
-            GameData game = gamesListArg.get(i);
-            System.out.println(EscapeSequences.SET_TEXT_COLOR_GREEN+
-                    (i+1) + EscapeSequences.RESET_TEXT_COLOR +
-                    ": " + game.gameName() + "\n   Players: " + "WHITE: " + game.whiteUsername() +
-                    " BLACK: " + game.blackUsername());
-        }
-    }
 
-    private static GameData findGame(ArrayList<GameData> gamesListArg, int gameIDArg){
-      for (GameData game : gamesListArg){
-        if (game.gameID() == gameIDArg){
-          return game;
-        }
-      }
-      return null;
-    }
 
 }

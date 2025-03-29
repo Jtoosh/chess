@@ -9,6 +9,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import request.LoginRequest;
 import response.LoginResponse;
 
+import javax.security.auth.login.CredentialNotFoundException;
+
 public class LoginService extends ParentService{
 
   public LoginService(UserDAO userDAO, AuthDAO authDAO){
@@ -18,9 +20,9 @@ public class LoginService extends ParentService{
   public LoginResponse login (LoginRequest request) {
     UserData user = getUser(request.username());
     if (user == null){
-      throw new AuthorizationException("Error: unauthorized");
+      throw new AuthorizationException("Error: not found");
     }
-    else if (!BCrypt.checkpw(request.password(),user.password())){
+    else if (!BCrypt.checkpw(request.password(), user.password())){
       throw new AuthorizationException("Error: unauthorized");
     }
     else{

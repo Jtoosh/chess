@@ -23,6 +23,8 @@ public class ErrorStrings {
           EscapeSequences.RESET_TEXT_COLOR;
   public static final String WRONG_PASSWORD = EscapeSequences.RESET_TEXT_COLOR + "Incorrect password";
 
+  public static final String USER_NOT_FOUND = EscapeSequences.RESET_TEXT_COLOR + "User not found.";
+
   //Logout Strings
   public static final String LOGOUT_UNAUTH = EscapeSequences.RESET_TEXT_COLOR + "Unauthorized";
 

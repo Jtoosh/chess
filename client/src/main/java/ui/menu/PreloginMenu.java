@@ -31,7 +31,11 @@ public class PreloginMenu extends ParentMenu{
                     System.out.println(ErrorStrings.BAD_LOGIN_REQUEST);
                     return "prelogin";
                 } catch (AuthorizationException e){
-                    System.out.println(ErrorStrings.WRONG_PASSWORD);
+                    if (e.getMessage().equals("Error: unauthorized")){
+                        System.out.println(ErrorStrings.WRONG_PASSWORD);
+                    } else if(e.getMessage().equals("Error: not found")){
+                        System.out.println(ErrorStrings.USER_NOT_FOUND);
+                    }
                     return "prelogin";
                 } catch (IOException e) {
                     System.out.println(ErrorStrings.IO_EXCEPTION);
