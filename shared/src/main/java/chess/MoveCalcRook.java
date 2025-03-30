@@ -11,7 +11,7 @@ public class MoveCalcRook implements MoveCalcPiece{
     private final int rookColIndex;
 
     public MoveCalcRook(ChessBoard board, ChessPosition position){
-        this.board = board.getBoard();
+        this.board = board.getBoardMatrix();
         this.rookPosition = position;
         this.validMovesCollection = new ArrayList<>();
         this.rookRowIndex =  rookPosition.getRow()-1;

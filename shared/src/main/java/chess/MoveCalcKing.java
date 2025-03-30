@@ -11,7 +11,7 @@ public class MoveCalcKing implements MoveCalcPiece{
     private final int kingCol;
 
     public MoveCalcKing (ChessBoard board, ChessPosition position){
-        this.board = board.getBoard();
+        this.board = board.getBoardMatrix();
         this.kingPosition = position;
         this.validMovePositions = new ArrayList<>();
         this.kingRow = kingPosition.getRow()-1;

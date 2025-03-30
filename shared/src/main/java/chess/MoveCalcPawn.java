@@ -14,7 +14,7 @@ public class MoveCalcPawn implements MoveCalcPiece{
     private final int direction;
 
     public MoveCalcPawn(ChessBoard board, ChessPosition position){
-        this.board = board.getBoard();
+        this.board = board.getBoardMatrix();
         this.pawnPosition = position;
         this.validMovePositions = new ArrayList<>();
         this.pawnRow = pawnPosition.getRow() - 1;

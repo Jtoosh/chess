@@ -11,7 +11,7 @@ public class MoveCalcBishop implements MoveCalcPiece{
     private final int bishopColIndex;
 
     public MoveCalcBishop(ChessBoard board, ChessPosition position){
-        this.board = board.getBoard();
+        this.board = board.getBoardMatrix();
         this.bishopPosition = position;
         this.validMovesCollection = new ArrayList<>();
         this.bishopRowIndex = bishopPosition.getRow() - 1;

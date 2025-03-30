@@ -65,12 +65,12 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        ChessPiece pieceToValidate = this.gameBoard.getBoard()[startPosition.getRow()-1][startPosition.getColumn()-1];
+        ChessPiece pieceToValidate = this.gameBoard.getBoardMatrix()[startPosition.getRow()-1][startPosition.getColumn()-1];
         Collection<ChessMove> movesToValidate = pieceToValidate.pieceMoves(this.gameBoard, startPosition);
         Collection <ChessMove> movesToRemove = new ArrayList<>();
         for (ChessMove move : movesToValidate){
             ChessBoard gameBoardCopy = new ChessBoard(this.gameBoard);
-            gameBoardCopy.setBoard(editPieceStorage(move, gameBoardCopy.getBoard()));
+            gameBoardCopy.setBoard(editPieceStorage(move, gameBoardCopy.getBoardMatrix()));
             if (inCheckLoopBody(pieceToValidate.getTeamColor(), gameBoardCopy)){
                 movesToRemove.add(move);
             }
@@ -86,7 +86,7 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        ChessPiece pieceToMove = this.gameBoard.getBoard()[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
+        ChessPiece pieceToMove = this.gameBoard.getBoardMatrix()[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
         if (pieceToMove == null){throw new InvalidMoveException("There is no piece to move at " + move.getStartPosition().toString());}
 
         if (pieceToMove.getTeamColor() != this.turnTeam){
@@ -94,7 +94,7 @@ public class ChessGame {
         }
 
         if (validMoves(move.getStartPosition()).contains(move)){
-           this.gameBoard.setBoard(editPieceStorage(move, this.gameBoard.getBoard()));
+           this.gameBoard.setBoard(editPieceStorage(move, this.gameBoard.getBoardMatrix()));
         } else { throw new InvalidMoveException("That is an invalid move.");}
         this.turnTeam = (this.turnTeam == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
     }
@@ -115,7 +115,7 @@ public class ChessGame {
     }
 
     private boolean inCheckLoopBody (TeamColor teamColor, ChessBoard board){
-        ChessPiece[][] boardStorage = board.getBoard();
+        ChessPiece[][] boardStorage = board.getBoardMatrix();
         for (int row = 0; row <= 7; row++){
             for (int col = 0; col <= 7; col++){
                 if (boardStorage[row][col] == null){ continue;}
@@ -129,7 +129,7 @@ public class ChessGame {
     }
 
     public boolean stalemateLoop(TeamColor teamColor) {
-        ChessPiece[][] boardStorage =this.gameBoard.getBoard();
+        ChessPiece[][] boardStorage =this.gameBoard.getBoardMatrix();
         for (int row = 0; row <= 7; row++){
             for (int col = 0; col <= 7; col++){
                 if (boardStorage[row][col] == null){continue;}

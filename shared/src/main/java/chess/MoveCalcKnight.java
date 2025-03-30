@@ -11,7 +11,7 @@ public class MoveCalcKnight implements MoveCalcPiece{
     private final int knightCol;
 
     public MoveCalcKnight(ChessBoard board, ChessPosition position){
-        this.board = board.getBoard();
+        this.board = board.getBoardMatrix();
         this.knightPosition = position;
         this.validMovePositions = new ArrayList<>();
         this.knightRow = knightPosition.getRow() - 1;

@@ -12,7 +12,7 @@ public class MoveCalcQueen implements MoveCalcPiece{
 
 
     public MoveCalcQueen(ChessBoard board, ChessPosition position) {
-        this.board = board.getBoard();
+        this.board = board.getBoardMatrix();
         this.queenPosition = position;
         this.validMovesCollection = new ArrayList<ChessMove>();
         this.queenRowIndex =  queenPosition.getRow()-1;

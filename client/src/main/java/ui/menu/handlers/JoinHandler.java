@@ -1,5 +1,6 @@
 package ui.menu.handlers;
 
+import chess.ChessGame;
 import client.*;
 import model.GameData;
 import ui.Chessboard;
@@ -39,10 +40,11 @@ public class JoinHandler {
       return "postlogin";
     }
     //Draw chess board
+    ChessGame game = new ChessGame();
     if (teamColor.equals("WHITE")){
-      Chessboard.main("light");
+      Chessboard.main("light", game.getBoard().getBoardMatrix());
     } else {
-      Chessboard.main("dark");
+      Chessboard.main("dark", game.getBoard().getBoardMatrix());
     }
 
     System.out.print(EscapeSequences.RESET_BG_COLOR);
