@@ -12,6 +12,7 @@ import java.util.Collection;
 public class ChessGame {
     private TeamColor turnTeam;
     private ChessBoard gameBoard;
+
     public ChessGame() {
         this.turnTeam = TeamColor.WHITE;
         setBoard(new ChessBoard());

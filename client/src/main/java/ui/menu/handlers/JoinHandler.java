@@ -42,9 +42,9 @@ public class JoinHandler {
     //Draw chess board
     ChessGame game = new ChessGame();
     if (teamColor.equals("WHITE")){
-      Chessboard.main("light", game.getBoard().getBoardMatrix());
+      Chessboard.draw("light", game.getBoard().getBoardMatrix());
     } else {
-      Chessboard.main("dark", game.getBoard().getBoardMatrix());
+      Chessboard.draw("dark", game.getBoard().getBoardMatrix());
     }
 
     System.out.print(EscapeSequences.RESET_BG_COLOR);

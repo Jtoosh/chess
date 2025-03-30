@@ -39,7 +39,7 @@ public class ObserveHandler {
     }
     //Draw chessboard
 
-    Chessboard.main("light", game.game().getBoard().getBoardMatrix());
+    Chessboard.draw("light", game.game().getBoard().getBoardMatrix());
     System.out.print(EscapeSequences.RESET_BG_COLOR);
     System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, game.gameName()));
     return "game";
