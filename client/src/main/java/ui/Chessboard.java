@@ -1,7 +1,6 @@
 package ui;
 
-import chess.ChessGame;
-import chess.ChessPiece;
+import chess.*;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -25,8 +24,12 @@ public class Chessboard {
     private static final String EMPTY = "   ";
     private static ArrayList<String> fileLables = new ArrayList<>(List.of(EMPTY, " a ", " b "," c ", " d "," e ", " f "," g ", " h ", EMPTY));
 
+    //Indexes for highlighting
+    private static int[] indexes = {9,9};
+    private static ArrayList<ChessMove> movesToHighlight;
 
-    public static void draw(String startColorArg, ChessPiece[][] board){
+    public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight){
+        ChessPiece[][] boardMatrix = board.getBoardMatrix();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         assert board != null;
         assert startColorArg.equals(LIGHT) || startColorArg.equals(DARK);
@@ -36,13 +39,19 @@ public class Chessboard {
             fileLables = new ArrayList<>(fileLables.reversed()) ;}
         int rankNumber;
 
+        if (pieceToHighlight != null){
+            indexes = findSquareIndeces(pieceToHighlight);
+            ChessPiece targetPiece = boardMatrix[indexes[0]][indexes[1]];
+            movesToHighlight = (ArrayList<ChessMove>) targetPiece.pieceMoves(board, new ChessPosition(indexes[0] + 1, indexes[1] + 1 ));
+        }
+
         drawHeaderRow(out);
         for (int i = 0; i < BOARD_ROWS; i++){
             rankNumber = (startColorArg.equals(LIGHT)) ? 7-i : i;
             if (lightFlag){
-                drawBoardRow(out, LIGHT, String.format(" %s ", rankNumber + 1), board[rankNumber]);
+                drawBoardRow(out, LIGHT, String.format(" %s ", rankNumber + 1), boardMatrix[rankNumber], rankNumber);
             } else {
-                drawBoardRow(out, DARK, String.format(" %s ", rankNumber + 1), board[rankNumber]);
+                drawBoardRow(out, DARK, String.format(" %s ", rankNumber + 1), boardMatrix[rankNumber], rankNumber);
             }
             lightFlag = !lightFlag;
         }
@@ -59,19 +68,22 @@ public class Chessboard {
         out.print("\n");
     }
 
-    private static void drawBoardRow(PrintStream out, String rowStartColor, String rank, ChessPiece[] row){
+    private static void drawBoardRow(PrintStream out, String rowStartColor, String rank, ChessPiece[] row, int i){
         boolean lightFlag = rowStartColor.equals(LIGHT);
         headerFormat(out);
         out.print(rank);
 
         out.print(EscapeSequences.RESET_TEXT_COLOR);
-        for (int i = 0; i < BOARD_SIZE_IN_SQUARES - 2; i++){
-            if (lightFlag){
+        for (int j = 0; j < BOARD_SIZE_IN_SQUARES - 2; j++){
+            if(i == indexes[0] && j == indexes[1]){
+                out.print(EscapeSequences.SET_BG_COLOR_YELLOW);
+            }
+            else if (lightFlag){
                 out.print(EscapeSequences.SET_BG_COLOR_TAN);
             } else{
                 out.print(EscapeSequences.SET_BG_COLOR_DARK_BROWN);
             }
-            out.print(evaluateSquare(row[i]));
+            out.print(evaluateSquare(row[j]));
             lightFlag = !lightFlag;
         }
         headerFormat(out);
@@ -103,5 +115,12 @@ public class Chessboard {
     private static void reset(PrintStream out){
         out.print(EscapeSequences.RESET_BG_COLOR);
         out.print(EscapeSequences.RESET_TEXT_COLOR);
+    }
+
+    private static int[] findSquareIndeces(String boardSquare){
+        String[] parts = boardSquare.split("");
+        int row = fileLables.indexOf(" " + parts[0] + " ");
+        int col = Integer.parseInt(parts[1]);
+      return new int[]{row, col};
     }
 }

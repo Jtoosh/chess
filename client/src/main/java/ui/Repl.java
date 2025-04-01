@@ -1,15 +1,16 @@
 package ui;
 
 import client.ServerFacade;
-import ui.menu.GameMenu;
-import ui.menu.PostloginMenu;
-import ui.menu.PreloginMenu;
+import model.GameData;
+import ui.menu.*;
 
 import java.util.Scanner;
 
 public class Repl {
     private final Scanner scanner = new Scanner(System.in);
     private final ServerFacade serverFacade;
+    private String username;
+    private GameData gameData;
 
     public Repl (ServerFacade serverFacadeArg){
         this.serverFacade = serverFacadeArg;
@@ -22,16 +23,18 @@ public class Repl {
                 System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "<< Login Menu >> ");
                 String result = scanner.nextLine();
                 currentState = PreloginMenu.eval(result, this.serverFacade);
+                username = PreloginMenu.returnUsername();
             }
             while (currentState.equals("postlogin")){
                 System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "<< Chess Menu >>");
                 String result = scanner.nextLine();
                 currentState = PostloginMenu.eval(result, this.serverFacade);
+                gameData = PostloginMenu.getGameData();
             }
             while (currentState.equals("game")){
                 System.out.println(EscapeSequences.SET_TEXT_COLOR_MAGENTA + "<< Game Menu >>");
                 String result = scanner.nextLine();
-                currentState = GameMenu.eval(result);
+                currentState = GameMenu.eval(result, this.serverFacade, username, gameData);
             }
         }
 

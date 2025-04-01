@@ -1,10 +1,13 @@
 package ui.menu;
 
+import client.ServerFacade;
+import model.GameData;
+import ui.Chessboard;
 import ui.EscapeSequences;
 
 public class GameMenu extends ParentMenu {
 
-    public static String eval(String input){
+    public static String eval(String input, ServerFacade serverFacade, String username, GameData gameData){
         String[] parts = input.split(" ");
 
         return switch (parts[0]) {
@@ -18,7 +21,7 @@ public class GameMenu extends ParentMenu {
                     "game";
             case "leave" -> {
                 validateInput(parts, 1);
-                System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.POSTLOGIN_MENU);
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, username));
                 yield "postlogin";
             }
             case "move" ->{
@@ -35,10 +38,17 @@ public class GameMenu extends ParentMenu {
             case "highlight" -> {
                 validateInput(parts, 2);
                 //get square from input
+                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), parts[1] );
                 yield "game";
             }
             default -> "game";
         };
+    }
+
+    private static String findStartColor (String username, GameData currentGame){
+        if (username.equals(currentGame.whiteUsername())){
+            return "light";
+        } else {return "dark";}
     }
 
 }

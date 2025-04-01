@@ -15,8 +15,9 @@ import static ui.menu.PostloginMenu.findGame;
 
 public class ObserveHandler {
 
+  private static GameData gameData;
+
   public static String observeHandle (String[] parts, ServerFacade serverFacade){
-    GameData game;
 
     if (!validateInput(parts, 2)){
       return "postlogin";
@@ -24,7 +25,7 @@ public class ObserveHandler {
     int observeId = Integer.parseInt(parts[1]);
     try {
       ArrayList<GameData> gamesList = (ArrayList<GameData>) serverFacade.listGames();
-      game = findGame(gamesList, observeId);
+      gameData= findGame(gamesList, observeId);
 
       //Print Chessboard using returned list
     } catch (AuthorizationException e){
@@ -39,9 +40,13 @@ public class ObserveHandler {
     }
     //Draw chessboard
 
-    Chessboard.draw("light", game.game().getBoard().getBoardMatrix());
+    Chessboard.draw("light", gameData.game().getBoard(), null);
     System.out.print(EscapeSequences.RESET_BG_COLOR);
-    System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, game.gameName()));
+    System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, gameData.gameName()));
     return "game";
+  }
+
+  public static GameData getGameData(){
+    return gameData;
   }
 }

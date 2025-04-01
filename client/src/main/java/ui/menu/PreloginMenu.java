@@ -9,6 +9,7 @@ import ui.EscapeSequences;
 import java.io.IOException;
 
 public class PreloginMenu extends ParentMenu{
+    private static String classUsername = "";
 
     public static String eval(String input, ServerFacade serverFacade) {
         String parsedInput = input.strip();
@@ -43,6 +44,7 @@ public class PreloginMenu extends ParentMenu{
                 }
                 System.out.println("Logged in " + username + ".");
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, username));
+                classUsername = username;
                 return "postlogin";
             //REGISTER CASE
             case "register":
@@ -67,6 +69,7 @@ public class PreloginMenu extends ParentMenu{
                     return "prelogin";
                 }
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, desiredUsername));
+                classUsername = desiredUsername;
                 return "postlogin";
             //QUIT CASE
             case "quit":
@@ -77,6 +80,10 @@ public class PreloginMenu extends ParentMenu{
                         MenuStrings.PRELOGIN_COMMANDS);
                 return "prelogin";
         }
+    }
+
+    public static String returnUsername(){
+        return classUsername;
     }
 
 }

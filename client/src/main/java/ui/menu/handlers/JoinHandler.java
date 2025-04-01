@@ -1,6 +1,7 @@
 package ui.menu.handlers;
 
 import chess.ChessGame;
+import chess.ChessPiece;
 import client.*;
 import model.GameData;
 import ui.Chessboard;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class JoinHandler {
+  private static GameData gameData;
 
   public static String joinHandle (String[] parts, ServerFacade serverFacade){
     if (!validateInput(parts, 3)){
@@ -20,11 +22,11 @@ public class JoinHandler {
     }
     int id = Integer.parseInt(parts[1]);
     String teamColor = parts[2];
-    String gameName = "";
+    String gameName;
     try {
       ArrayList<GameData> gamesList = (ArrayList<GameData>) serverFacade.listGames();
-      GameData game = findGame(gamesList, id);
-      gameName = game.gameName();
+      gameData = findGame(gamesList, id);
+      gameName = gameData.gameName();
       serverFacade.joinGame(id, teamColor);
     } catch (AuthorizationException e){
       System.out.println(ErrorStrings.LOGOUT_UNAUTH);
@@ -40,15 +42,19 @@ public class JoinHandler {
       return "postlogin";
     }
     //Draw chess board
-    ChessGame game = new ChessGame();
+
     if (teamColor.equals("WHITE")){
-      Chessboard.draw("light", game.getBoard().getBoardMatrix());
+      Chessboard.draw("light", gameData.game().getBoard(), null);
     } else {
-      Chessboard.draw("dark", game.getBoard().getBoardMatrix());
+      Chessboard.draw("dark", gameData.game().getBoard(), null);
     }
 
     System.out.print(EscapeSequences.RESET_BG_COLOR);
     System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, gameName));
     return "game";
+  }
+
+  public static GameData getGameData(){
+    return gameData;
   }
 }
