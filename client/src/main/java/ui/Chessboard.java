@@ -2,7 +2,6 @@ package ui;
 
 import chess.*;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -14,11 +13,7 @@ public class Chessboard {
 
     private static Logger logger;
     static{
-      try {
         initLog();
-      } catch (IOException e) {
-        System.out.println("Could not initialize logger due to: " + e.getMessage());
-      }
     }
 
     //Board dimensions
@@ -40,7 +35,7 @@ public class Chessboard {
     private static ChessPiece targetPiece;
     private static ArrayList<ChessMove> movesToHighlight;
 
-    private static void initLog() throws IOException {
+    private static void initLog(){
         logger = Logger.getLogger("Chessboard");
         Level logLevel = Level.INFO;
         logger.setLevel(logLevel);
@@ -55,8 +50,10 @@ public class Chessboard {
     public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight){
         ChessPiece[][] boardMatrix = board.getBoardMatrix();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-        assert board != null;
-        assert startColorArg.equals(LIGHT) || startColorArg.equals(DARK);
+        // parameter checks
+        if (!startColorArg.equals(LIGHT) && !startColorArg.equals(DARK)){
+            throw new IllegalArgumentException("The startColorArg parameter must have a value \"light\" or \"dark\"");
+        }
 
         boolean lightFlag = startColorArg.equals(LIGHT);
         if (!lightFlag){
@@ -106,7 +103,6 @@ public class Chessboard {
         out.print(EscapeSequences.RESET_TEXT_COLOR);
         for (int j = 0; j < BOARD_SIZE_IN_SQUARES - 2; j++){
             if(i == indexes[0] && j == indexes[1]){
-//                System.out.println("Entered piece highlight block");
                 out.print(EscapeSequences.SET_BG_COLOR_YELLOW);
             } else if(targetPiece != null && checkSquareForHighlight(i, j)){
                 out.print(EscapeSequences.SET_BG_COLOR_MAGENTA);
@@ -157,12 +153,9 @@ public class Chessboard {
       return new int[]{row, col};
     }
 
-    private static boolean checkSquareForHighlight(int row, int col){
-        ChessPosition startPosition = new ChessPosition(indexes[0] + 1, indexes[1] + 1);
-        ChessPosition endPosition = new ChessPosition(row + 1, col + 1);
-        if (movesToHighlight.contains(new ChessMove(startPosition, endPosition, null))){
-            return true;
-        }
-        else {return false;}
+    private static boolean checkSquareForHighlight(int row, int col) {
+        ChessPosition startPosition=new ChessPosition(indexes[0] + 1, indexes[1] + 1);
+        ChessPosition endPosition=new ChessPosition(row + 1, col + 1);
+        return movesToHighlight.contains(new ChessMove(startPosition, endPosition, null));
     }
 }

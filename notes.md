@@ -1316,3 +1316,6 @@ Right now, I am trying to figure out my starting point after copying the starter
 - To accomodate for square highlighting, I had to add a parameter to the `ui.Chessboard`'s `draw()` method to take in a string of the square for which to highlight moves. Then I made a method in `ui.Chessboard` to decode that string into a "tuple" of indexes for the 2D array of squares.
 
 - I also had to change the `board` parameter to have a `ChessBoard` type, rather than `ChessPiece[][]`, in order to accomodate calling `.pieceMoves()` in the `ui.Chessboard` class, since that method takes in a `ChessBoard` type, and I didn't want to bother changing that and all it's dependencies.
+
+- Current progress as of 4.1: I have the highlighting down for when the board needs to be from the white player/observer's perspective, but there is a bug with highlighting from the black player's perspective. The board will load from the black player's perspective as expected, but then when I run the highlight command, the pieces get flipped. The ranks (numbers) are flipped, but the files (letters) are not. I think the bug may lie in the GameData that I am passing to the game menu.
+`
