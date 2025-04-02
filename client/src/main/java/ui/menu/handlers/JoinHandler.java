@@ -25,9 +25,12 @@ public class JoinHandler {
     String gameName;
     try {
       ArrayList<GameData> gamesList = (ArrayList<GameData>) serverFacade.listGames();
+
+      serverFacade.joinGame(id, teamColor);
+
       gameData = findGame(gamesList, id);
       gameName = gameData.gameName();
-      serverFacade.joinGame(id, teamColor);
+
     } catch (AuthorizationException e){
       System.out.println(ErrorStrings.LOGOUT_UNAUTH);
       return "postlogin";
