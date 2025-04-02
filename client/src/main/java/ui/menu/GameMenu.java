@@ -46,9 +46,9 @@ public class GameMenu extends ParentMenu {
     }
 
     private static String findStartColor (String username, GameData currentGame){
-        if (username.equals(currentGame.whiteUsername())){
-            return "light";
-        } else {return "dark";}
+        if (username.equals(currentGame.blackUsername())){
+            return "dark";
+        } else {return "light";}
     }
 
 }

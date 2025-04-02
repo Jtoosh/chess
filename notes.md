@@ -1307,7 +1307,6 @@ I ran into a decent snag on the negative tests for ServerFacade. The errorStream
 
 #### Phase 5 Retrospective
 
-
 ### Phase 6 Notes
 
 Right now, I am trying to figure out my starting point after copying the starter code. I am going to review the spec to see what to do with the User game commands and server messages.

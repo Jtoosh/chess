@@ -2,13 +2,24 @@ package ui;
 
 import chess.*;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
 
 
 public class Chessboard {
+
+    private static Logger logger;
+    static{
+      try {
+        initLog();
+      } catch (IOException e) {
+        System.out.println("Could not initialize logger due to: " + e.getMessage());
+      }
+    }
 
     //Board dimensions
     private static final int BOARD_SIZE_IN_SQUARES = 10;
@@ -22,11 +33,24 @@ public class Chessboard {
 
     //Padded characters (Note: Chess piece padded characters are in EscapeSequences.java)
     private static final String EMPTY = "   ";
-    private static ArrayList<String> fileLables = new ArrayList<>(List.of(EMPTY, " a ", " b "," c ", " d "," e ", " f "," g ", " h ", EMPTY));
+    private static ArrayList<String> fileLables = new ArrayList<>(List.of(" a ", " b "," c ", " d "," e ", " f "," g ", " h "));
 
     //Indexes for highlighting
     private static int[] indexes = {9,9};
+    private static ChessPiece targetPiece;
     private static ArrayList<ChessMove> movesToHighlight;
+
+    private static void initLog() throws IOException {
+        logger = Logger.getLogger("Chessboard");
+        Level logLevel = Level.INFO;
+        logger.setLevel(logLevel);
+
+        Handler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(logLevel);
+        consoleHandler.setFormatter(new SimpleFormatter());
+        logger.addHandler(consoleHandler);
+
+    }
 
     public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight){
         ChessPiece[][] boardMatrix = board.getBoardMatrix();
@@ -39,9 +63,13 @@ public class Chessboard {
             fileLables = new ArrayList<>(fileLables.reversed()) ;}
         int rankNumber;
 
+
         if (pieceToHighlight != null){
-            indexes = findSquareIndeces(pieceToHighlight);
-            ChessPiece targetPiece = boardMatrix[indexes[0]][indexes[1]];
+            indexes = findSquareIndexes(pieceToHighlight);
+            targetPiece = boardMatrix[indexes[0]][indexes[1]];
+        }
+
+        if (targetPiece != null){
             movesToHighlight = (ArrayList<ChessMove>) targetPiece.pieceMoves(board, new ChessPosition(indexes[0] + 1, indexes[1] + 1 ));
         }
 
@@ -61,9 +89,11 @@ public class Chessboard {
 
     private static void drawHeaderRow(PrintStream out){
         headerFormat(out);
+        out.print(EMPTY);
         for (String label : fileLables){
             out.print(label);
         }
+        out.print(EMPTY);
         reset(out);
         out.print("\n");
     }
@@ -76,7 +106,10 @@ public class Chessboard {
         out.print(EscapeSequences.RESET_TEXT_COLOR);
         for (int j = 0; j < BOARD_SIZE_IN_SQUARES - 2; j++){
             if(i == indexes[0] && j == indexes[1]){
+//                System.out.println("Entered piece highlight block");
                 out.print(EscapeSequences.SET_BG_COLOR_YELLOW);
+            } else if(targetPiece != null && checkSquareForHighlight(i, j)){
+                out.print(EscapeSequences.SET_BG_COLOR_MAGENTA);
             }
             else if (lightFlag){
                 out.print(EscapeSequences.SET_BG_COLOR_TAN);
@@ -117,10 +150,19 @@ public class Chessboard {
         out.print(EscapeSequences.RESET_TEXT_COLOR);
     }
 
-    private static int[] findSquareIndeces(String boardSquare){
+    private static int[] findSquareIndexes(String boardSquare){
         String[] parts = boardSquare.split("");
-        int row = fileLables.indexOf(" " + parts[0] + " ");
-        int col = Integer.parseInt(parts[1]);
+        int col = fileLables.indexOf(" " + parts[0] + " ");
+        int row = Integer.parseInt(parts[1]) - 1;
       return new int[]{row, col};
+    }
+
+    private static boolean checkSquareForHighlight(int row, int col){
+        ChessPosition startPosition = new ChessPosition(indexes[0] + 1, indexes[1] + 1);
+        ChessPosition endPosition = new ChessPosition(row + 1, col + 1);
+        if (movesToHighlight.contains(new ChessMove(startPosition, endPosition, null))){
+            return true;
+        }
+        else {return false;}
     }
 }
