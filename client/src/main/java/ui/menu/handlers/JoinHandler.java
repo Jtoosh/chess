@@ -45,7 +45,7 @@ public class JoinHandler {
       System.out.println(ErrorStrings.IO_EXCEPTION);
       return "postlogin";
     }
-
+    //TODO: Send CONNECT UserGameCommand to server
 
     //Draw chess board
 

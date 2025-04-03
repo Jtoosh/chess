@@ -16,11 +16,13 @@ public class GameMenu extends ParentMenu {
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + MenuStrings.GAMEPLAY_HELP);
                 yield "game";
             }
-            case "redraw" ->
-                //redraw chess board;
-                    "game";
+            case "redraw" ->{
+                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), null);
+                yield "game";
+            }
             case "leave" -> {
                 validateInput(parts, 1);
+                // TODO:Send LEAVE UserGameCommand
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, username));
                 yield "postlogin";
             }
@@ -31,7 +33,7 @@ public class GameMenu extends ParentMenu {
             }
             case "resign" -> {
                 validateInput(parts, 1);
-                //
+                //TODO: Send RESIGN UserGameCommand
                 System.out.println("Well, I guess you lost now.");
                 yield "game";
             }

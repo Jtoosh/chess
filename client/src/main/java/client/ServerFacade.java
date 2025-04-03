@@ -76,6 +76,8 @@ public class ServerFacade {
                 null, null, endpointURL + "/db", "DELETE", null);
     }
 
+    //TODO: Add method for sending UserGameCommands
+
     private Record handleResponse(HttpHandler commHandler) throws IOException {
         try{
             return commHandler.makeRequest();

@@ -70,9 +70,9 @@ public class MenuStrings {
             6. Type \u001b[38;5;12m"highlight <square>"\u001b[39m to show legal moves for the piece on that square. 
             """;
     public static final String GAMEPLAY_HELP ="""
-            - Type \u001b[38;5;12m"help"\u001b to see this menu again.
-            - Type \u001b[38;5;12m"redraw"\u001b to redraw the chess board if it scrolls off-screen.
-            - Type \u001b[38;5;12m"leave"\u001b to leave this game and move to the previous menu.
+            - Type \u001b[38;5;12m"help"\u001b[39m to see this menu again.
+            - Type \u001b[38;5;12m"redraw"\u001b[39m to redraw the chess board if it scrolls off-screen.
+            - Type \u001b[38;5;12m"leave"\u001b[39m to leave this game and move to the previous menu.
             - Type \u001b[38;5;12m"move <start square end square>"\u001b[39m to make a move. For example, as the white 
               player, type \u001b[38;5;12m"move d2d4"\u001b[39m to move the pawn on square d2 forward 2 squares.
             - Type \u001b[38;5;12m"resign"\u001b[39m to resign. You'll stay in this menu, but the game will be over and
