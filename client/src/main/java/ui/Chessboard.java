@@ -23,6 +23,7 @@ public class Chessboard {
     //Team colors
     private static final ChessGame.TeamColor WHITE = ChessGame.TeamColor.WHITE;
 
+    //Constants for which color square to make/start with
     private static final String LIGHT = "light";
     private static final String DARK = "dark";
 
@@ -31,11 +32,12 @@ public class Chessboard {
     private static final ArrayList<String> fileLables = new ArrayList<>(List.of(" a ", " b "," c ", " d "," e ", " f "," g ", " h "));
     private static  ArrayList<String> fileLablesInUse;
 
-    //Indexes for highlighting
+    //Indexes, ChessPiece and ArrayList for highlighting
     private static int[] indexes = {9,9};
     private static ChessPiece targetPiece;
     private static ArrayList<ChessMove> movesToHighlight = new ArrayList<>();
 
+    //Logger setup
     private static void initLog(){
         logger = Logger.getLogger("Chessboard");
         Level logLevel = Level.INFO;
@@ -45,7 +47,6 @@ public class Chessboard {
         consoleHandler.setLevel(logLevel);
         consoleHandler.setFormatter(new SimpleFormatter());
         logger.addHandler(consoleHandler);
-
     }
 
     public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight){
@@ -54,12 +55,15 @@ public class Chessboard {
             throw new IllegalArgumentException("The startColorArg parameter must have a value \"light\" or \"dark\"");
         }
 
-        //Clear out old movesToHighlight
+        //Clear out old highlight data
         movesToHighlight.clear();
+        targetPiece = null;
+        indexes =new int[]{9, 9};
 
         ChessPiece[][] boardMatrix = board.getBoardMatrix();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
+        //Determines the color to make the first square, which direction the file labes will go
         boolean lightFlag = startColorArg.equals(LIGHT);
         if (!lightFlag){
             fileLablesInUse = new ArrayList<>(fileLables.reversed()) ;
@@ -68,17 +72,18 @@ public class Chessboard {
         }
         int rankNumber;
 
-
+        //finds the indexes for the piece to highlight by parsing the string arguement
         if (pieceToHighlight != null){
             indexes = findSquareIndexes(pieceToHighlight);
             targetPiece = boardMatrix[indexes[0]][indexes[1]];
         }
-
+        //Sets the piece to highlight
         if (targetPiece != null){
             movesToHighlight = (ArrayList<ChessMove>) targetPiece.pieceMoves(board, new ChessPosition(indexes[0] + 1, indexes[1] + 1 ));
         }
 
         drawHeaderRow(out);
+        //Body rows loop
         for (int i = 0; i < BOARD_ROWS; i++){
             rankNumber = (startColorArg.equals(LIGHT)) ? 7-i : i;
             if (lightFlag){
@@ -123,6 +128,7 @@ public class Chessboard {
             out.print(evaluateSquare(row[j]));
             lightFlag = !lightFlag;
         }
+        //Formats for the rank column, prints the rank, resets formatting, then goes to a new line
         headerFormat(out);
         out.print(rank);
         reset(out);
@@ -130,6 +136,7 @@ public class Chessboard {
 
     }
 
+    //Determines which piece type goes on a square
     private static String evaluateSquare (ChessPiece piece){
         if (piece == null){
             return EMPTY;

@@ -41,7 +41,11 @@ public class GameMenu extends ParentMenu {
                 Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), parts[1] );
                 yield "game";
             }
-            default -> "game";
+            default -> {
+                System.out.println("Sorry, we don't recognize that command. Make sure your command looks like this:\n " +
+                        MenuStrings.GAMEPLAY_HELP);
+                yield "game";
+            }
         };
     }
 
