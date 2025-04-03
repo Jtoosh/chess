@@ -28,12 +28,13 @@ public class Chessboard {
 
     //Padded characters (Note: Chess piece padded characters are in EscapeSequences.java)
     private static final String EMPTY = "   ";
-    private static ArrayList<String> fileLables = new ArrayList<>(List.of(" a ", " b "," c ", " d "," e ", " f "," g ", " h "));
+    private static final ArrayList<String> fileLables = new ArrayList<>(List.of(" a ", " b "," c ", " d "," e ", " f "," g ", " h "));
+    private static  ArrayList<String> fileLablesInUse;
 
     //Indexes for highlighting
     private static int[] indexes = {9,9};
     private static ChessPiece targetPiece;
-    private static ArrayList<ChessMove> movesToHighlight;
+    private static ArrayList<ChessMove> movesToHighlight = new ArrayList<>();
 
     private static void initLog(){
         logger = Logger.getLogger("Chessboard");
@@ -48,16 +49,23 @@ public class Chessboard {
     }
 
     public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight){
-        ChessPiece[][] boardMatrix = board.getBoardMatrix();
-        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         // parameter checks
         if (!startColorArg.equals(LIGHT) && !startColorArg.equals(DARK)){
             throw new IllegalArgumentException("The startColorArg parameter must have a value \"light\" or \"dark\"");
         }
 
+        //Clear out old movesToHighlight
+        movesToHighlight.clear();
+
+        ChessPiece[][] boardMatrix = board.getBoardMatrix();
+        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+
         boolean lightFlag = startColorArg.equals(LIGHT);
         if (!lightFlag){
-            fileLables = new ArrayList<>(fileLables.reversed()) ;}
+            fileLablesInUse = new ArrayList<>(fileLables.reversed()) ;
+        } else{
+            fileLablesInUse = fileLables;
+        }
         int rankNumber;
 
 
@@ -87,7 +95,7 @@ public class Chessboard {
     private static void drawHeaderRow(PrintStream out){
         headerFormat(out);
         out.print(EMPTY);
-        for (String label : fileLables){
+        for (String label : fileLablesInUse){
             out.print(label);
         }
         out.print(EMPTY);
@@ -148,7 +156,7 @@ public class Chessboard {
 
     private static int[] findSquareIndexes(String boardSquare){
         String[] parts = boardSquare.split("");
-        int col = fileLables.indexOf(" " + parts[0] + " ");
+        int col = fileLablesInUse.indexOf(" " + parts[0] + " ");
         int row = Integer.parseInt(parts[1]) - 1;
       return new int[]{row, col};
     }

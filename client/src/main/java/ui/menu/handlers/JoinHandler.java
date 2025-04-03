@@ -28,6 +28,7 @@ public class JoinHandler {
 
       serverFacade.joinGame(id, teamColor);
 
+      gamesList = (ArrayList<GameData>) serverFacade.listGames();
       gameData = findGame(gamesList, id);
       gameName = gameData.gameName();
 
@@ -44,6 +45,8 @@ public class JoinHandler {
       System.out.println(ErrorStrings.IO_EXCEPTION);
       return "postlogin";
     }
+
+
     //Draw chess board
 
     if (teamColor.equals("WHITE")){

@@ -49,7 +49,6 @@ public class GameMenu extends ParentMenu {
         if (username.equals(currentGame.blackUsername())){
             return "dark";
         } else {
-            System.out.println("RETURNING LIGHT");
             return "light";}
     }
 
