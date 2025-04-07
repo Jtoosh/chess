@@ -63,8 +63,6 @@ public class Server {
       Spark.init();
       Spark.awaitInitialization();
 
-      //
-      Spark.get("/echo/:msg", (req, res) -> "HTTP response: " + req.params(":msg"));
 
       //Clear Endpoint
       Spark.delete("/db", (req, res) ->{

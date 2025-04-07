@@ -30,6 +30,10 @@ public class WebsocketCommunicator extends Endpoint {
 
   }
 
+  public void updateActiveClients(String username, Integer gameID){
+//    this.activeClients.put(gameID, );
+  }
+
   public void send(String msg) throws Exception {this.session.getBasicRemote().sendText(msg);}
   @Override
   public void onOpen(Session session, EndpointConfig endpointConfig) {

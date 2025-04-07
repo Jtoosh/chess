@@ -1042,7 +1042,7 @@ With ServerMessages and UserGameCommands, there is a similar serialization issue
 
 However, this method can be computationally expensive in larger systems. A better way to handler this for all system sizes is to **use a Gson type adapter**. This will essentially signifiy to Gson that when it encounters a certain type, it should use a certain adapter to deserialize it.
 
-Among the 3 types of type adapters that Dr. Wilkerson mentiones, the one he recommends for this use case is the Deserializer type adapter. It is the most simple. RuntimeTypeAdapter and StandartTypeAdapter are faster, but more complex.
+Among the 3 types of type adapters that Dr. Wilkerson mentiones, the one he recommends for this use case is the Deserializer type adapter. It is the most simple. RuntimeTypeAdapter and StandardTypeAdapter are faster, but more complex.
 
 ### Lecture: Computer Security
 

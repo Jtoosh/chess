@@ -89,6 +89,7 @@ public class ServerFacade {
         switch (commandType) {
             case "CONNECT":
                  parsedCommandType=  UserGameCommand.CommandType.CONNECT;
+
                  break;
             case "MAKE_MOVE":
                 parsedCommandType = UserGameCommand.CommandType.MAKE_MOVE;

@@ -15,10 +15,13 @@ public class ParentMenu {
   public static void printGames (ArrayList<GameData> gamesListArg){
     for (int i = 0; i < gamesListArg.size(); i++){
       GameData game = gamesListArg.get(i);
+      String whitePrintName = (game.whiteUsername() != null) ? game.whiteUsername() : "Color available";
+      String blackPrintName = (game.blackUsername() != null) ? game.blackUsername() : "Color available";
       System.out.println(EscapeSequences.SET_TEXT_COLOR_GREEN+
               (i+1) + EscapeSequences.RESET_TEXT_COLOR +
-              ": " + game.gameName() + "\n   Players: " + "WHITE: " + game.whiteUsername() +
-              " BLACK: " + game.blackUsername());
+              ": " + game.gameName() + "\n   Players: " + "WHITE: " + EscapeSequences.SET_TEXT_COLOR_BLUE +
+              whitePrintName + EscapeSequences.RESET_TEXT_COLOR +
+              " BLACK: " + EscapeSequences.SET_TEXT_COLOR_BLUE + blackPrintName + EscapeSequences.RESET_TEXT_COLOR);
     }
   }
 
