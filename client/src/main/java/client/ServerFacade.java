@@ -4,7 +4,6 @@ package client;
 import model.*;
 import request.*;
 import response.*;
-import ui.Client;
 import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
@@ -16,18 +15,17 @@ public class ServerFacade {
     private WebsocketCommunicator wsCommunitcator;
     private AuthData clientAuthData = new AuthData(null, null);
 
+    public ServerFacade (int port, ServerMessageObserver msgObserver) {
+        this.endpointURL = this.endpointURL + port;
+        try {
+            this.wsCommunitcator = new WebsocketCommunicator(msgObserver);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public AuthData getClientAuthData() {
         return clientAuthData;
-    }
-
-    public ServerFacade (int port, Client chessClient) {
-        this.endpointURL = this.endpointURL + port;
-      try {
-        this.wsCommunitcator = new WebsocketCommunicator(chessClient);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
     }
 
     public AuthData register(String username, String password, String email) throws IOException {

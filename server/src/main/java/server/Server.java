@@ -51,84 +51,82 @@ public class Server {
     }
 
     public int run(int desiredPort) {
-        DatabaseManager.createDatabase();
+      DatabaseManager.createDatabase();
 
-        Spark.port(desiredPort);
+      Spark.port(desiredPort);
 
-        Spark.staticFiles.location("web");
-        // Register your endpoints and handle exceptions here.
+      Spark.staticFiles.location("web");
+      // Register your endpoints and handle exceptions here.
 
-        //Clear Endpoint
-        Spark.delete("/db", (req, res) ->{
-          ClearRequest clearRequest = new ClearRequest(req.headers(), req.body());
-          ServiceHandler clearServiceLambda = request -> clearService.clear();
+      Spark.webSocket("/connect", Server.class);
 
-          handleResponse(res, clearRequest, clearServiceLambda );
+      Spark.init();
+      Spark.awaitInitialization();
+
+      Spark.get("/echo/:msg", (req, res) -> "HTTP response: " + req.params(":msg"));
+
+      //Clear Endpoint
+      Spark.delete("/db", (req, res) ->{
+        ClearRequest clearRequest = new ClearRequest(req.headers(), req.body());
+        ServiceHandler clearServiceLambda = request -> clearService.clear();
+
+        handleResponse(res, clearRequest, clearServiceLambda );
+        return res.body();
+      });
+
+      //Register Endpoint
+      Spark.post("/user", (req, res) ->{
+        RegisterRequest registerRequest = serializer.fromJSON(req.body(), RegisterRequest.class);
+        ServiceHandler registerServiceLambda = request -> registerService.register((RegisterRequest) request);
+        handleResponse(res, registerRequest, registerServiceLambda);
+        return res.body();
+      });
+
+      //Login Endpoint
+      Spark.post("/session", (req, res) ->{
+          LoginRequest loginRequest = serializer.fromJSON(req.body(), LoginRequest.class);
+          ServiceHandler loginServiceLambda = request -> loginService.login((LoginRequest)request);
+          handleResponse(res, loginRequest, loginServiceLambda);
           return res.body();
-        });
+      });
 
-        //Register Endpoint
-        Spark.post("/user", (req, res) ->{
-          RegisterRequest registerRequest = serializer.fromJSON(req.body(), RegisterRequest.class);
-          ServiceHandler registerServiceLambda = request -> registerService.register((RegisterRequest) request);
-          handleResponse(res, registerRequest, registerServiceLambda);
-          return res.body();
-        });
+      //Logout endpoint
+      Spark.delete("/session", (req, res) ->{
+       LogoutRequest logoutRequest = new LogoutRequest(req.headers("Authorization"));
+       ServiceHandler logoutServiceLambda = request -> logoutService.logout((LogoutRequest) request);
+       handleResponse(res, logoutRequest, logoutServiceLambda);
+       return res.body();
+      });
 
-        //Login Endpoint
-        Spark.post("/session", (req, res) ->{
-            LoginRequest loginRequest = serializer.fromJSON(req.body(), LoginRequest.class);
-            ServiceHandler loginServiceLambda = request -> loginService.login((LoginRequest)request);
-            handleResponse(res, loginRequest, loginServiceLambda);
-            return res.body();
-        });
+      //List Games endpoint
+      Spark.get("/game", (req, res) ->{
+          ListRequest listRequest = new ListRequest(req.headers("Authorization"));
+          ServiceHandler listServiceLambda = request -> listService.listGames((ListRequest) request);
+          handleResponse(res, listRequest, listServiceLambda);
+        return res.body();
+      });
 
-        //Logout endpoint
-        Spark.delete("/session", (req, res) ->{
-         LogoutRequest logoutRequest = new LogoutRequest(req.headers("Authorization"));
-         ServiceHandler logoutServiceLambda = request -> logoutService.logout((LogoutRequest) request);
-         handleResponse(res, logoutRequest, logoutServiceLambda);
-         return res.body();
-        });
+      //Create game endpoint
+      Spark.post("/game", (req, res) -> {
+        CreateRequest testRequest = serializer.fromJSON(req.body(), CreateRequest.class);
+        CreateRequest createRequest = new CreateRequest(req.headers("Authorization"), testRequest.gameName());
+        ServiceHandler createServiceLambda = request -> createService.createGame((CreateRequest) request);
+        handleResponse(res, createRequest, createServiceLambda);
+        return res.body();
+      });
 
-        //List Games endpoint
-        Spark.get("/game", (req, res) ->{
-            ListRequest listRequest = new ListRequest(req.headers("Authorization"));
-            ServiceHandler listServiceLambda = request -> listService.listGames((ListRequest) request);
-            handleResponse(res, listRequest, listServiceLambda);
-          return res.body();
-        });
+      //Join game endpoint
+      Spark.put("/game", (req,res)->{
+        JoinRequest tempRequest = serializer.fromJSON(req.body(), JoinRequest.class);
+        JoinRequest joinRequest = new JoinRequest(req.headers("Authorization"), tempRequest.playerColor(), tempRequest.gameID());
+        ServiceHandler joinServiceLambda = request -> joinService.joinGame((JoinRequest) request);
+        handleResponse(res, joinRequest, joinServiceLambda);
+        return res.body();
+      });
 
-        //Create game endpoint
-        Spark.post("/game", (req, res) -> {
-          CreateRequest testRequest = serializer.fromJSON(req.body(), CreateRequest.class);
-          CreateRequest createRequest = new CreateRequest(req.headers("Authorization"), testRequest.gameName());
-          ServiceHandler createServiceLambda = request -> createService.createGame((CreateRequest) request);
-          handleResponse(res, createRequest, createServiceLambda);
-          return res.body();
-        });
+      //TODO: Add /ws endpoint
 
-        //Join game endpoint
-        Spark.put("/game", (req,res)->{
-          JoinRequest tempRequest = serializer.fromJSON(req.body(), JoinRequest.class);
-          JoinRequest joinRequest = new JoinRequest(req.headers("Authorization"), tempRequest.playerColor(), tempRequest.gameID());
-          ServiceHandler joinServiceLambda = request -> joinService.joinGame((JoinRequest) request);
-          handleResponse(res, joinRequest, joinServiceLambda);
-          return res.body();
-        });
-
-        //TODO: Add /ws endpoint
-
-        Spark.webSocket("/connect", Server.class);
-        Spark.get("/echo/:msg", (req, res) -> "HTTP response: " + req.params(":msg"));
-
-
-
-  //This line initializes the server and can be removed once you have a functioning endpoint
-        Spark.init();
-
-        Spark.awaitInitialization();
-        return Spark.port();
+      return Spark.port();
     }
 
         public void stop() {

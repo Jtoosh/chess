@@ -18,8 +18,8 @@ public class ServerFacadeTests {
     @BeforeAll
     public static void init() {
         server = new Server();
-        chessClient = new Client();
         var port = server.run(8080);
+        chessClient = new Client();
         serverFacade = new ServerFacade(port, chessClient);
         System.out.println("Started test HTTP server on " + port);
     }
@@ -32,6 +32,7 @@ public class ServerFacadeTests {
     @BeforeEach
     void setUp() throws IOException {
         serverFacade.register("testUser", "testPassword", "testEmail.com");
+        serverFacade.logout();
     }
 
     @AfterEach
@@ -130,7 +131,7 @@ public class ServerFacadeTests {
     }
 
     @Test
-    @DisplayName("List Games Negative")
+    @DisplayName("Join Games Negative")
     void joinGameNegative() throws IOException {
         Assertions.assertThrows(AuthorizationException.class,
                 ()-> serverFacade.joinGame(1, "BLACK"));
