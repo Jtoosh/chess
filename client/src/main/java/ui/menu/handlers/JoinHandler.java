@@ -45,7 +45,7 @@ public class JoinHandler {
       return "postlogin";
     }
     //TODO: Send CONNECT UserGameCommand to server
-//    serverFacade.sendGameCommand();
+    serverFacade.sendUserGameCommand("CONNECT", gameData.gameID());
 
     //Draw chess board
 

@@ -14,13 +14,15 @@ public class ServerFacadeTests {
 
     private static Server server;
     private static ServerFacade serverFacade;
-    private static Client chessClient;
-    @BeforeAll
+
+  @BeforeAll
     public static void init() {
         server = new Server();
         var port = server.run(8080);
-        chessClient = new Client();
+
+        Client chessClient=new Client();
         serverFacade = new ServerFacade(port, chessClient);
+
         System.out.println("Started test HTTP server on " + port);
     }
 

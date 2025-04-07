@@ -14,6 +14,7 @@ public class ServerFacade {
     private final HttpCommunicator clientCommunicator = new HttpCommunicator();
     private WebsocketCommunicator wsCommunitcator;
     private AuthData clientAuthData = new AuthData(null, null);
+    private final ClientSerializer serializer = new ClientSerializer();
 
     public ServerFacade (int port, ServerMessageObserver msgObserver) {
         this.endpointURL = this.endpointURL + port;
@@ -84,7 +85,7 @@ public class ServerFacade {
 
     //TODO: Add method for sending UserGameCommands
     public void sendUserGameCommand(String commandType, Integer gameID){
-        UserGameCommand.CommandType parsedCommandType;
+        UserGameCommand.CommandType parsedCommandType = null;
         switch (commandType) {
             case "CONNECT":
                  parsedCommandType=  UserGameCommand.CommandType.CONNECT;
@@ -97,7 +98,14 @@ public class ServerFacade {
                 break;
             case "RESIGN":
                 parsedCommandType = UserGameCommand.CommandType.RESIGN;
+                break;
         }
+        UserGameCommand command = new UserGameCommand(parsedCommandType, this.clientAuthData.authToken(), gameID);
+      try {
+        wsCommunitcator.send(serializer.toJSON(command));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
 
     }
 
