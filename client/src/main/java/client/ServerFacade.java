@@ -4,6 +4,8 @@ package client;
 import model.*;
 import request.*;
 import response.*;
+import ui.Client;
+import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -11,6 +13,7 @@ import java.util.Collection;
 public class ServerFacade {
     private String endpointURL = "http://localhost:";
     private final HttpCommunicator clientCommunicator = new HttpCommunicator();
+    private WebsocketCommunicator wsCommunitcator;
     private AuthData clientAuthData = new AuthData(null, null);
 
 
@@ -18,8 +21,13 @@ public class ServerFacade {
         return clientAuthData;
     }
 
-    public ServerFacade (int port){
+    public ServerFacade (int port, Client chessClient) {
         this.endpointURL = this.endpointURL + port;
+      try {
+        this.wsCommunitcator = new WebsocketCommunicator(chessClient);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
     }
 
     public AuthData register(String username, String password, String email) throws IOException {
@@ -77,6 +85,23 @@ public class ServerFacade {
     }
 
     //TODO: Add method for sending UserGameCommands
+    public void sendUserGameCommand(String commandType, Integer gameID){
+        UserGameCommand.CommandType parsedCommandType;
+        switch (commandType) {
+            case "CONNECT":
+                 parsedCommandType=  UserGameCommand.CommandType.CONNECT;
+                 break;
+            case "MAKE_MOVE":
+                parsedCommandType = UserGameCommand.CommandType.MAKE_MOVE;
+                break;
+            case "LEAVE":
+                parsedCommandType = UserGameCommand.CommandType.LEAVE;
+                break;
+            case "RESIGN":
+                parsedCommandType = UserGameCommand.CommandType.RESIGN;
+        }
+
+    }
 
     private Record handleResponse(HttpHandler commHandler) throws IOException {
         try{

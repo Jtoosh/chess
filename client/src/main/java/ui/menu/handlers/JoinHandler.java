@@ -1,12 +1,11 @@
 package ui.menu.handlers;
 
-import chess.ChessGame;
-import chess.ChessPiece;
 import client.*;
 import model.GameData;
 import ui.Chessboard;
 import ui.EscapeSequences;
 import ui.menu.*;
+import websocket.commands.UserGameCommand;
 
 import static ui.menu.ParentMenu.*;
 
@@ -46,6 +45,7 @@ public class JoinHandler {
       return "postlogin";
     }
     //TODO: Send CONNECT UserGameCommand to server
+//    serverFacade.sendGameCommand();
 
     //Draw chess board
 

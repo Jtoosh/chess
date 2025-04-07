@@ -2,11 +2,15 @@ package server;
 
 
 import dataaccess.*;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.*;
+import org.eclipse.jetty.websocket.api.*;
 import request.*;
 import response.*;
 import service.*;
 import spark.*;
 
+@WebSocket
 public class Server {
     private final UserDAO userDataAccess = new SQLUserDAO();
     private final AuthDAO authDataAccess = new SQLAuthDAO();
@@ -115,7 +119,12 @@ public class Server {
 
         //TODO: Add /ws endpoint
 
-        //This line initializes the server and can be removed once you have a functioning endpoint 
+        Spark.webSocket("/connect", Server.class);
+        Spark.get("/echo/:msg", (req, res) -> "HTTP response: " + req.params(":msg"));
+
+
+
+  //This line initializes the server and can be removed once you have a functioning endpoint
         Spark.init();
 
         Spark.awaitInitialization();
@@ -126,6 +135,12 @@ public class Server {
         Spark.stop();
         Spark.awaitStop();
     }
+
+  @OnWebSocketMessage
+  public void onMessage(Session session, String message) throws Exception {
+    session.getRemote().sendString("WebSocket response: " + message);
+  }
+
 
 
 }

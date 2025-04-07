@@ -4,6 +4,7 @@ import model.AuthData;
 import model.GameData;
 import org.junit.jupiter.api.*;
 import server.Server;
+import ui.Client;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -13,11 +14,13 @@ public class ServerFacadeTests {
 
     private static Server server;
     private static ServerFacade serverFacade;
+    private static Client chessClient;
     @BeforeAll
     public static void init() {
         server = new Server();
-        var port = server.run(0);
-        serverFacade = new ServerFacade(port);
+        chessClient = new Client();
+        var port = server.run(8080);
+        serverFacade = new ServerFacade(port, chessClient);
         System.out.println("Started test HTTP server on " + port);
     }
 

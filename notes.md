@@ -1178,7 +1178,35 @@ One way to write thread-safe code in a database context is to use multi-query tr
 
 #### Critical Sections
 
-A critical section of code is a section that only one thread should be allowed to run at a time. Generally, race conditions appear because a critical section is not properly protected. This can be done by in Java adding the `synchronized` keyword in the method declaration, which will ensure that only one thread can run that section of code at a time. Synchronized code can cause deadlocks at times, which is when threads are waiting on each other and cannot proceed.
+A critical section of code is a section that only one thread should be allowed to run at a time. Generally, race conditions appear because a critical section is not properly protected. This can be done by in Java adding the `synchronized` keyword in the method declaration, which will ensure that only one thread can run that section of code at a time. Synchronized code can cause **deadlocks** at times, which is when threads are waiting on each other and cannot proceed.
+
+**Object-locking** is a way to prevent deadlocks. This is done by using the `synchronized` keyword on an object, which will lock that object and prevent other threads from accessing it until the lock is released. This can be done by using the `wait()` and `notify()` methods, which will allow threads to wait for a certain condition to be met before proceeding. ~CP
+
+#### Atomic Variables
+
+Atomic variables are variables that can be accessed and set in one CPU operation, instead of multiple. Getting and setting requiring multiple operations is what creates critical sections (if that code is running/runnable from multiple threads). With Atomic variables, since accessing and setting is done in one operation, there is no need for critical sections. 
+
+Atomic variables are created using the classes in the `java.util.concurrent.atomic` package, such as `AtomicInteger`, `AtomicReference`, and others. View the Javadoc for more details on the classes and their useful methods.
+
+#### Race Conditions in Chess Project
+
+Although I don't explicitly use Thread objects in my code, the Spark library, and the Websocket library on the Client-side both use threads, which means that there _is_ potential race conditions.
+
+### Lecture: Command Line Builds
+
+When referring to "builds" and "building" software, it can generally refer to these steps:
+
+- Retrieving source code
+- Downloading/resolving dependencies
+- Compiling code
+- Compiling and running automated unit and integration tests
+- Verifying code quality and test coverage
+- Packaging compiled code into a distributable format
+- Installing/deploying the software
+
+These steps can be followed manually, but that can lead to errors, simply due to the amount of steps and the potential problems at each stage. Command line builds are a way to automate this process, using tools like Maven and Gradel in Java, and others in other languages, like npm for Javascript. Command line builds are generally preferred to manual builds.
+
+Things like GitHub actions are a form of continuous integration, where changes are built and tested on a git commit. Something like pre-commit, which we used in 236, is similar. There is also continuous deployment, which is taking continuous integration a step further, and automatically deploying the code to production after it is built and tested.
 
 ## Project Notes
 
@@ -1324,4 +1352,3 @@ Right now, I am trying to figure out my starting point after copying the starter
 - For the second bug, the cause was rooted in my use of static variables. Because the variables for the piece to highlight and the arrayList of its legal moves were all static, whenever they were changed, that change persisted because it was performed to the class itself. This caused me to reflect on if making the `ui.Chessboard` class static was the best move in this context. On the one hand, the need to clear out certain variables each time, and make use of several parameters indicates the need for instance-specific data, making the class be non-static seem logical. On the other hand, with the sheer amount of Chessboards that may be drawn during a given match of chess, it would be very memory inefficient to create a new Chessboard instance every single time it is drawn. This makes the static class decision seem just as logical. If I wanted to take some time later to optimize, finding a way to store and reuse instance of Chessboards would be a good middle ground that would allow the benefits of both routes.
 
 - [ ] TODO: Address todo comments in `ServerFacade`, `JoinHandler`, and `Server` class.
-
