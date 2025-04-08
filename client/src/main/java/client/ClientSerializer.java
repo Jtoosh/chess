@@ -1,7 +1,7 @@
 package client;
 
 import com.google.gson.*;
-import websocket.messages.ServerMessage;
+import websocket.messages.*;
 
 import java.lang.reflect.Type;
 
@@ -12,7 +12,11 @@ public class ClientSerializer {
   }
 
   public <T> T fromJSON(String json, Class<T> genericClass){
-    var gson = new Gson();
+    GsonBuilder builder = new GsonBuilder();
+    builder.registerTypeAdapter(ServerMessage.class, new ServerMessageDeserializer());
+    Gson gson = builder.create();
+
+
 
     return gson.fromJson(json, genericClass);
   }
@@ -26,7 +30,9 @@ public class ClientSerializer {
       String typeString = parsedObject.get("serverMessageType").getAsString();
       ServerMessage.ServerMessageType messageType =ServerMessage.ServerMessageType.valueOf(typeString);
       return switch (messageType){
-//        case NOTIFICATION -> context.deserialize(jsonElement, Ser);
+        case LOAD_GAME -> context.deserialize(jsonElement, LoadGame.class);
+        case ERROR -> context.deserialize(jsonElement, ErrorMsg.class);
+        case NOTIFICATION -> context.deserialize(jsonElement, Notification.class);
       };
     }
   }
