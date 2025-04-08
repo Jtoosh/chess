@@ -34,13 +34,8 @@ public class Server {
         res.status(400);
         res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
       } catch (AuthorizationException e) {
-        if (e.getMessage().equals("Error: unauthorized")){
-          res.status(401);
-          res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
-        } else if (e.getMessage().equals("Error: not found")){
-          res.status(404);
-          res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
-        }
+        res.status(401);
+        res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
       } catch (AlreadyInUseException e){
         res.status(403);
         res.body(serializer.toJSON(new ErrorResponse(e.getMessage())));
