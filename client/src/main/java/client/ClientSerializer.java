@@ -21,7 +21,7 @@ public class ClientSerializer {
     return gson.fromJson(json, genericClass);
   }
 
-  private class ServerMessageDeserializer implements JsonDeserializer<ServerMessage>{
+  private static class ServerMessageDeserializer implements JsonDeserializer<ServerMessage>{
 
     @Override
     public ServerMessage deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {

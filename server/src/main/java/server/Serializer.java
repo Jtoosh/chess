@@ -1,6 +1,10 @@
 package server;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
+import websocket.commands.MakeMoveCommand;
+import websocket.commands.UserGameCommand;
+
+import java.lang.reflect.Type;
 
 public class Serializer {
   public String toJSON(Object o){
@@ -9,8 +13,25 @@ public class Serializer {
   }
 
   public <T> T fromJSON(String json, Class<T> genericClass){
-    var gson = new Gson();
+    GsonBuilder builder = new GsonBuilder();
+    builder.registerTypeAdapter(UserGameCommand.class, new UserGameCommandDeserializer());
+    Gson gson = builder.create();
 
     return gson.fromJson(json, genericClass);
+  }
+
+  private static class UserGameCommandDeserializer implements JsonDeserializer<UserGameCommand> {
+
+    @Override
+    public UserGameCommand deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+      JsonObject parsedObject = jsonElement.getAsJsonObject();
+
+      String typeString = parsedObject.get("commandType").getAsString();
+      UserGameCommand.CommandType commandType = UserGameCommand.CommandType.valueOf(typeString);
+      return switch (commandType){
+        case MAKE_MOVE -> jsonDeserializationContext.deserialize(jsonElement, MakeMoveCommand.class);
+        case LEAVE, RESIGN, CONNECT -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
+      };
+    }
   }
 }
