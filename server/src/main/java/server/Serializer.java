@@ -1,8 +1,7 @@
 package server;
 
 import com.google.gson.*;
-import websocket.commands.MakeMoveCommand;
-import websocket.commands.UserGameCommand;
+import websocket.commands.*;
 
 import java.lang.reflect.Type;
 

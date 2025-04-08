@@ -23,6 +23,9 @@ public class ParentMenu {
               whitePrintName + EscapeSequences.RESET_TEXT_COLOR +
               " BLACK: " + EscapeSequences.SET_TEXT_COLOR_BLUE + blackPrintName + EscapeSequences.RESET_TEXT_COLOR);
     }
+    if (gamesListArg.size() == 0){
+      System.out.println(EscapeSequences.RESET_TEXT_COLOR + "No games stored");
+    }
   }
 
   public static GameData findGame(ArrayList<GameData> gamesListArg, int gameIDArg){

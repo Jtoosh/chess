@@ -1,6 +1,7 @@
 package client;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -20,7 +21,6 @@ public class HttpCommunicator {
 
         connection.setReadTimeout(5000);
         connection.setRequestMethod(method);
-//        connection.setDoInput(true);
         connection.setDoOutput(true);
         writeBody(request,connection);
 
@@ -43,9 +43,13 @@ public class HttpCommunicator {
     private <T> T readBody(Class<T> responseClass, HttpURLConnection httpConn) throws IOException {
         T response = null;
         if (httpConn.getResponseCode() != HttpURLConnection.HTTP_OK){
-            try(InputStream errorStream = httpConn.getErrorStream()){
-                handleHTTPStatus(httpConn.getResponseCode());
+            try (InputStream responseBody = httpConn.getErrorStream();){
+                BufferedInputStream responseBodyOptimized = new BufferedInputStream(responseBody);
+                InputStreamReader responseBodyReader = new InputStreamReader(responseBodyOptimized);
+                JsonObject errorResponse = serializer.fromJson(responseBodyReader, JsonObject.class);
+                handleHTTPStatus(httpConn.getResponseCode(), errorResponse.get("message").getAsString());
             }
+
         }
         try (InputStream responseBody = httpConn.getInputStream();){
             BufferedInputStream responseBodyOptimized = new BufferedInputStream(responseBody);
@@ -57,12 +61,17 @@ public class HttpCommunicator {
         return response;
     }
 
-    private void handleHTTPStatus(int responseCode) throws IOException {
+    private void handleHTTPStatus(int responseCode, String message) throws IOException {
         switch (responseCode){
             case 400:
                 throw new IllegalArgumentException("Error: bad request");
             case 401:
-                throw new AuthorizationException("Error: unauthorized");
+                if (message.equals("Error: unauthorized")){
+                    throw new AuthorizationException("Error: unauthorized");
+                }
+                else if (message.equals("Error: not found")){
+                    throw new AuthorizationException("Error: not found");
+                }
             case 403:
                 throw new AlreadyInUseException("Error: already in use");
             case 404:
