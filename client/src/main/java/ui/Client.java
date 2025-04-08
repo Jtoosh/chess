@@ -3,6 +3,7 @@ package ui;
 import client.ServerFacade;
 import client.ServerMessageObserver;
 import ui.menu.MenuStrings;
+import websocket.messages.Notification;
 import websocket.messages.ServerMessage;
 
 public class Client implements ServerMessageObserver {
@@ -18,6 +19,10 @@ public class Client implements ServerMessageObserver {
 
     @Override
     public void notify(ServerMessage message) {
-
+        System.out.println(message.getServerMessageType());
+        switch (message.getServerMessageType()){
+            case NOTIFICATION :
+                System.out.println(((Notification) message).getMessage());
+        }
     }
 }

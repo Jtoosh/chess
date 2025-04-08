@@ -4,6 +4,8 @@ package client;
 
 
 
+import websocket.messages.ServerMessage;
+
 import javax.websocket.*;
 import java.net.URI;
 
@@ -15,6 +17,7 @@ public class WebsocketCommunicator extends Endpoint {
   private final ServerMessageObserver msgObserver;
   private Map<Integer, Collection<String>> activeClients = new TreeMap<>();
   private Session session;
+  private ClientSerializer serializer = new ClientSerializer();
 
   public WebsocketCommunicator(ServerMessageObserver msgObserver) throws Exception{
     this.msgObserver = msgObserver;
@@ -22,10 +25,10 @@ public class WebsocketCommunicator extends Endpoint {
     WebSocketContainer container = ContainerProvider.getWebSocketContainer();
     this.session = container.connectToServer(this, uri);
 
-    this.session.addMessageHandler(new MessageHandler.Whole<String>() {
-      public void onMessage(String message) {
-        System.out.println(message);
-      }
+    this.session.addMessageHandler((MessageHandler.Whole<String>) message -> {
+      ServerMessage serverResponse = serializer.fromJSON(message, ServerMessage.class);
+      System.out.println(serverResponse.toString());
+      msgObserver.notify(serverResponse);
     });
 
   }

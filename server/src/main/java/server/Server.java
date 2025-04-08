@@ -2,13 +2,17 @@ package server;
 
 
 import dataaccess.*;
+import model.AuthData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
-import org.eclipse.jetty.websocket.api.*;
 import request.*;
 import response.*;
 import service.*;
 import spark.*;
+import websocket.commands.UserGameCommand;
+import websocket.messages.*;
+
+import java.io.IOException;
 
 @WebSocket
 public class Server {
@@ -129,8 +133,21 @@ public class Server {
     }
 
   @OnWebSocketMessage
-  public void onMessage(Session session, String message) throws Exception {
-    session.getRemote().sendString("WebSocket response: " + message);
+  public void onMessage(Session session, String message){
+    UserGameCommand parsedMessage = serializer.fromJSON(message, UserGameCommand.class);
+    AuthData userAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
+    String responseMessage = "";
+    switch (parsedMessage.getCommandType()){
+      case CONNECT:
+        ServerMessage response = new Notification(userAuth.username() + " has connected to the game");
+        responseMessage = serializer.toJSON(response);
+    }
+    System.out.println(responseMessage);
+    try {
+      session.getRemote().sendString(responseMessage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 

@@ -29,7 +29,9 @@ public class Serializer {
       UserGameCommand.CommandType commandType = UserGameCommand.CommandType.valueOf(typeString);
       return switch (commandType){
         case MAKE_MOVE -> jsonDeserializationContext.deserialize(jsonElement, MakeMoveCommand.class);
-        case LEAVE, RESIGN, CONNECT -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
+        case CONNECT -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
+        case LEAVE -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
+        case RESIGN -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
       };
     }
   }
