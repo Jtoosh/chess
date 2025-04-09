@@ -23,6 +23,7 @@ public class GameMenu extends ParentMenu {
             case "leave" -> {
                 validateInput(parts, 1);
                 // TODO:Send LEAVE UserGameCommand
+                serverFacade.sendUserGameCommand("LEAVE", gameData.gameID());
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, username));
                 yield "postlogin";
             }
@@ -34,6 +35,7 @@ public class GameMenu extends ParentMenu {
             case "resign" -> {
                 validateInput(parts, 1);
                 //TODO: Send RESIGN UserGameCommand
+                serverFacade.sendUserGameCommand("RESIGN", gameData.gameID());
                 System.out.println("Well, I guess you lost now.");
                 yield "game";
             }

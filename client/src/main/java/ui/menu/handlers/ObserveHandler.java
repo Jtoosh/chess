@@ -38,6 +38,7 @@ public class ObserveHandler {
       System.out.println(ErrorStrings.IO_EXCEPTION);
       return "postlogin";
     }
+    serverFacade.sendUserGameCommand("CONNECT", gameData.gameID());
     //Draw chessboard
 
     Chessboard.draw("light", gameData.game().getBoard(), null);

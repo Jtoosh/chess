@@ -19,11 +19,9 @@ public class Client implements ServerMessageObserver {
 
     @Override
     public void notify(ServerMessage message) {
-        System.out.println("Entered client.notify");
-        System.out.println(message.getServerMessageType());
         switch (message.getServerMessageType()){
             case NOTIFICATION :
-                System.out.println(((Notification) message).getMessage());
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + ((Notification) message).getMessage());
         }
     }
 }

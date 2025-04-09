@@ -3,6 +3,7 @@ package server;
 
 import dataaccess.*;
 import model.AuthData;
+import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import request.*;
@@ -134,15 +135,29 @@ public class Server {
 
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException {
-    System.out.println("Websocket reached server with " + message);
     UserGameCommand parsedMessage = serializer.fromJSON(message, UserGameCommand.class);
-    AuthData userAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
+    AuthData rootUserAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
+    GameData currentGameData = gameDataAccess.getGameData(parsedMessage.getGameID());
+
+    String userRole;
+    if (currentGameData.whiteUsername().equals(rootUserAuth.username())){
+      userRole = "the White player";
+    }
+    else userRole = currentGameData.blackUsername().equals(rootUserAuth.username()) ? "the Black player" : "an observer";
     String responseMessage = "";
+    ServerMessage listenerResponse = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
     switch (parsedMessage.getCommandType()){
       case CONNECT:
-        ServerMessage response = new Notification(userAuth.username() + " has connected to the game");
-        responseMessage = serializer.toJSON(response);
+        ServerMessage rootClientResponse = new LoadGame(currentGameData);
+        listenerResponse = new Notification(rootUserAuth.username() + " has connected to the game as " + userRole);
+        break;
+      case LEAVE:
+        listenerResponse = new Notification(rootUserAuth.username() + " has left the game.");
+        break;
+      case RESIGN:
+        listenerResponse = new Notification(rootUserAuth.username() + " has resigned, the game is over.");
     }
+    responseMessage = serializer.toJSON(listenerResponse);
     session.getRemote().sendString(responseMessage);
 
   }

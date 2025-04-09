@@ -31,8 +31,6 @@ public class WebsocketCommunicator extends Endpoint {
         msgObserver.notify(serverResponse);
       }
     });
-
-
   }
 
   public void updateActiveClients(String username, Integer gameID){
