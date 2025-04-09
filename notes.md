@@ -1359,3 +1359,4 @@ So, I've had to wrangle with type adapters to correctly serialize `ServerMessage
 2. For whatever, reason, _on the client side_, when adding the `WebsocketCommunicator`'s message handler, following the IntelliJ suggestion to change the anonymous inner class to a lambda caused the message handler to not be called. I had to change it back to an anonymous inner class, and then it worked. I don't know why this is the case, and I frankly didn't even know I was using an anonymous inner class. In the future, I want to examine this a bit closer and understand the inner class better.
 
 - [ ] TODO: Write code in `ui.Client` and `Server` to differentiate which client is being messaged, and send the appropriate messages.
+  - I am finding that following PetShop's example is useful here, making some separate classes in a websocket passage to keep things cleaner.

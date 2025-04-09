@@ -10,10 +10,15 @@ import request.*;
 import response.*;
 import service.*;
 import spark.*;
+import websocket.Connection;
 import websocket.commands.UserGameCommand;
 import websocket.messages.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 @WebSocket
 public class Server {
@@ -29,6 +34,8 @@ public class Server {
     private final ListService listService = new ListService(authDataAccess, gameDataAccess);
     private final CreateService createService = new CreateService(authDataAccess, gameDataAccess);
     private final JoinService joinService = new JoinService(userDataAccess, authDataAccess, gameDataAccess);
+
+  private Map<Integer, Collection<String>> activeClients = new TreeMap<>();
 
     private void handleResponse(Response res, Record request, ServiceHandler service){
       try{
@@ -135,9 +142,19 @@ public class Server {
 
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException {
+
     UserGameCommand parsedMessage = serializer.fromJSON(message, UserGameCommand.class);
     AuthData rootUserAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
     GameData currentGameData = gameDataAccess.getGameData(parsedMessage.getGameID());
+
+    Connection connection = new Connection(rootUserAuth.username(), session);
+
+    ArrayList<String> gameClients=new ArrayList<>();
+    if (activeClients.containsKey(parsedMessage.getGameID())){
+      gameClients =(ArrayList<String>) activeClients.get(parsedMessage.getGameID());
+    }
+    gameClients.add(rootUserAuth.username());
+    activeClients.put(parsedMessage.getGameID(), gameClients);
 
     String userRole;
     if (currentGameData.whiteUsername().equals(rootUserAuth.username())){
