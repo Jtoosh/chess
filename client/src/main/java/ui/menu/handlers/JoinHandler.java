@@ -47,13 +47,7 @@ public class JoinHandler {
     //TODO: Send CONNECT UserGameCommand to server
     serverFacade.sendUserGameCommand("CONNECT", gameData.gameID());
 
-    //Draw chess board
-
-    if (teamColor.equals("WHITE")){
-      Chessboard.draw("light", gameData.game().getBoard(), null);
-    } else {
-      Chessboard.draw("dark", gameData.game().getBoard(), null);
-    }
+    //Draw chess board now handled in WS notifier
 
     System.out.print(EscapeSequences.RESET_BG_COLOR);
     System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, gameName));

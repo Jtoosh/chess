@@ -11,8 +11,8 @@ import java.net.URI;
 
 public class WebsocketCommunicator extends Endpoint {
   private final ServerMessageObserver msgObserver;
-  private Session session;
-  private ClientSerializer serializer = new ClientSerializer();
+  private final Session session;
+  private final ClientSerializer serializer = new ClientSerializer();
   private String clientUsername;
 
   public WebsocketCommunicator(ServerMessageObserver msgObserver) throws Exception{

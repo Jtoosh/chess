@@ -9,12 +9,10 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import server.Serializer;
 import websocket.commands.UserGameCommand;
-import websocket.messages.LoadGame;
-import websocket.messages.Notification;
-import websocket.messages.ServerMessage;
+import websocket.messages.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 @WebSocket
 public class WebsocketHandler {
@@ -36,29 +34,51 @@ public class WebsocketHandler {
     UserGameCommand parsedMessage = serializer.fromJSON(message, UserGameCommand.class);
     AuthData rootUserAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
     GameData currentGameData = gameDataAccess.getGameData(parsedMessage.getGameID());
+//    System.out.println("GameData, pre DB Update: " + currentGameData.toString());
 
-    String userRole;
-    if (currentGameData.whiteUsername().equals(rootUserAuth.username())){
-      userRole = "the White player";
-    }
-    else userRole = currentGameData.blackUsername().equals(rootUserAuth.username()) ? "the Black player" : "an observer";
 
-    String responseMessage = "";
 
     switch (parsedMessage.getCommandType()) {
-      case CONNECT ->connect(rootUserAuth.username(), session, userRole, currentGameData);
+      case CONNECT ->connect(rootUserAuth.username(), session, currentGameData);
+      case LEAVE -> leave(rootUserAuth.username(), session, currentGameData);
       case RESIGN -> new Notification(rootUserAuth.username() + " has resigned, the game is over.");
-
-    };
+    }
   }
 
-  public void connect(String username, Session session,String userRole, GameData game) throws IOException {
+  public void connect(String username, Session session, GameData game) throws IOException {
     Connection rootClientConnection = new Connection(username, session);
     connections.add(game.gameID(), rootClientConnection);
     //load game message
     ServerMessage rootClientResponse = new LoadGame(game);
     rootClientConnection.send(serializer.toJSON(rootClientResponse));
+
+    String userRole;
+    if (game.whiteUsername().equals(username)){
+      userRole = "the White player";
+    }
+    else userRole = game.blackUsername().equals(username) ? "the Black player" : "an observer";
+
     ServerMessage broadcastMessage = new Notification(username + " has connected to the game as " + userRole);
     connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
+  }
+  public void leave(String username, Session session, GameData game) throws IOException {
+    String colorToUpdate="";
+    if (game.whiteUsername() != null){
+      if (game.whiteUsername().equals(username)){
+        colorToUpdate = "WHITE";
+        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null);
+      }
+    }
+    if ( game.blackUsername() != null) {
+      if (game.blackUsername().equals(username)){
+        colorToUpdate = "BLACK";
+        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null);
+      }
+    }
+//    System.out.println("GameData, postDB update: " + game);
+
+    ServerMessage broadcastMessage = new Notification(username + " has left the game");
+    connections.broadcast(null, serializer.toJSON(broadcastMessage), game.gameID());
+    connections.removeConnectionFromGame(game.gameID(), connections.getConnection(username, game.gameID()));
   }
 }

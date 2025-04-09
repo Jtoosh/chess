@@ -1,8 +1,6 @@
 package websocket;
 
-
 import org.eclipse.jetty.websocket.api.Session;
-import websocket.messages.Notification;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,9 +23,20 @@ public class ConnectionManager {
     connections.remove(gameID);
   }
 
+  public Connection getConnection (String username, Integer gameID){
+    ArrayList<Connection> listToSearch = (ArrayList<Connection>) connections.get(gameID);
+    for (Connection conn : listToSearch){
+      if (conn.getUsername().equals(username)){
+        return conn;
+      }
+    }
+    return null;
+  }
+
   public void removeConnectionFromGame(Integer gameID, Connection connection){
     ArrayList<Connection> listToEdit =(ArrayList<Connection>) connections.get(gameID);
     int removalIndex = listToEdit.indexOf(connection);
+    if (removalIndex == -1){return;}
     listToEdit.remove(removalIndex);
     connections.put(gameID, listToEdit);
   }

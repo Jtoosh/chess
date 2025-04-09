@@ -23,11 +23,16 @@ public class Client implements ServerMessageObserver {
         switch (message.getServerMessageType()){
             case NOTIFICATION :
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + ((Notification) message).getMessage());
+                break;
             case LOAD_GAME:
                 LoadGame gameMessage = (LoadGame) message;
                 ChessBoard boardToLoad = gameMessage.getGame().game().getBoard();
                 String startColor = evalBoardStartColor(gameMessage.getGame(), clientUsername);
                 Chessboard.draw(startColor, boardToLoad,null );
+                break;
+            case ERROR:
+                System.out.println(EscapeSequences.RESET_TEXT_COLOR + ((ErrorMsg) message).getErrorMessage());
+                break;
         }
     }
 

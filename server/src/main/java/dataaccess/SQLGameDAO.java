@@ -7,6 +7,7 @@ import server.Serializer;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -75,6 +76,7 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
 
     @Override
     public void updateGame(int gameID, String teamColorRequest, String username) {
+      System.out.println("UPDATE EXECUTING");
         String updateTeamColor = null;
         if (teamColorRequest.equals("WHITE")){
             updateTeamColor = "whiteUsername";
@@ -84,9 +86,13 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
         try(Connection conn = DatabaseManager.getConnection()){
             var query = String.format("UPDATE games SET %s = ? WHERE id = ?", updateTeamColor);
             var preppedStmt = conn.prepareStatement(query);
+          if (username == null) {
+            preppedStmt.setString(1, null);
+          } else {
             preppedStmt.setString(1, username);
-            preppedStmt.setInt(2, gameID);
-            preppedStmt.executeUpdate();
+          }
+          preppedStmt.setInt(2, gameID);
+          preppedStmt.executeUpdate();
         } catch (SQLException e){
              throw new DataAccessException(e.getMessage());
         }

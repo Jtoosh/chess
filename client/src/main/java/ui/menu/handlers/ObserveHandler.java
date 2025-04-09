@@ -39,9 +39,7 @@ public class ObserveHandler {
       return "postlogin";
     }
     serverFacade.sendUserGameCommand("CONNECT", gameData.gameID());
-    //Draw chessboard
-
-    Chessboard.draw("light", gameData.game().getBoard(), null);
+    //Draw chessboard handled in ws notifier
     System.out.print(EscapeSequences.RESET_BG_COLOR);
     System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.GAMEPLAY_MENU, gameData.gameName()));
     return "game";

@@ -1358,7 +1358,13 @@ So, I've had to wrangle with type adapters to correctly serialize `ServerMessage
 1. There is a subtle bug that can cause a Gson type adapter to recurse infinitely and cause a stack overflow. In my case, I was dealing with _deserializing `UserGameCommand` JSON strings on the server side_. Since `MAKE_MOVE` is the only commmand type that is unique in its parameters, I simply had the other three command types deserialize to a `UserGameCommand` object with the command type set to the correct type. However, the deserializer inner class that I was writing, like most deserializer type adapters, implements the `JsonDeserializer<T>` interface. Because I had implemented this interface for the `UserGameCommand` class, then calling `context.deserialize(jsonElement, UserGameCommand.class)` would cause the type adapter to call itself. So, even though the other three game command types didn't have any unique fields, because the `commandType` field needs to be different, and this Gson subtlety, I had to create a `UserGameCommand` subclass for each of the other three. This fixed the bug.
 2. For whatever, reason, _on the client side_, when adding the `WebsocketCommunicator`'s message handler, following the IntelliJ suggestion to change the anonymous inner class to a lambda caused the message handler to not be called. I had to change it back to an anonymous inner class, and then it worked. I don't know why this is the case, and I frankly didn't even know I was using an anonymous inner class. In the future, I want to examine this a bit closer and understand the inner class better.
 
-- [ ] TODO: Write code in `ui.Client` and `Server` to differentiate which client is being messaged, and send the appropriate messages.
+- [x] TODO: Write code in `ui.Client` and `Server` to differentiate which client is being messaged, and send the appropriate messages.
   - I am finding that following PetShop's example is useful here, making some separate classes in a websocket passage to keep things cleaner.
 
 - [ ] TODO: Include in my retrospective for this phase an analysis of the Petshop code, and why it was useful to draw from it _including specific programming principles_
+
+- Parameter drilling is an issue that I ran into later down the line while I was working on the `notify` method in the `ui.Client` class.
+
+- [ ] TODO: Replace all of the `throws IOException` clauses in Server side method declarations with a handler that sends an `ErrorMsg` server message to the client.
+
+When I was working on the `LEAVE` websocket interaction, the thing that caught be was using an if-else if block for the null checks on white/black usernames. As far as I understand, because the values for the other usernames can sometimes be null, doing `game.blackUsername().equals(userName)` will throw a null pointer exception. If I want to write slightly more efficient code, I'll need to do `if (username.equals(game.blackUsername())` instead.
