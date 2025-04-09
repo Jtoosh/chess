@@ -22,16 +22,16 @@ public class Serializer {
   private static class UserGameCommandDeserializer implements JsonDeserializer<UserGameCommand> {
 
     @Override
-    public UserGameCommand deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+    public UserGameCommand deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
       JsonObject parsedObject = jsonElement.getAsJsonObject();
 
       String typeString = parsedObject.get("commandType").getAsString();
       UserGameCommand.CommandType commandType = UserGameCommand.CommandType.valueOf(typeString);
       return switch (commandType){
-        case MAKE_MOVE -> jsonDeserializationContext.deserialize(jsonElement, MakeMoveCommand.class);
-        case CONNECT -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
-        case LEAVE -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
-        case RESIGN -> jsonDeserializationContext.deserialize(jsonElement, UserGameCommand.class);
+        case MAKE_MOVE -> context.deserialize(jsonElement, MakeMoveCommand.class);
+        case CONNECT -> context.deserialize(jsonElement, ConnectCommand.class);
+        case LEAVE -> context.deserialize(jsonElement, LeaveCommand.class);
+        case RESIGN -> context.deserialize(jsonElement, ResignCommand.class);
       };
     }
   }

@@ -133,7 +133,8 @@ public class Server {
     }
 
   @OnWebSocketMessage
-  public void onMessage(Session session, String message){
+  public void onMessage(Session session, String message) throws IOException {
+    System.out.println("Websocket reached server with " + message);
     UserGameCommand parsedMessage = serializer.fromJSON(message, UserGameCommand.class);
     AuthData userAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
     String responseMessage = "";
@@ -142,14 +143,8 @@ public class Server {
         ServerMessage response = new Notification(userAuth.username() + " has connected to the game");
         responseMessage = serializer.toJSON(response);
     }
-    System.out.println(responseMessage);
-    try {
-      session.getRemote().sendString(responseMessage);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    session.getRemote().sendString(responseMessage);
+
   }
-
-
 
 }

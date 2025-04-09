@@ -85,21 +85,7 @@ public class ServerFacade {
 
     //TODO: Add method for sending UserGameCommands
     public void sendUserGameCommand(String commandType, Integer gameID){
-        UserGameCommand.CommandType parsedCommandType = null;
-        switch (commandType) {
-            case "CONNECT":
-                 parsedCommandType=  UserGameCommand.CommandType.CONNECT;
-                 break;
-            case "MAKE_MOVE":
-                parsedCommandType = UserGameCommand.CommandType.MAKE_MOVE;
-                break;
-            case "LEAVE":
-                parsedCommandType = UserGameCommand.CommandType.LEAVE;
-                break;
-            case "RESIGN":
-                parsedCommandType = UserGameCommand.CommandType.RESIGN;
-                break;
-        }
+        UserGameCommand.CommandType parsedCommandType =UserGameCommand.CommandType.valueOf(commandType);
         UserGameCommand command = new UserGameCommand(parsedCommandType, this.clientAuthData.authToken(), gameID);
       try {
         wsCommunitcator.send(serializer.toJSON(command));
