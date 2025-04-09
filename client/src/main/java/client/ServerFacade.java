@@ -87,6 +87,7 @@ public class ServerFacade {
     public void sendUserGameCommand(String commandType, Integer gameID){
         UserGameCommand.CommandType parsedCommandType =UserGameCommand.CommandType.valueOf(commandType);
         UserGameCommand command = new UserGameCommand(parsedCommandType, this.clientAuthData.authToken(), gameID);
+        wsCommunitcator.setClientUsername(this.clientAuthData.username());
       try {
         wsCommunitcator.send(serializer.toJSON(command));
       } catch (Exception e) {

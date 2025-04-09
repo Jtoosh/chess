@@ -37,28 +37,28 @@ public class WebsocketHandler {
     AuthData rootUserAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
     GameData currentGameData = gameDataAccess.getGameData(parsedMessage.getGameID());
 
-    Connection connection = new Connection(rootUserAuth.username(), session);
-
     String userRole;
     if (currentGameData.whiteUsername().equals(rootUserAuth.username())){
       userRole = "the White player";
     }
     else userRole = currentGameData.blackUsername().equals(rootUserAuth.username()) ? "the Black player" : "an observer";
-    String responseMessage = "";
-    ServerMessage listenerResponse = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
-    switch (parsedMessage.getCommandType()){
-      case CONNECT:
-        ServerMessage rootClientResponse = new LoadGame(currentGameData);
-        listenerResponse = new Notification(rootUserAuth.username() + " has connected to the game as " + userRole);
-        break;
-      case LEAVE:
-        listenerResponse = new Notification(rootUserAuth.username() + " has left the game.");
-        break;
-      case RESIGN:
-        listenerResponse = new Notification(rootUserAuth.username() + " has resigned, the game is over.");
-    }
-    responseMessage = serializer.toJSON(listenerResponse);
-    session.getRemote().sendString(responseMessage);
 
+    String responseMessage = "";
+
+    switch (parsedMessage.getCommandType()) {
+      case CONNECT ->connect(rootUserAuth.username(), session, userRole, currentGameData);
+      case RESIGN -> new Notification(rootUserAuth.username() + " has resigned, the game is over.");
+
+    };
+  }
+
+  public void connect(String username, Session session,String userRole, GameData game) throws IOException {
+    Connection rootClientConnection = new Connection(username, session);
+    connections.add(game.gameID(), rootClientConnection);
+    //load game message
+    ServerMessage rootClientResponse = new LoadGame(game);
+    rootClientConnection.send(serializer.toJSON(rootClientResponse));
+    ServerMessage broadcastMessage = new Notification(username + " has connected to the game as " + userRole);
+    connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
   }
 }

@@ -12,8 +12,7 @@ import java.util.TreeMap;
 public class ConnectionManager {
   private TreeMap<Integer, Collection<Connection>> connections = new TreeMap<>();
 
-  public void add(Integer gameID, String username, Session session){
-    Connection userConnection = new Connection(username, session);
+  public void add(Integer gameID, Connection userConnection){
     ArrayList<Connection> gameClients = new ArrayList<>();
     if (connections.containsKey(gameID)){
       gameClients = (ArrayList<Connection>) connections.get(gameID);
@@ -33,12 +32,12 @@ public class ConnectionManager {
     connections.put(gameID, listToEdit);
   }
 
-  public void broadcast(String excludeUsername, Notification notification, Integer gameID ) throws IOException {
+  public void broadcast(String excludeUsername, String notification, Integer gameID ) throws IOException {
     ArrayList<Connection> gameToNotify = (ArrayList<Connection>) connections.get(gameID);
     for (Connection conn : gameToNotify){
       if (conn.getSession().isOpen()){
         if(!conn.getUsername().equals(excludeUsername)){
-          conn.send(notification.toString());
+          conn.send(notification);
         }
       } else{
         this.removeConnectionFromGame(gameID, conn);

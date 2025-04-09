@@ -3,5 +3,5 @@ package client;
 import websocket.messages.ServerMessage;
 
 public interface ServerMessageObserver {
-  public void notify (ServerMessage message);
+  public void notify (ServerMessage message, String clientUsername);
 }

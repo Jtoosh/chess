@@ -9,15 +9,11 @@ import websocket.messages.ServerMessage;
 import javax.websocket.*;
 import java.net.URI;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
-
 public class WebsocketCommunicator extends Endpoint {
   private final ServerMessageObserver msgObserver;
-  private Map<Integer, Collection<String>> activeClients = new TreeMap<>();
   private Session session;
   private ClientSerializer serializer = new ClientSerializer();
+  private String clientUsername;
 
   public WebsocketCommunicator(ServerMessageObserver msgObserver) throws Exception{
     this.msgObserver = msgObserver;
@@ -28,14 +24,12 @@ public class WebsocketCommunicator extends Endpoint {
     this.session.addMessageHandler(new MessageHandler.Whole<String>() {
       public void onMessage(String message) {
         ServerMessage serverResponse = serializer.fromJSON(message, ServerMessage.class);
-        msgObserver.notify(serverResponse);
+        msgObserver.notify(serverResponse, clientUsername);
       }
     });
   }
 
-  public void updateActiveClients(String username, Integer gameID){
-//    this.activeClients.put(gameID, );
-  }
+  public void setClientUsername(String usernameArg){this.clientUsername = usernameArg;}
 
   public void send(String msg) throws Exception {this.session.getBasicRemote().sendText(msg);}
   @Override
