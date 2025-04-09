@@ -2,7 +2,9 @@ package websocket;
 
 
 import org.eclipse.jetty.websocket.api.Session;
+import websocket.messages.Notification;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
@@ -24,6 +26,24 @@ public class ConnectionManager {
     connections.remove(gameID);
   }
 
-  public void broadcast
+  public void removeConnectionFromGame(Integer gameID, Connection connection){
+    ArrayList<Connection> listToEdit =(ArrayList<Connection>) connections.get(gameID);
+    int removalIndex = listToEdit.indexOf(connection);
+    listToEdit.remove(removalIndex);
+    connections.put(gameID, listToEdit);
+  }
+
+  public void broadcast(String excludeUsername, Notification notification, Integer gameID ) throws IOException {
+    ArrayList<Connection> gameToNotify = (ArrayList<Connection>) connections.get(gameID);
+    for (Connection conn : gameToNotify){
+      if (conn.getSession().isOpen()){
+        if(!conn.getUsername().equals(excludeUsername)){
+          conn.send(notification.toString());
+        }
+      } else{
+        this.removeConnectionFromGame(gameID, conn);
+      }
+    }
+  }
 
 }

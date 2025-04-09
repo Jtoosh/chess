@@ -14,6 +14,8 @@ public class Connection {
   }
   public String getUsername(){return this.username;}
 
+  public Session getSession(){return this.session;}
+
   public void send(String msg) throws IOException {
     this.session.getRemote().sendString(msg);
   }

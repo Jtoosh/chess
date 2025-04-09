@@ -1360,3 +1360,5 @@ So, I've had to wrangle with type adapters to correctly serialize `ServerMessage
 
 - [ ] TODO: Write code in `ui.Client` and `Server` to differentiate which client is being messaged, and send the appropriate messages.
   - I am finding that following PetShop's example is useful here, making some separate classes in a websocket passage to keep things cleaner.
+
+- [ ] TODO: Include in my retrospective for this phase an analysis of the Petshop code, and why it was useful to draw from it _including specific programming principles_
