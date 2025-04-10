@@ -1,5 +1,7 @@
 package ui.menu;
 
+import chess.ChessMove;
+import chess.ChessPosition;
 import client.ServerFacade;
 import model.GameData;
 import ui.Chessboard;
@@ -27,11 +29,11 @@ public class GameMenu extends ParentMenu {
             }
             case "leave" -> {
                 validateInput(parts, 1);
-                // TODO:Send LEAVE UserGameCommand
-                serverFacade.sendUserGameCommand("LEAVE", gameData.gameID());
+                serverFacade.sendUserGameCommand("LEAVE", gameData.gameID(), null);
                 System.out.println(EscapeSequences.RESET_TEXT_COLOR + String.format(MenuStrings.POSTLOGIN_MENU, username));
                 yield "postlogin";
             }
+            //TODO: Add support for pawn promotion
             case "move" ->{
                 if (isObserver){
                     System.out.println(EscapeSequences.RESET_TEXT_COLOR + "Sorry, observers can't make moves.");
@@ -42,14 +44,14 @@ public class GameMenu extends ParentMenu {
                 }
                 validateInput(parts, 2);
                 //get square from input
+                ChessMove desiredMove = generateMove(parts[1]);
+                serverFacade.sendUserGameCommand("MAKE_MOVE", gameData.gameID(), desiredMove);
                 yield "game";
             }
             case "resign" -> {
                 validateInput(parts, 1);
-                //TODO: Send RESIGN UserGameCommand
-                serverFacade.sendUserGameCommand("RESIGN", gameData.gameID());
-
-              System.out.println("Well, I guess you lost now.");
+                //TODO: Tests want an ErrorMsg for Double Resign
+                serverFacade.sendUserGameCommand("RESIGN", gameData.gameID(), null);
                 yield "game";
             }
             case "highlight" -> {
@@ -72,6 +74,16 @@ public class GameMenu extends ParentMenu {
         } else {
             return "light";}
     }
+
+    private static ChessMove generateMove(String moveDescription){
+        String[] indexes = moveDescription.split("(?<=[a-h][1-8])");
+        int[] startIndexes = Chessboard.findSquareIndexes(indexes[0]);
+        int[] endIndexes = Chessboard.findSquareIndexes(indexes[1]);
+        ChessPosition startPos = new ChessPosition(startIndexes[0]+1, startIndexes[1]+1);
+        ChessPosition endPos = new ChessPosition(endIndexes[0]+1, endIndexes[1]+1);
+        return new ChessMove(startPos, endPos, null);
+    }
+
 
     public static void setIsObserver(boolean flag){isObserver = flag;}
 

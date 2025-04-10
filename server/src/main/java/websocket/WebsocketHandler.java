@@ -1,5 +1,6 @@
 package websocket;
 
+import chess.*;
 import dataaccess.AuthDAO;
 import dataaccess.GameDAO;
 import model.AuthData;
@@ -7,11 +8,14 @@ import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import org.jetbrains.annotations.NotNull;
 import server.Serializer;
+import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 import websocket.messages.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 @WebSocket
@@ -31,10 +35,9 @@ public class WebsocketHandler {
   @OnWebSocketMessage
   public void onMessage(Session session, String message) throws IOException {
 
-    UserGameCommand parsedMessage = serializer.fromJSON(message, UserGameCommand.class);
-    AuthData rootUserAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
-    GameData currentGameData = gameDataAccess.getGameData(parsedMessage.getGameID());
-
+    UserGameCommand parsedCommand = serializer.fromJSON(message, UserGameCommand.class);
+    AuthData rootUserAuth = authDataAccess.getAuthData(parsedCommand.getAuthToken());
+    GameData currentGameData = gameDataAccess.getGameData(parsedCommand.getGameID());
     if (currentGameData == null){
       error(rootUserAuth.username(), session, "the gameID passed in is invalid");
       return;
@@ -44,53 +47,84 @@ public class WebsocketHandler {
       return;
     }
 
-    switch (parsedMessage.getCommandType()) {
+    switch (parsedCommand.getCommandType()) {
       case CONNECT ->connect(rootUserAuth.username(), session, currentGameData);
-      case LEAVE -> leave(rootUserAuth.username(), session, currentGameData);
+      case LEAVE -> leave(rootUserAuth.username(), currentGameData);
       case RESIGN -> resign(rootUserAuth.username(), session, currentGameData);
+      case MAKE_MOVE -> {
+        MakeMoveCommand moveCommand = (MakeMoveCommand) parsedCommand;
+        makeMove(rootUserAuth.username(), session, currentGameData,moveCommand.getMoveToMake());
+      }
     }
   }
 
-  public void connect(String username, Session session, GameData game) throws IOException {
+  public void connect(String username, Session session, @org.jetbrains.annotations.NotNull GameData gameData) throws IOException {
     Connection rootClientConnection = new Connection(username, session);
-    connections.add(game.gameID(), rootClientConnection);
+    connections.add(gameData.gameID(), rootClientConnection);
     //load game message
-    ServerMessage rootClientResponse = new LoadGame(game);
+    ServerMessage rootClientResponse = new LoadGame(gameData);
     rootClientConnection.send(serializer.toJSON(rootClientResponse));
 
-    String userRole = determineUserRole(username, game);
+    String userRole = determineUserRole(username, gameData);
 
     ServerMessage broadcastMessage = new Notification(username + " has connected to the game as " + userRole, false);
-    connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
+    connections.broadcast(username, serializer.toJSON(broadcastMessage), gameData.gameID());
   }
 
-  public void leave(String username, Session session, GameData game) throws IOException {
+  public void leave(String username, @NotNull GameData gameData) throws IOException {
     String colorToUpdate="";
-    if (game.whiteUsername() != null && game.whiteUsername().equals(username)){
+    if (gameData.whiteUsername() != null && gameData.whiteUsername().equals(username)){
         colorToUpdate = "WHITE";
-        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null, serializer.toJSON(game.game()));
+        gameDataAccess.updateGame(gameData.gameID(), colorToUpdate, null, serializer.toJSON(gameData.game()));
       }
 
-    if ( game.blackUsername() != null && game.blackUsername().equals(username)){
+    if ( gameData.blackUsername() != null && gameData.blackUsername().equals(username)){
         colorToUpdate = "BLACK";
-        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null, serializer.toJSON(game.game()));
+        gameDataAccess.updateGame(gameData.gameID(), colorToUpdate, null, serializer.toJSON(gameData.game()));
       }
 
     ServerMessage broadcastMessage = new Notification(username + " has left the game", false);
-    connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
-    connections.removeConnectionFromGame(game.gameID(), connections.getConnection(username, game.gameID()));
+    connections.broadcast(username, serializer.toJSON(broadcastMessage), gameData.gameID());
+    connections.removeConnectionFromGame(gameData.gameID(), connections.getConnection(username, gameData.gameID()));
   }
 
-  public void resign(String username, Session session, GameData game) throws IOException {
-    if (determineUserRole(username, game).equals("an observer")){
-      Connection rootClientConn = connections.getConnection(username,game.gameID());
-      ErrorMsg errorResponse = new ErrorMsg("error: " + username + " can't resign as an observer");
-      rootClientConn.send(serializer.toJSON(errorResponse));
-    }else {
-      game.game().resign();
-      gameDataAccess.updateGame(game.gameID(), null, username, serializer.toJSON(game.game()));
+  public void resign(String username, Session session, GameData gameData) throws IOException {
+    if (determineUserRole(username, gameData).equals("an observer")){
+      error(username,session, " can't resign as an observer");
+    } else if (gameData.game().isGameOver()) {
+      error(username, session, "this game is already over, you can't resign");
+    } else {
+      gameData.game().resign();
+      gameDataAccess.updateGame(gameData.gameID(), null, username, serializer.toJSON(gameData.game()));
       ServerMessage broadcastMessage = new Notification(username + " has resigned, the game is over", true);
-      connections.broadcast(null, serializer.toJSON(broadcastMessage), game.gameID());
+      connections.broadcast(null, serializer.toJSON(broadcastMessage), gameData.gameID());
+    }
+  }
+
+  private void makeMove(String username, Session session, GameData gameData, ChessMove move) throws IOException {
+    if (move == null){
+      error(username, session, "no move was provided");
+      return;
+    }
+    int rowIndex = move.getStartPosition().getRow()-1;
+    int colIndex = move.getStartPosition().getColumn()-1;
+    ChessBoard gameBoard = gameData.game().getBoard();
+    ChessPiece pieceToMove = gameBoard.getBoardMatrix()[rowIndex][colIndex];
+    if (pieceToMove == null){
+      error(username, session, "there is not a chess piece there.");
+    } else if (!pieceColorMatchesPlayer(username, pieceToMove,gameData )) {
+      error(username, session, "that is not one of your pieces");
+    } else{
+     try {
+       gameData.game().makeMove(move);
+     } catch (InvalidMoveException e) {
+       error(username, session, "that is not a valid move");
+     }
+     gameDataAccess.updateGame(gameData.gameID(),null, username, serializer.toJSON(gameData.game()));
+     ServerMessage moveMadeLoadGame = new LoadGame(gameData);
+     connections.broadcast(null, serializer.toJSON(moveMadeLoadGame), gameData.gameID());
+     ServerMessage audienceNotification = new Notification(username + "moved", false);
+     connections.broadcast(username, serializer.toJSON(audienceNotification) , gameData.gameID());
     }
   }
 
@@ -111,5 +145,17 @@ public class WebsocketHandler {
       userRole = "an observer";
     }
     return userRole;
+  }
+
+  private boolean pieceColorMatchesPlayer (String username, ChessPiece piece, GameData game){
+    String usernameTeamColor="";
+    if (username.equals(game.blackUsername())){
+      usernameTeamColor = "BLACK";
+    } else if (username.equals(game.whiteUsername())) {
+      usernameTeamColor = "WHITE";
+    }
+    if (usernameTeamColor.equals(piece.getTeamColor().toString())){
+      return true;
+    } else {return false;}
   }
 }

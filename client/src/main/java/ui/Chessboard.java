@@ -161,7 +161,7 @@ public class Chessboard {
         out.print(EscapeSequences.RESET_TEXT_COLOR);
     }
 
-    private static int[] findSquareIndexes(String boardSquare){
+    public static int[] findSquareIndexes(String boardSquare){
         String[] parts = boardSquare.split("");
         int col = fileLablesInUse.indexOf(" " + parts[0] + " ");
         int row = Integer.parseInt(parts[1]) - 1;

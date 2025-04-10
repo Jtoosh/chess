@@ -1370,3 +1370,5 @@ So, I've had to wrangle with type adapters to correctly serialize `ServerMessage
 When I was working on the `LEAVE` websocket interaction, the thing that caught be was using an if-else if block for the null checks on white/black usernames. As far as I understand, because the values for the other usernames can sometimes be null, doing `game.blackUsername().equals(userName)` will throw a null pointer exception. If I want to write slightly more efficient code, I'll need to do `if (username.equals(game.blackUsername())` instead.
 
 A bug that got me for a good few minutes was making the Websocket endpoint URL one that was not what the spec for the test and Test website expected.
+
+I was getting a `ConcurrentModificationException` on the `broadcast` method. I thought it was because I was using a `TreeMap` instead of a `ConcurrentHashMap`, but it turned out it was because I was removing closed connections in my for-each loop. This was making the iterator that the for-each creates behind the scenes invalid, causing the exception.

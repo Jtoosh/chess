@@ -45,7 +45,7 @@ public class JoinHandler {
       return "postlogin";
     }
     //TODO: Send CONNECT UserGameCommand to server
-    serverFacade.sendUserGameCommand("CONNECT", gameData.gameID());
+    serverFacade.sendUserGameCommand("CONNECT", gameData.gameID(), null);
 
     //Draw chess board now handled in WS notifier
 

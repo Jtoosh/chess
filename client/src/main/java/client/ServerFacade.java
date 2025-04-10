@@ -1,13 +1,16 @@
 package client;
 
 
+import chess.ChessMove;
 import model.*;
 import request.*;
 import response.*;
+import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 public class ServerFacade {
     private String endpointURL = "http://localhost:";
@@ -84,9 +87,13 @@ public class ServerFacade {
     }
 
     //TODO: Add method for sending UserGameCommands
-    public void sendUserGameCommand(String commandType, Integer gameID){
+    public void sendUserGameCommand(String commandType, Integer gameID, ChessMove move){
         UserGameCommand.CommandType parsedCommandType =UserGameCommand.CommandType.valueOf(commandType);
         UserGameCommand command = new UserGameCommand(parsedCommandType, this.clientAuthData.authToken(), gameID);
+        System.out.println(move);
+        if (parsedCommandType.equals(UserGameCommand.CommandType.MAKE_MOVE)){
+            command = new MakeMoveCommand(this.clientAuthData.authToken(), gameID, move);
+        }
         wsCommunitcator.setClientUsername(this.clientAuthData.username());
       try {
         wsCommunitcator.send(serializer.toJSON(command));
