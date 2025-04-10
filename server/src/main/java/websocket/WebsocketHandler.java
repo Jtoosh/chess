@@ -83,7 +83,7 @@ public class WebsocketHandler {
       }
     }
     ServerMessage broadcastMessage = new Notification(username + " has left the game");
-    connections.broadcast(null, serializer.toJSON(broadcastMessage), game.gameID());
+    connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
     connections.removeConnectionFromGame(game.gameID(), connections.getConnection(username, game.gameID()));
   }
 
