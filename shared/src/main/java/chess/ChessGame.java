@@ -13,6 +13,7 @@ public class ChessGame {
     private TeamColor turnTeam;
     private ChessBoard gameBoard;
     private boolean gameOver = false;
+    private boolean gameStart = true;
 
     public ChessGame() {
         this.turnTeam = TeamColor.WHITE;
@@ -88,6 +89,7 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        this.gameStart = false;
         ChessPiece pieceToMove = this.gameBoard.getBoardMatrix()[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
         if (pieceToMove == null){throw new InvalidMoveException("There is no piece to move at " + move.getStartPosition().toString());}
 
@@ -199,6 +201,8 @@ public class ChessGame {
     }
 
     public boolean isGameOver(){return this.gameOver;}
+
+    public boolean isGameStart(){return this.gameStart;}
 
     public void resign(){this.gameOver = true;}
 }

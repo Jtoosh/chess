@@ -30,7 +30,8 @@ public class Client implements ServerMessageObserver {
                 LoadGame gameMessage = (LoadGame) message;
                 ChessBoard boardToLoad = gameMessage.getGame().game().getBoard();
                 String startColor = evalBoardStartColor(gameMessage.getGame(), clientUsername);
-                Chessboard.draw(startColor, boardToLoad,null );
+                boolean startOfGameFlag = gameMessage.getGame().game().isGameStart();
+                Chessboard.draw(startColor, boardToLoad,null , startOfGameFlag);
                 menuDrawer.setGameData(gameMessage.getGame());
                 break;
             case ERROR:

@@ -1,6 +1,7 @@
 package ui.menu;
 
 import chess.ChessMove;
+import chess.ChessPiece;
 import chess.ChessPosition;
 import client.ServerFacade;
 import model.GameData;
@@ -23,7 +24,7 @@ public class GameMenu extends ParentMenu {
                 yield "game";
             }
             case "redraw" ->{
-                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), null);
+                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), null, false);
                 yield "game";
             }
             case "leave" -> {
@@ -44,6 +45,10 @@ public class GameMenu extends ParentMenu {
                 validateInput(parts, 2);
                 //get square from input
                 ChessMove desiredMove = generateMove(parts[1]);
+                if(promotionRequired(username, gameData,desiredMove)){
+                    System.out.println(EscapeSequences.RESET_TEXT_COLOR + "What piece would you like to promote this pawn to?");
+                    //Method to get promotion piece
+                }
                 serverFacade.sendUserGameCommand("MAKE_MOVE", gameData.gameID(), desiredMove);
                 yield "game";
             }
@@ -57,7 +62,7 @@ public class GameMenu extends ParentMenu {
             case "highlight" -> {
                 validateInput(parts, 2);
                 //get square from input
-                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), parts[1] );
+                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), parts[1], false);
                 yield "game";
             }
             default -> {
@@ -98,6 +103,17 @@ public class GameMenu extends ParentMenu {
             System.out.println(MenuStrings.CONFIRM_RESIGN_ERROR);
         }
       }
+    }
+
+    private static boolean promotionRequired(String username, GameData gameData, ChessMove move){
+        String teamColor = (username.equals(gameData.whiteUsername())) ? "WHITE" : "BLACK";
+        ChessPiece[][] boardMatrix = gameData.game().getBoard().getBoardMatrix();
+        ChessPiece pieceToMove = boardMatrix[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
+        if (move.getEndPosition().getRow() == 1 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("BLACK")){
+            return true;
+        } else if (move.getEndPosition().getRow()==8 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("WHITE")){
+            return true;
+        } else {return false;}
     }
 
 

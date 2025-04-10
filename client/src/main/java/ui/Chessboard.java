@@ -5,6 +5,7 @@ import chess.*;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.*;
 
@@ -49,7 +50,7 @@ public class Chessboard {
         logger.addHandler(consoleHandler);
     }
 
-    public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight){
+    public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight, boolean isGameStart){
         // parameter checks
         if (!startColorArg.equals(LIGHT) && !startColorArg.equals(DARK)){
             throw new IllegalArgumentException("The startColorArg parameter must have a value \"light\" or \"dark\"");
@@ -64,9 +65,11 @@ public class Chessboard {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
         //Determines the color to make the first square, which direction the file labes will go
-        boolean lightFlag = startColorArg.equals(LIGHT);
-        if (!lightFlag){
+        boolean lightFlag = true;
+        if (!startColorArg.equals(LIGHT)){
             fileLablesInUse = new ArrayList<>(FILE_LABLES.reversed()) ;
+            boardMatrix = reverseBoardMatrix(boardMatrix);
+            board.setBoard(boardMatrix);
         } else{
             fileLablesInUse =FILE_LABLES;
         }
@@ -75,7 +78,9 @@ public class Chessboard {
         //finds the indexes for the piece to highlight by parsing the string arguement
         if (pieceToHighlight != null){
             indexes = findSquareIndexes(pieceToHighlight);
-            targetPiece = boardMatrix[indexes[0]][indexes[1]];
+            if (isGameStart){
+                targetPiece = boardMatrix[indexes[0]][indexes[1]];
+            }
         }
         //Sets the piece to highlight
         if (targetPiece != null){
@@ -87,7 +92,8 @@ public class Chessboard {
         for (int i = 0; i < BOARD_ROWS; i++){
             rankNumber = (startColorArg.equals(LIGHT)) ? 7-i : i;
             if (lightFlag){
-                drawBoardRow(out, LIGHT, String.format(" %s ", rankNumber + 1), boardMatrix[rankNumber], rankNumber);
+                ChessPiece[] rowToDraw = boardMatrix[rankNumber];
+                drawBoardRow(out, LIGHT, String.format(" %s ", rankNumber + 1), rowToDraw, rankNumber);
             } else {
                 drawBoardRow(out, DARK, String.format(" %s ", rankNumber + 1), boardMatrix[rankNumber], rankNumber);
             }
@@ -173,4 +179,17 @@ public class Chessboard {
         ChessPosition endPosition=new ChessPosition(row + 1, col + 1);
         return movesToHighlight.contains(new ChessMove(startPosition, endPosition, null));
     }
+
+    private static ChessPiece[][] reverseBoardMatrix(ChessPiece[][] boardMatrix){
+        ArrayList<ChessPiece[]> prepNewBoardMatrix = new ArrayList<>();
+        for (ChessPiece[] row: boardMatrix){
+            ArrayList<ChessPiece> prepForReverse = new ArrayList<>(Arrays.asList(row));
+            ArrayList<ChessPiece> reversedRow = new ArrayList<>(prepForReverse.reversed());
+            prepNewBoardMatrix.add(reversedRow.toArray(new ChessPiece[row.length]));
+        }
+
+        return prepNewBoardMatrix.toArray(new ChessPiece[8][8]);
+
+    }
+
 }
