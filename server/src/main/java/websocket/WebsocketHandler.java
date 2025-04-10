@@ -35,6 +35,15 @@ public class WebsocketHandler {
     AuthData rootUserAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
     GameData currentGameData = gameDataAccess.getGameData(parsedMessage.getGameID());
 
+    if (currentGameData == null){
+      error(rootUserAuth.username(), session, "the gameID passed in is invalid");
+      return;
+    }
+    if (rootUserAuth == null){
+      error("", session, "the authToken pass in is invalid.");
+    }
+
+
     switch (parsedMessage.getCommandType()) {
       case CONNECT ->connect(rootUserAuth.username(), session, currentGameData);
       case LEAVE -> leave(rootUserAuth.username(), session, currentGameData);
@@ -80,5 +89,11 @@ public class WebsocketHandler {
 
   public void resign(String username, Session session, GameData game){
 
+  }
+
+  private void error(String username, Session session, String errorString) throws IOException {
+    Connection rootClientConn = new Connection(username, session);
+    ServerMessage errorMsg = new ErrorMsg("Error: " + errorString);
+    rootClientConn.send(serializer.toJSON(errorMsg));
   }
 }
