@@ -168,8 +168,8 @@ public class WebsocketHandler {
   private String generateMoveDescription(String username, String teamColor, ChessMove move, ChessPiece piece){
     String pieceTypeString = piece.getPieceType().toString().toLowerCase();
 //    String squareString = move.getEndPosition().getRow()
-    ArrayList<String> fileLabelsinUse = new ArrayList<>();
     ArrayList<String> fileLabels = new ArrayList<>(List.of("a", "b", "c", "d", "e", "f", "g", "h"));
+    ArrayList<String> fileLabelsinUse = fileLabels;
     if (teamColor.equals("BLACK")){
       fileLabelsinUse =  new ArrayList<>(fileLabels.reversed());
     }
