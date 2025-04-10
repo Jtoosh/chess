@@ -7,6 +7,8 @@ import model.GameData;
 import ui.Chessboard;
 import ui.EscapeSequences;
 
+import java.util.Scanner;
+
 public class GameMenu extends ParentMenu {
     private static boolean isObserver = false;
     private static boolean gameIsOver = false;
@@ -47,7 +49,9 @@ public class GameMenu extends ParentMenu {
             }
             case "resign" -> {
                 validateInput(parts, 1);
-                serverFacade.sendUserGameCommand("RESIGN", gameData.gameID(), null);
+                if (confirmResign()){
+                    serverFacade.sendUserGameCommand("RESIGN", gameData.gameID(), null);
+                }
                 yield "game";
             }
             case "highlight" -> {
@@ -78,6 +82,22 @@ public class GameMenu extends ParentMenu {
         ChessPosition startPos = new ChessPosition(startIndexes[0]+1, startIndexes[1]+1);
         ChessPosition endPos = new ChessPosition(endIndexes[0]+1, endIndexes[1]+1);
         return new ChessMove(startPos, endPos, null);
+    }
+
+    private static boolean confirmResign(){
+        System.out.println(MenuStrings.CONFIRM_RESIGN);
+        Scanner scanner = new Scanner(System.in);
+        boolean done = false;
+      while (true){
+        String input = scanner.nextLine();
+        if (input.equals("yes")){
+            return true;
+        } else if (input.equals("no")){
+            return false;
+        } else {
+            System.out.println(MenuStrings.CONFIRM_RESIGN_ERROR);
+        }
+      }
     }
 
 

@@ -1,5 +1,7 @@
 package ui.menu;
 
+import ui.EscapeSequences;
+
 public class MenuStrings {
     public static final String PRELOGIN_MENU = """
                     Welcome to Chess.
@@ -79,7 +81,15 @@ public class MenuStrings {
               you'll be unable to make anymore moves
             - Type \u001b[38;5;12m"highlight <square>"\u001b[39m to show legal moves for that piece. For example:
               \u001b[38;5;12m"highlight f1"\u001b[39m, as the white player, will show legal moves for the Bishop on the 
-              right-hand side. 
+              right-hand side.
+            """;
+    public static final String CONFIRM_RESIGN =EscapeSequences.RESET_TEXT_COLOR + """
+            This will end the game and you will lose. Are you sure you want to resign? Type \u001b[38;5;12m"yes"\u001b[39m
+            to confirm, or \u001b[38;5;12m"no"\u001b[39m to go back.
+            """;
+    public static final String CONFIRM_RESIGN_ERROR = EscapeSequences.RESET_TEXT_COLOR + """
+            Sorry, that input didn't quite work. Make sure your response matches one of these:
+            \u001b[38;5;12m"yes"\u001b[39m to confirm, or \u001b[38;5;12m"no"\u001b[39m to go back.
             """;
 
 
