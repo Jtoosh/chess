@@ -8,7 +8,6 @@ import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.jetbrains.annotations.NotNull;
 import server.Serializer;
 import websocket.commands.MakeMoveCommand;
 import websocket.commands.UserGameCommand;
@@ -59,7 +58,7 @@ public class WebsocketHandler {
     }
   }
 
-  public void connect(String username, Session session, @org.jetbrains.annotations.NotNull GameData gameData) throws IOException {
+  public void connect(String username, Session session, GameData gameData) throws IOException {
     Connection rootClientConnection = new Connection(username, session);
     connections.add(gameData.gameID(), rootClientConnection);
     //load game message
@@ -72,7 +71,7 @@ public class WebsocketHandler {
     connections.broadcast(username, serializer.toJSON(broadcastMessage), gameData.gameID());
   }
 
-  public void leave(String username, @NotNull GameData gameData) throws IOException {
+  public void leave(String username, GameData gameData) throws IOException {
     String colorToUpdate="";
     if (gameData.whiteUsername() != null && gameData.whiteUsername().equals(username)){
         colorToUpdate = "WHITE";
