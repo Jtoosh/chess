@@ -90,7 +90,6 @@ public class ServerFacade {
     public void sendUserGameCommand(String commandType, Integer gameID, ChessMove move){
         UserGameCommand.CommandType parsedCommandType =UserGameCommand.CommandType.valueOf(commandType);
         UserGameCommand command = new UserGameCommand(parsedCommandType, this.clientAuthData.authToken(), gameID);
-        System.out.println(move);
         if (parsedCommandType.equals(UserGameCommand.CommandType.MAKE_MOVE)){
             command = new MakeMoveCommand(this.clientAuthData.authToken(), gameID, move);
         }

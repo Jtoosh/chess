@@ -16,6 +16,7 @@ import websocket.messages.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @WebSocket
@@ -119,11 +120,16 @@ public class WebsocketHandler {
        gameData.game().makeMove(move);
      } catch (InvalidMoveException e) {
        error(username, session, "that is not a valid move");
+       return;
      }
      gameDataAccess.updateGame(gameData.gameID(),null, username, serializer.toJSON(gameData.game()));
      ServerMessage moveMadeLoadGame = new LoadGame(gameData);
      connections.broadcast(null, serializer.toJSON(moveMadeLoadGame), gameData.gameID());
-     ServerMessage audienceNotification = new Notification(username + "moved", false);
+     //Determine if game is in check
+
+     String teamColor = determineTeamColor(username, gameData);
+     String moveString = generateMoveDescription(username, teamColor, move, pieceToMove);
+     ServerMessage audienceNotification = new Notification(moveString, gameData.game().isGameOver());
      connections.broadcast(username, serializer.toJSON(audienceNotification) , gameData.gameID());
     }
   }
@@ -157,5 +163,29 @@ public class WebsocketHandler {
     if (usernameTeamColor.equals(piece.getTeamColor().toString())){
       return true;
     } else {return false;}
+  }
+
+  private String generateMoveDescription(String username, String teamColor, ChessMove move, ChessPiece piece){
+    String pieceTypeString = piece.getPieceType().toString().toLowerCase();
+//    String squareString = move.getEndPosition().getRow()
+    ArrayList<String> fileLabelsinUse = new ArrayList<>();
+    ArrayList<String> fileLabels = new ArrayList<>(List.of("a", "b", "c", "d", "e", "f", "g", "h"));
+    if (teamColor.equals("BLACK")){
+      fileLabelsinUse =  new ArrayList<>(fileLabels.reversed());
+    }
+    String fileString = fileLabelsinUse.get(move.getEndPosition().getColumn()-1);
+    String rankString =String.valueOf(move.getEndPosition().getRow());
+    String squareString = fileString+rankString;
+    return username + " moved their " + pieceTypeString + " to " + squareString;
+  }
+
+  private String determineTeamColor(String username, GameData gameData){
+    if (username.equals(gameData.whiteUsername())){
+      return "WHITE";
+    } else if (username.equals(gameData.blackUsername())){
+      return "BLACK";
+    } else{
+      return "";
+    }
   }
 }

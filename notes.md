@@ -1372,3 +1372,5 @@ When I was working on the `LEAVE` websocket interaction, the thing that caught b
 A bug that got me for a good few minutes was making the Websocket endpoint URL one that was not what the spec for the test and Test website expected.
 
 I was getting a `ConcurrentModificationException` on the `broadcast` method. I thought it was because I was using a `TreeMap` instead of a `ConcurrentHashMap`, but it turned out it was because I was removing closed connections in my for-each loop. This was making the iterator that the for-each creates behind the scenes invalid, causing the exception.
+
+Right now I can make moves just fine, but the notification is only being sent on the first move, not on all subseqent moves. The tests are also struggling to get a Chessmove from the client.
