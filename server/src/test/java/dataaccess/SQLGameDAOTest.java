@@ -68,7 +68,7 @@ public class SQLGameDAOTest {
     @Test
     @DisplayName("Update Game Positive")
     void updateGamePos(){
-        gameDataAccess.updateGame(2000000000, "BLACK", "logdog");
+        gameDataAccess.updateGame(2000000000, "BLACK", "logdog", null);
         GameData updatedGame = gameDataAccess.getGameData(2000000000);
         Assertions.assertEquals("logdog", updatedGame.blackUsername());
     }
@@ -76,7 +76,7 @@ public class SQLGameDAOTest {
     @Test
     @DisplayName("Update Game Negative")
     void updateGameNegative(){
-        Assertions.assertThrows(DataAccessException.class, () -> gameDataAccess.updateGame(-144, "PURPLE", "rogdog"));
+        Assertions.assertThrows(DataAccessException.class, () -> gameDataAccess.updateGame(-144, "PURPLE", "rogdog", null));
     }
 
 

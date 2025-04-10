@@ -14,7 +14,8 @@ import java.util.ArrayList;
 
 public class PostloginMenu extends ParentMenu{
 
-    public static GameData classGameData;
+    private static GameData classGameData;
+    private static boolean requestsObserver = false;
 
     public static String eval(String input, ServerFacade serverFacade){
         String[] parts = input.split(" ");
@@ -67,6 +68,7 @@ public class PostloginMenu extends ParentMenu{
             case "join":
               String joinResult = JoinHandler.joinHandle(parts, serverFacade);
               classGameData = JoinHandler.getGameData();
+              requestsObserver = false;
               return joinResult;
 
 
@@ -74,6 +76,7 @@ public class PostloginMenu extends ParentMenu{
             case "observe":
               String observeResult = ObserveHandler.observeHandle(parts, serverFacade);
               classGameData = ObserveHandler.getGameData();
+              requestsObserver = true;
               return observeResult;
             default:
               System.out.println("Sorry, we don't recognize that command. Make sure your command looks like this:\n " +
@@ -85,5 +88,6 @@ public class PostloginMenu extends ParentMenu{
   public static GameData getGameData(){
     return classGameData;
   }
+  public static boolean getRequestsObserverFlag(){return requestsObserver;}
 
 }

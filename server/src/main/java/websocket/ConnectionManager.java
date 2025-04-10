@@ -1,14 +1,12 @@
 package websocket;
 
-import org.eclipse.jetty.websocket.api.Session;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectionManager {
-  private TreeMap<Integer, Collection<Connection>> connections = new TreeMap<>();
+  private ConcurrentHashMap<Integer, Collection<Connection>> connections = new ConcurrentHashMap<>();
 
   public void add(Integer gameID, Connection userConnection){
     ArrayList<Connection> gameClients = new ArrayList<>();
@@ -43,14 +41,19 @@ public class ConnectionManager {
 
   public void broadcast(String excludeUsername, String notification, Integer gameID ) throws IOException {
     ArrayList<Connection> gameToNotify = (ArrayList<Connection>) connections.get(gameID);
+    ArrayList<Connection> connectionsToRemove = new ArrayList<>();
     for (Connection conn : gameToNotify){
       if (conn.getSession().isOpen()){
         if(!conn.getUsername().equals(excludeUsername)){
           conn.send(notification);
         }
       } else{
-        this.removeConnectionFromGame(gameID, conn);
+        connectionsToRemove.add(conn);
       }
+    }
+
+    for (Connection conn : connectionsToRemove){
+      this.removeConnectionFromGame(gameID, conn);
     }
   }
 

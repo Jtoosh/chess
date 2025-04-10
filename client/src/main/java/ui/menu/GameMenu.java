@@ -5,7 +5,12 @@ import model.GameData;
 import ui.Chessboard;
 import ui.EscapeSequences;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class GameMenu extends ParentMenu {
+    private static boolean isObserver = false;
+    private static boolean gameIsOver = false;
 
     public static String eval(String input, ServerFacade serverFacade, String username, GameData gameData){
         String[] parts = input.split(" ");
@@ -28,7 +33,14 @@ public class GameMenu extends ParentMenu {
                 yield "postlogin";
             }
             case "move" ->{
-                    validateInput(parts, 2);
+                if (isObserver){
+                    System.out.println(EscapeSequences.RESET_TEXT_COLOR + "Sorry, observers can't make moves.");
+                    yield "game";
+                } else if (gameIsOver) {
+                    System.out.println(EscapeSequences.RESET_TEXT_COLOR + "Sorry, this game has ended, and no more moves can be made");
+                    yield "game";
+                }
+                validateInput(parts, 2);
                 //get square from input
                 yield "game";
             }
@@ -36,7 +48,8 @@ public class GameMenu extends ParentMenu {
                 validateInput(parts, 1);
                 //TODO: Send RESIGN UserGameCommand
                 serverFacade.sendUserGameCommand("RESIGN", gameData.gameID());
-                System.out.println("Well, I guess you lost now.");
+
+              System.out.println("Well, I guess you lost now.");
                 yield "game";
             }
             case "highlight" -> {
@@ -59,5 +72,9 @@ public class GameMenu extends ParentMenu {
         } else {
             return "light";}
     }
+
+    public static void setIsObserver(boolean flag){isObserver = flag;}
+
+    public static void setGameIsOver(boolean flag){gameIsOver = flag;}
 
 }

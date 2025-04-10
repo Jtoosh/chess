@@ -46,8 +46,8 @@ public class ParentService {
     return gameDataAccess.createGame(whiteUsername, blackUsername, gameName);
   }
 
-  public void updateGame(int gameID, String teamColorRequest, String username){
-    gameDataAccess.updateGame(gameID, teamColorRequest, username);
+  public void updateGame(int gameID, String teamColorRequest, String username, String game){
+    gameDataAccess.updateGame(gameID, teamColorRequest, username, game);
   }
 
 

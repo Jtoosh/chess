@@ -41,13 +41,13 @@ public class WebsocketHandler {
     }
     if (rootUserAuth == null){
       error("", session, "the authToken pass in is invalid.");
+      return;
     }
-
 
     switch (parsedMessage.getCommandType()) {
       case CONNECT ->connect(rootUserAuth.username(), session, currentGameData);
       case LEAVE -> leave(rootUserAuth.username(), session, currentGameData);
-      case RESIGN -> new Notification(rootUserAuth.username() + " has resigned, the game is over.");
+      case RESIGN -> resign(rootUserAuth.username(), session, currentGameData);
     }
   }
 
@@ -58,42 +58,58 @@ public class WebsocketHandler {
     ServerMessage rootClientResponse = new LoadGame(game);
     rootClientConnection.send(serializer.toJSON(rootClientResponse));
 
-    String userRole;
-    if (game.whiteUsername().equals(username)){
-      userRole = "the White player";
-    }
-    else userRole = game.blackUsername().equals(username) ? "the Black player" : "an observer";
+    String userRole = determineUserRole(username, game);
 
-    ServerMessage broadcastMessage = new Notification(username + " has connected to the game as " + userRole);
+    ServerMessage broadcastMessage = new Notification(username + " has connected to the game as " + userRole, false);
     connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
   }
 
   public void leave(String username, Session session, GameData game) throws IOException {
     String colorToUpdate="";
-    if (game.whiteUsername() != null){
-      if (game.whiteUsername().equals(username)){
+    if (game.whiteUsername() != null && game.whiteUsername().equals(username)){
         colorToUpdate = "WHITE";
-        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null);
+        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null, serializer.toJSON(game.game()));
       }
-    }
-    if ( game.blackUsername() != null) {
-      if (game.blackUsername().equals(username)){
+
+    if ( game.blackUsername() != null && game.blackUsername().equals(username)){
         colorToUpdate = "BLACK";
-        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null);
+        gameDataAccess.updateGame(game.gameID(), colorToUpdate, null, serializer.toJSON(game.game()));
       }
-    }
-    ServerMessage broadcastMessage = new Notification(username + " has left the game");
+
+    ServerMessage broadcastMessage = new Notification(username + " has left the game", false);
     connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
     connections.removeConnectionFromGame(game.gameID(), connections.getConnection(username, game.gameID()));
   }
 
-  public void resign(String username, Session session, GameData game){
-
+  public void resign(String username, Session session, GameData game) throws IOException {
+    if (determineUserRole(username, game).equals("an observer")){
+      Connection rootClientConn = connections.getConnection(username,game.gameID());
+      ErrorMsg errorResponse = new ErrorMsg("error: " + username + " can't resign as an observer");
+      rootClientConn.send(serializer.toJSON(errorResponse));
+    }else {
+      game.game().resign();
+      gameDataAccess.updateGame(game.gameID(), null, username, serializer.toJSON(game.game()));
+      ServerMessage broadcastMessage = new Notification(username + " has resigned, the game is over", true);
+      connections.broadcast(null, serializer.toJSON(broadcastMessage), game.gameID());
+    }
   }
 
   private void error(String username, Session session, String errorString) throws IOException {
     Connection rootClientConn = new Connection(username, session);
     ServerMessage errorMsg = new ErrorMsg("Error: " + errorString);
     rootClientConn.send(serializer.toJSON(errorMsg));
+  }
+
+  private String determineUserRole(String username, GameData game){
+    String userRole;
+    if (game.whiteUsername() != null && game.whiteUsername().equals(username)){
+      userRole = "the White player";
+    }
+    else if (game.blackUsername() != null && game.blackUsername().equals(username)){
+      userRole = "the Black player";
+    } else {
+      userRole = "an observer";
+    }
+    return userRole;
   }
 }

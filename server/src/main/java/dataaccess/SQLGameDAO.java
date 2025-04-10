@@ -75,22 +75,30 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
     }
 
     @Override
-    public void updateGame(int gameID, String teamColorRequest, String username) {
+    public void updateGame(int gameID, String teamColorRequest, String username, String game) {
         String updateTeamColor = null;
-        if (teamColorRequest.equals("WHITE")){
+        if (teamColorRequest != null && teamColorRequest.equals("WHITE")){
             updateTeamColor = "whiteUsername";
-        } else if (teamColorRequest.equals("BLACK")) {
+        } else if (teamColorRequest != null && teamColorRequest.equals("BLACK")) {
             updateTeamColor = "blackUsername";
         }
         try(Connection conn = DatabaseManager.getConnection()){
-            var query = String.format("UPDATE games SET %s = ? WHERE id = ?", updateTeamColor);
-            var preppedStmt = conn.prepareStatement(query);
-          if (username == null) {
-            preppedStmt.setString(1, null);
-          } else {
+          var query = String.format("UPDATE games SET %s = ?, ChessGame = ? WHERE id = ?", updateTeamColor);
+          var preppedStmt = conn.prepareStatement(query);
+          preppedStmt.setString(1, username);
+          preppedStmt.setString(2, game);
+          preppedStmt.setInt(3, gameID);
+          if (game == null){
+            query = String.format("UPDATE games SET %s = ? WHERE id = ?", updateTeamColor);
+            preppedStmt = conn.prepareStatement(query);
             preppedStmt.setString(1, username);
+            preppedStmt.setInt(2, gameID);
+          } else if (updateTeamColor == null) {
+            query = "UPDATE games SET ChessGame = ? WHERE id = ?";
+            preppedStmt = conn.prepareStatement(query);
+            preppedStmt.setString(1, game);
+            preppedStmt.setInt(2, gameID);
           }
-          preppedStmt.setInt(2, gameID);
           preppedStmt.executeUpdate();
         } catch (SQLException e){
              throw new DataAccessException(e.getMessage());
@@ -101,4 +109,5 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
     public void clearGameData() {
         super.clearTable("games");
     }
+
 }

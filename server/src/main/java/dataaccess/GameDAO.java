@@ -10,7 +10,7 @@ public interface GameDAO {
 
   int createGame(String whiteUsername, String blackUsername, String gameName);
 
-  void updateGame(int gameID, String teamColorRequest, String username);
+  void updateGame(int gameID, String teamColorRequest, String username, String game);
 
   void clearGameData();
 }
