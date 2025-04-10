@@ -105,33 +105,36 @@ public class WebsocketHandler {
   private void makeMove(String username, Session session, GameData gameData, ChessMove move) throws IOException {
     if (move == null){
       error(username, session, "no move was provided");
-      return;
-    }
-    int rowIndex = move.getStartPosition().getRow()-1;
-    int colIndex = move.getStartPosition().getColumn()-1;
-    ChessBoard gameBoard = gameData.game().getBoard();
-    ChessPiece pieceToMove = gameBoard.getBoardMatrix()[rowIndex][colIndex];
-    if (pieceToMove == null){
-      error(username, session, "there is not a chess piece there.");
-    } else if (!pieceColorMatchesPlayer(username, pieceToMove,gameData )) {
-      error(username, session, "that is not one of your pieces");
-    } else{
-     try {
-       gameData.game().makeMove(move);
-     } catch (InvalidMoveException e) {
-       error(username, session, "that is not a valid move");
-       return;
-     }
-     gameDataAccess.updateGame(gameData.gameID(),null, username, serializer.toJSON(gameData.game()));
-     ServerMessage moveMadeLoadGame = new LoadGame(gameData);
-     connections.broadcast(null, serializer.toJSON(moveMadeLoadGame), gameData.gameID());
-     //Determine if game is in check
 
-     String teamColor = determineTeamColor(username, gameData);
-     String moveString = generateMoveDescription(username, teamColor, move, pieceToMove);
-     ServerMessage audienceNotification = new Notification(moveString, gameData.game().isGameOver());
-     connections.broadcast(username, serializer.toJSON(audienceNotification) , gameData.gameID());
+    } else if (gameData.game().isGameOver()) {
+      error(username, session, "the game is over, no more moves can be made");
+
+    } else {
+      int rowIndex = move.getStartPosition().getRow()-1;
+      int colIndex = move.getStartPosition().getColumn()-1;
+      ChessBoard gameBoard = gameData.game().getBoard();
+      ChessPiece pieceToMove = gameBoard.getBoardMatrix()[rowIndex][colIndex];
+      if (pieceToMove == null){
+        error(username, session, "there is not a chess piece there.");
+      } else if (!pieceColorMatchesPlayer(username, pieceToMove,gameData )) {
+        error(username, session, "that is not one of your pieces");
+      } else{
+        try {
+          gameData.game().makeMove(move);
+        } catch (InvalidMoveException e) {
+          error(username, session, "that is not a valid move");
+          return;
+        }
+        gameDataAccess.updateGame(gameData.gameID(),null, username, serializer.toJSON(gameData.game()));
+        ServerMessage moveMadeLoadGame = new LoadGame(gameData);
+        connections.broadcast(null, serializer.toJSON(moveMadeLoadGame), gameData.gameID());
+        String teamColor = determineTeamColor(username, gameData);
+        String moveString = generateMoveDescription(username, teamColor, move, pieceToMove);
+        ServerMessage audienceNotification = new Notification(moveString, gameData.game().isGameOver());
+        connections.broadcast(username, serializer.toJSON(audienceNotification) , gameData.gameID());
+      }
     }
+
   }
 
   private void error(String username, Session session, String errorString) throws IOException {
