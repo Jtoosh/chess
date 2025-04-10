@@ -29,6 +29,7 @@ public class JoinHandler {
 
       gamesList = (ArrayList<GameData>) serverFacade.listGames();
       gameData = findGame(gamesList, id);
+      assert gameData != null;
       gameName = gameData.gameName();
 
     } catch (AuthorizationException e){
@@ -44,7 +45,6 @@ public class JoinHandler {
       System.out.println(ErrorStrings.IO_EXCEPTION);
       return "postlogin";
     }
-    //TODO: Send CONNECT UserGameCommand to server
     serverFacade.sendUserGameCommand("CONNECT", gameData.gameID(), null);
 
     //Draw chess board now handled in WS notifier

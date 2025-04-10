@@ -86,7 +86,6 @@ public class ServerFacade {
                 null, null, endpointURL + "/db", "DELETE", null);
     }
 
-    //TODO: Add method for sending UserGameCommands
     public void sendUserGameCommand(String commandType, Integer gameID, ChessMove move){
         UserGameCommand.CommandType parsedCommandType =UserGameCommand.CommandType.valueOf(commandType);
         UserGameCommand command = new UserGameCommand(parsedCommandType, this.clientAuthData.authToken(), gameID);

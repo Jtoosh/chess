@@ -7,9 +7,6 @@ import model.GameData;
 import ui.Chessboard;
 import ui.EscapeSequences;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class GameMenu extends ParentMenu {
     private static boolean isObserver = false;
     private static boolean gameIsOver = false;
@@ -50,7 +47,6 @@ public class GameMenu extends ParentMenu {
             }
             case "resign" -> {
                 validateInput(parts, 1);
-                //TODO: Tests want an ErrorMsg for Double Resign
                 serverFacade.sendUserGameCommand("RESIGN", gameData.gameID(), null);
                 yield "game";
             }

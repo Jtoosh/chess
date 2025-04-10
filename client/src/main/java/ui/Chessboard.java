@@ -29,7 +29,7 @@ public class Chessboard {
 
     //Padded characters (Note: Chess piece padded characters are in EscapeSequences.java)
     private static final String EMPTY = "   ";
-    private static final ArrayList<String> fileLables = new ArrayList<>(List.of(" a ", " b "," c ", " d "," e ", " f "," g ", " h "));
+    private static final ArrayList<String> FILE_LABLES= new ArrayList<>(List.of(" a ", " b "," c ", " d "," e ", " f "," g ", " h "));
     private static  ArrayList<String> fileLablesInUse;
 
     //Indexes, ChessPiece and ArrayList for highlighting
@@ -66,9 +66,9 @@ public class Chessboard {
         //Determines the color to make the first square, which direction the file labes will go
         boolean lightFlag = startColorArg.equals(LIGHT);
         if (!lightFlag){
-            fileLablesInUse = new ArrayList<>(fileLables.reversed()) ;
+            fileLablesInUse = new ArrayList<>(FILE_LABLES.reversed()) ;
         } else{
-            fileLablesInUse = fileLables;
+            fileLablesInUse =FILE_LABLES;
         }
         int rankNumber;
 

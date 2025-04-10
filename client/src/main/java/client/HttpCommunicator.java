@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpCommunicator {
-    Gson serializer = new Gson(); //TODO: Write separate serializer class with type adapters
+    Gson serializer = new Gson();
 
     public <T> T httpRequest(Record request,String authToken, String urlArg, String method, Class<T> responseClass) throws IOException{
         URL connectionURL = new URL(urlArg);
