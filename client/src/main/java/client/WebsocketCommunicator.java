@@ -4,20 +4,22 @@ package client;
 
 
 
+import websocket.messages.ErrorMsg;
 import websocket.messages.ServerMessage;
 
 import javax.websocket.*;
+import java.io.IOException;
 import java.net.URI;
 
 public class WebsocketCommunicator extends Endpoint {
   private final ServerMessageObserver msgObserver;
-  private final Session session;
+  private Session session;
   private final ClientSerializer serializer = new ClientSerializer();
   private String clientUsername;
 
-  public WebsocketCommunicator(ServerMessageObserver msgObserver) throws Exception{
+  public WebsocketCommunicator(ServerMessageObserver msgObserver, int port) throws Exception{
     this.msgObserver = msgObserver;
-    URI uri = new URI("ws://localhost:8080/connect");
+    URI uri = new URI("ws://localhost:" + port +"/ws");
     WebSocketContainer container = ContainerProvider.getWebSocketContainer();
     this.session = container.connectToServer(this, uri);
 
@@ -31,7 +33,14 @@ public class WebsocketCommunicator extends Endpoint {
 
   public void setClientUsername(String usernameArg){this.clientUsername = usernameArg;}
 
-  public void send(String msg) throws Exception {this.session.getBasicRemote().sendText(msg);}
+  public void send(String msg) {
+    try {
+      this.session.getBasicRemote().sendText(msg);
+    } catch (IOException e) {
+      ServerMessage errorMessage = new ErrorMsg("error: problem sending message to server");
+      this.msgObserver.notify(errorMessage, clientUsername);
+    }
+  }
   @Override
   public void onOpen(Session session, EndpointConfig endpointConfig) {
 

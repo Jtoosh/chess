@@ -12,6 +12,7 @@ import java.util.Collection;
 public class ChessGame {
     private TeamColor turnTeam;
     private ChessBoard gameBoard;
+    private boolean gameOver = false;
 
     public ChessGame() {
         this.turnTeam = TeamColor.WHITE;
@@ -153,7 +154,8 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamColor) {
         if (!isInCheck(teamColor)){ return false;}
-      return stalemateLoop(teamColor);
+        this.gameOver = stalemateLoop(teamColor);
+      return this.gameOver;
     }
 
     /**
@@ -195,4 +197,8 @@ public class ChessGame {
         }
         return false;
     }
+
+    public boolean isGameOver(){return this.gameOver;}
+
+    public void resign(){this.gameOver = true;}
 }

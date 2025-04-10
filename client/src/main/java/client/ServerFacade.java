@@ -19,7 +19,7 @@ public class ServerFacade {
     public ServerFacade (int port, ServerMessageObserver msgObserver) {
         this.endpointURL = this.endpointURL + port;
         try {
-            this.wsCommunitcator = new WebsocketCommunicator(msgObserver);
+            this.wsCommunitcator = new WebsocketCommunicator(msgObserver, port);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

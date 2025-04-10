@@ -76,7 +76,6 @@ public class SQLGameDAO extends ParentSQLDAO implements GameDAO{
 
     @Override
     public void updateGame(int gameID, String teamColorRequest, String username) {
-      System.out.println("UPDATE EXECUTING");
         String updateTeamColor = null;
         if (teamColorRequest.equals("WHITE")){
             updateTeamColor = "whiteUsername";

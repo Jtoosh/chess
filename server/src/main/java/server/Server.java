@@ -57,7 +57,7 @@ public class Server {
     // Register your endpoints and handle exceptions here.
 
     //TODO: Potential trouble spot, look here if bugs arise
-    Spark.webSocket("/connect", websocketHandler);
+    Spark.webSocket("/ws", websocketHandler);
 
     Spark.init();
     Spark.awaitInitialization();

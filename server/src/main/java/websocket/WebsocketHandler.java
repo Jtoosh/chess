@@ -34,9 +34,6 @@ public class WebsocketHandler {
     UserGameCommand parsedMessage = serializer.fromJSON(message, UserGameCommand.class);
     AuthData rootUserAuth = authDataAccess.getAuthData(parsedMessage.getAuthToken());
     GameData currentGameData = gameDataAccess.getGameData(parsedMessage.getGameID());
-//    System.out.println("GameData, pre DB Update: " + currentGameData.toString());
-
-
 
     switch (parsedMessage.getCommandType()) {
       case CONNECT ->connect(rootUserAuth.username(), session, currentGameData);
@@ -61,6 +58,7 @@ public class WebsocketHandler {
     ServerMessage broadcastMessage = new Notification(username + " has connected to the game as " + userRole);
     connections.broadcast(username, serializer.toJSON(broadcastMessage), game.gameID());
   }
+
   public void leave(String username, Session session, GameData game) throws IOException {
     String colorToUpdate="";
     if (game.whiteUsername() != null){
@@ -75,10 +73,12 @@ public class WebsocketHandler {
         gameDataAccess.updateGame(game.gameID(), colorToUpdate, null);
       }
     }
-//    System.out.println("GameData, postDB update: " + game);
-
     ServerMessage broadcastMessage = new Notification(username + " has left the game");
     connections.broadcast(null, serializer.toJSON(broadcastMessage), game.gameID());
     connections.removeConnectionFromGame(game.gameID(), connections.getConnection(username, game.gameID()));
+  }
+
+  public void resign(String username, Session session, GameData game){
+
   }
 }
