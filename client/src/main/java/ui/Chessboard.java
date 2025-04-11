@@ -123,7 +123,7 @@ public class Chessboard {
         out.print(rank);
 
         out.print(EscapeSequences.RESET_TEXT_COLOR);
-        if (startColorGlobal.equals(LIGHT)){
+        if (startColorGlobal.equals(DARK)){
             for (int j = 7; j >= 0; j-- ){
                 boardRowLoop(out, i, j, lightFlag, row);
                 lightFlag = !lightFlag;

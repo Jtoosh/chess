@@ -59,8 +59,8 @@ public class ChessBoard{
         this.board[firstRow][0] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
         this.board[firstRow][1] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
         this.board[firstRow][2] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
-        this.board[firstRow][3] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
-        this.board[firstRow][4] = new ChessPiece(teamColor, ChessPiece.PieceType.QUEEN);
+        this.board[firstRow][3] = new ChessPiece(teamColor, ChessPiece.PieceType.QUEEN);
+        this.board[firstRow][4] = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
         this.board[firstRow][5] = new ChessPiece(teamColor, ChessPiece.PieceType.BISHOP);
         this.board[firstRow][6] = new ChessPiece(teamColor, ChessPiece.PieceType.KNIGHT);
         this.board[firstRow][7] = new ChessPiece(teamColor, ChessPiece.PieceType.ROOK);
