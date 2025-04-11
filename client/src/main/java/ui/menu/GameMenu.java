@@ -111,9 +111,7 @@ public class GameMenu extends ParentMenu {
         ChessPiece pieceToMove = boardMatrix[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
         if (move.getEndPosition().getRow() == 1 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("BLACK")){
             return true;
-        } else if (move.getEndPosition().getRow()==8 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("WHITE")){
-            return true;
-        } else {return false;}
+        } else return move.getEndPosition().getRow() == 8 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("WHITE");
     }
 
 

@@ -38,6 +38,8 @@ public class Chessboard {
     private static ChessPiece targetPiece;
     private static ArrayList<ChessMove> movesToHighlight = new ArrayList<>();
 
+    private static String startColorGlobal;
+
     //Logger setup
     private static void initLog(){
         logger = Logger.getLogger("Chessboard");
@@ -55,6 +57,7 @@ public class Chessboard {
         if (!startColorArg.equals(LIGHT) && !startColorArg.equals(DARK)){
             throw new IllegalArgumentException("The startColorArg parameter must have a value \"light\" or \"dark\"");
         }
+        startColorGlobal = startColorArg;
 
         //Clear out old highlight data
         movesToHighlight.clear();
@@ -68,8 +71,10 @@ public class Chessboard {
         boolean lightFlag = true;
         if (!startColorArg.equals(LIGHT)){
             fileLablesInUse = new ArrayList<>(FILE_LABLES.reversed()) ;
-            boardMatrix = reverseBoardMatrix(boardMatrix);
-            board.setBoard(boardMatrix);
+//          if (isGameStart) {
+//            boardMatrix = reverseBoardMatrix(boardMatrix);
+//            board.setBoard(boardMatrix);
+//          }
         } else{
             fileLablesInUse =FILE_LABLES;
         }
@@ -78,9 +83,7 @@ public class Chessboard {
         //finds the indexes for the piece to highlight by parsing the string arguement
         if (pieceToHighlight != null){
             indexes = findSquareIndexes(pieceToHighlight);
-            if (isGameStart){
-                targetPiece = boardMatrix[indexes[0]][indexes[1]];
-            }
+            targetPiece = boardMatrix[indexes[0]][indexes[1]];
         }
         //Sets the piece to highlight
         if (targetPiece != null){
@@ -120,19 +123,16 @@ public class Chessboard {
         out.print(rank);
 
         out.print(EscapeSequences.RESET_TEXT_COLOR);
-        for (int j = 0; j < BOARD_SIZE_IN_SQUARES - 2; j++){
-            if(i == indexes[0] && j == indexes[1]){
-                out.print(EscapeSequences.SET_BG_COLOR_YELLOW);
-            } else if(targetPiece != null && checkSquareForHighlight(i, j)){
-                out.print(EscapeSequences.SET_BG_COLOR_MAGENTA);
+        if (startColorGlobal.equals(LIGHT)){
+            for (int j = 7; j >= 0; j-- ){
+                boardRowLoop(out, i, j, lightFlag, row);
+                lightFlag = !lightFlag;
             }
-            else if (lightFlag){
-                out.print(EscapeSequences.SET_BG_COLOR_TAN);
-            } else{
-                out.print(EscapeSequences.SET_BG_COLOR_DARK_BROWN);
+        } else{
+            for (int j = 0; j < BOARD_SIZE_IN_SQUARES - 2; j++){
+                boardRowLoop(out, i, j, lightFlag, row);
+                lightFlag = !lightFlag;
             }
-            out.print(evaluateSquare(row[j]));
-            lightFlag = !lightFlag;
         }
         //Formats for the rank column, prints the rank, resets formatting, then goes to a new line
         headerFormat(out);
@@ -191,5 +191,21 @@ public class Chessboard {
         return prepNewBoardMatrix.toArray(new ChessPiece[8][8]);
 
     }
+    private static void boardRowLoop(PrintStream out, int rankNumber, int fileNumber, boolean lightFlag, ChessPiece[] row){
+        if(rankNumber == indexes[0] && fileNumber == indexes[1]){
+            out.print(EscapeSequences.SET_BG_COLOR_YELLOW);
+        } else if(targetPiece != null && checkSquareForHighlight(rankNumber, fileNumber)){
+            out.print(EscapeSequences.SET_BG_COLOR_MAGENTA);
+        }
+        else if (lightFlag){
+            out.print(EscapeSequences.SET_BG_COLOR_TAN);
+        } else{
+            out.print(EscapeSequences.SET_BG_COLOR_DARK_BROWN);
+        }
+        out.print(evaluateSquare(row[fileNumber]));
+
+    }
+
+
 
 }
