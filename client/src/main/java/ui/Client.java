@@ -1,6 +1,7 @@
 package ui;
 
 import chess.ChessBoard;
+import chess.ChessGame;
 import client.ServerFacade;
 import client.ServerMessageObserver;
 import model.GameData;
@@ -28,10 +29,10 @@ public class Client implements ServerMessageObserver {
                 break;
             case LOAD_GAME:
                 LoadGame gameMessage = (LoadGame) message;
-                ChessBoard boardToLoad = gameMessage.getGame().game().getBoard();
+                ChessGame gameToLoad = gameMessage.getGame().game();
                 String startColor = evalBoardStartColor(gameMessage.getGame(), clientUsername);
-                boolean startOfGameFlag = gameMessage.getGame().game().isGameStart();
-                Chessboard.draw(startColor, boardToLoad,null , startOfGameFlag);
+
+                Chessboard.draw(startColor, gameToLoad,null);
                 menuDrawer.setGameData(gameMessage.getGame());
                 break;
             case ERROR:

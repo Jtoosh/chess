@@ -24,7 +24,7 @@ public class GameMenu extends ParentMenu {
                 yield "game";
             }
             case "redraw" ->{
-                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), null, false);
+                Chessboard.draw(findStartColor(username, gameData), gameData.game(), null);
                 yield "game";
             }
             case "leave" -> {
@@ -42,7 +42,12 @@ public class GameMenu extends ParentMenu {
                     System.out.println(EscapeSequences.RESET_TEXT_COLOR + "Sorry, this game has ended, and no more moves can be made");
                     yield "game";
                 }
-                validateInput(parts, 2);
+                if (!validateInput(parts, 2)){
+                    yield "game";
+                }
+                if (!validateInput(parts[1].split("(?<=[a-h][1-8])"), 2)){
+                    yield "game";
+                }
                 //get square from input
                 ChessMove desiredMoveInUse;
                 ChessMove desiredMove = generateMove(parts[1]);
@@ -65,7 +70,7 @@ public class GameMenu extends ParentMenu {
             case "highlight" -> {
                 validateInput(parts, 2);
                 //get square from input
-                Chessboard.draw(findStartColor(username, gameData), gameData.game().getBoard(), parts[1], false);
+                Chessboard.draw(findStartColor(username, gameData), gameData.game(), parts[1]);
                 yield "game";
             }
             default -> {

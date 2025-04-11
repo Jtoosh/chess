@@ -129,8 +129,31 @@ public class WebsocketHandler {
         connections.broadcast(null, serializer.toJSON(moveMadeLoadGame), gameData.gameID());
         String teamColor = determineTeamColor(username, gameData);
         String moveString = generateMoveDescription(username, teamColor, move, pieceToMove);
-        ServerMessage audienceNotification = new Notification(moveString, gameData.game().isGameOver());
-        connections.broadcast(username, serializer.toJSON(audienceNotification) , gameData.gameID());
+        ServerMessage moveNotification = new Notification(moveString,gameData.game().isGameOver());
+        ServerMessage audienceNotification = null;
+        if (gameData.game().isInCheckmate(ChessGame.TeamColor.BLACK)){
+          audienceNotification = new Notification(
+                  gameData.blackUsername() + " is in checkmate. " + gameData.whiteUsername() + "wins!", gameData.game().isGameOver());
+        } else if (gameData.game().isInCheckmate(ChessGame.TeamColor.WHITE)) {
+          audienceNotification = new Notification(
+                  gameData.whiteUsername() + " is in checkmate. " + gameData.blackUsername() + "wins!", gameData.game().isGameOver());
+        } else if (gameData.game().isInStalemate(ChessGame.TeamColor.BLACK)){
+          audienceNotification = new Notification(
+                  gameData.blackUsername() + "is in stalemate", gameData.game().isGameOver());
+        } else if (gameData.game().isInStalemate(ChessGame.TeamColor.WHITE)) {
+          audienceNotification = new Notification(
+                  gameData.whiteUsername() + " is in stalemate", gameData.game().isGameOver());
+        } else if (gameData.game().isInCheck(ChessGame.TeamColor.WHITE)) {
+          audienceNotification = new Notification(
+                  gameData.whiteUsername() + "is in check!", gameData.game().isGameOver());
+        } else if (gameData.game().isInCheck(ChessGame.TeamColor.BLACK)) {
+          audienceNotification = new Notification(
+                  gameData.blackUsername() + " is in check!", gameData.game().isGameOver());
+        }
+        connections.broadcast(username, serializer.toJSON(moveNotification), gameData.gameID());
+        if (audienceNotification != null){
+          connections.broadcast(null, serializer.toJSON(audienceNotification) , gameData.gameID());
+        }
       }
     }
 

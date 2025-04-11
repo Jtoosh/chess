@@ -51,7 +51,7 @@ public class Chessboard {
         logger.addHandler(consoleHandler);
     }
 
-    public static void draw(String startColorArg, ChessBoard board, String pieceToHighlight, boolean isGameStart){
+    public static void draw(String startColorArg, ChessGame game, String pieceToHighlight){
         // parameter checks
         if (!startColorArg.equals(LIGHT) && !startColorArg.equals(DARK)){
             throw new IllegalArgumentException("The startColorArg parameter must have a value \"light\" or \"dark\"");
@@ -63,7 +63,7 @@ public class Chessboard {
         targetPiece = null;
         indexes =new int[]{9, 9};
 
-        ChessPiece[][] boardMatrix = board.getBoardMatrix();
+        ChessPiece[][] boardMatrix = game.getBoard().getBoardMatrix();
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
         //Determines the color to make the first square, which direction the file labes will go
@@ -82,7 +82,8 @@ public class Chessboard {
         }
         //Sets the piece to highlight
         if (targetPiece != null){
-            movesToHighlight = (ArrayList<ChessMove>) targetPiece.pieceMoves(board, new ChessPosition(indexes[0] + 1, indexes[1] + 1 ));
+            ChessPosition movePosition = new ChessPosition(indexes[0] + 1,indexes[1] + 1 );
+            movesToHighlight = (ArrayList<ChessMove>) game.validMoves(movePosition);
         }
 
         drawHeaderRow(out);
@@ -164,7 +165,7 @@ public class Chessboard {
 
     public static int[] findSquareIndexes(String boardSquare){
         String[] parts = boardSquare.split("");
-        int col = fileLablesInUse.indexOf(" " + parts[0] + " ");
+        int col = FILE_LABLES.indexOf(" " + parts[0] + " ");
         int row = Integer.parseInt(parts[1]) - 1;
       return new int[]{row, col};
     }
