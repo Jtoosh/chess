@@ -5,7 +5,6 @@ import chess.*;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.*;
 
@@ -71,10 +70,6 @@ public class Chessboard {
         boolean lightFlag = true;
         if (!startColorArg.equals(LIGHT)){
             fileLablesInUse = new ArrayList<>(FILE_LABLES.reversed()) ;
-//          if (isGameStart) {
-//            boardMatrix = reverseBoardMatrix(boardMatrix);
-//            board.setBoard(boardMatrix);
-//          }
         } else{
             fileLablesInUse =FILE_LABLES;
         }
@@ -180,17 +175,6 @@ public class Chessboard {
         return movesToHighlight.contains(new ChessMove(startPosition, endPosition, null));
     }
 
-    private static ChessPiece[][] reverseBoardMatrix(ChessPiece[][] boardMatrix){
-        ArrayList<ChessPiece[]> prepNewBoardMatrix = new ArrayList<>();
-        for (ChessPiece[] row: boardMatrix){
-            ArrayList<ChessPiece> prepForReverse = new ArrayList<>(Arrays.asList(row));
-            ArrayList<ChessPiece> reversedRow = new ArrayList<>(prepForReverse.reversed());
-            prepNewBoardMatrix.add(reversedRow.toArray(new ChessPiece[row.length]));
-        }
-
-        return prepNewBoardMatrix.toArray(new ChessPiece[8][8]);
-
-    }
     private static void boardRowLoop(PrintStream out, int rankNumber, int fileNumber, boolean lightFlag, ChessPiece[] row){
         if(rankNumber == indexes[0] && fileNumber == indexes[1]){
             out.print(EscapeSequences.SET_BG_COLOR_YELLOW);

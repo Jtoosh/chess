@@ -44,12 +44,15 @@ public class GameMenu extends ParentMenu {
                 }
                 validateInput(parts, 2);
                 //get square from input
+                ChessMove desiredMoveInUse;
                 ChessMove desiredMove = generateMove(parts[1]);
+                desiredMoveInUse = desiredMove;
                 if(promotionRequired(username, gameData,desiredMove)){
                     System.out.println(EscapeSequences.RESET_TEXT_COLOR + "What piece would you like to promote this pawn to?");
-                    //Method to get promotion piece
+                    ChessPiece.PieceType promotionType = determinePromotionPiece();
+                    desiredMoveInUse = new ChessMove(desiredMove.getStartPosition(),desiredMove.getEndPosition(), promotionType);
                 }
-                serverFacade.sendUserGameCommand("MAKE_MOVE", gameData.gameID(), desiredMove);
+                serverFacade.sendUserGameCommand("MAKE_MOVE", gameData.gameID(), desiredMoveInUse);
                 yield "game";
             }
             case "resign" -> {
@@ -111,7 +114,38 @@ public class GameMenu extends ParentMenu {
         ChessPiece pieceToMove = boardMatrix[move.getStartPosition().getRow()-1][move.getStartPosition().getColumn()-1];
         if (move.getEndPosition().getRow() == 1 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("BLACK")){
             return true;
-        } else return move.getEndPosition().getRow() == 8 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("WHITE");
+        } else {return move.getEndPosition().getRow() == 8 && pieceToMove.getPieceType().toString().equals("PAWN") && teamColor.equals("WHITE");}
+    }
+
+    private static ChessPiece.PieceType determinePromotionPiece(){
+        Scanner scanner = new Scanner(System.in);
+      ChessPiece.PieceType returnType =null;
+      boolean finished = false;
+      while (!finished) {
+        String input = scanner.nextLine();
+        returnType=ChessPiece.PieceType.PAWN;
+        switch (input) {
+           case "QUEEN":
+               returnType =  ChessPiece.PieceType.QUEEN;
+               finished = true;
+               break;
+           case "KNIGHT":
+               returnType = ChessPiece.PieceType.KNIGHT;
+               finished = true;
+               break;
+           case "ROOK":
+               returnType =  ChessPiece.PieceType.ROOK;
+               finished = true;
+               break;
+           case "BISHOP":
+               returnType =  ChessPiece.PieceType.BISHOP;
+               finished = true;
+               break;
+           default:
+               System.out.println("That's not a valid piece to promote your pawn to. Please select Queen, Rook, Bishop, or Knight.");
+       }
+      }
+      return returnType;
     }
 
 
